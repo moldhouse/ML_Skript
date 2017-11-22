@@ -1,0 +1,1488 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[linguistics]{forest}
+\usepackage{mathtools}
+\usepackage{bbm}
+\usepackage[utf8]{inputenc} % this is needed for umlauts
+\usepackage[ngerman]{babel} % this is needed for umlauts
+\usepackage[T1]{fontenc}
+\usepackage{fancyhdr}
+\usepackage[makeroom]{cancel}
+\usepackage[a4paper,bindingoffset=0.2in,
+            left=1in,right=1in,top=1.2in,bottom=1in,
+            footskip=.25in]{geometry}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\thesubsection}
+\lhead{Fundamentals of Machine Learning}
+\rfoot{Page \thepage}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+
+
+\title{Fundamentels of Machine Learning}
+\author{Ullrich Köthe}
+\date{WS 2017, Heidelberg}
+
+\begin{document}
+  \maketitle
+  \vspace{25mm}
+  \begin{center}
+    Skript zur Vorlesung an der Universität Heidelberg
+  \end{center}
+  \newpage
+
+  \tableofcontents
+  \newpage
+  \section*{Rational of Machine Learning}
+    \begin{itemize}
+      \item Interest in attributes/quantities Y ("response"), but they are not easily measurable.
+      \item Choose attributes/quantities X ("features"), that are easy to measure.
+      \item find a mapping $Y = f(X)$ to determine Y indirectly
+      \item many problems don't have an explicit analytical $f(X)$
+      \item $\Rightarrow$ use "generic mapping": $Y = f(X, \theta)$, $\theta:$ adjustable parameters (ideally a universal approximate) and adjust $\theta$ by learning from a training set:
+      \begin{equation*}
+        TS = \{(X_{i}, Y_{i})\}_{i=1}^{N}
+      \end{equation*}
+      \item usually the relation between X and Y is not deterministic
+      \item posterior probability:
+    \end{itemize}
+    \begin{equation*}
+      p(Y|X;\theta)
+    \end{equation*}
+
+    \begin{equation*}
+    f(X) = \begin{cases}
+    Y_{1} &\text{with probability $p(Y=Y_{1}|X;\theta)$}\\
+    Y_{2} &\text{with probability $p(Y=Y_{2}|X;\theta)$}
+    \end{cases}
+    \end{equation*}
+
+  \section*{Kinds of Variables}
+    \begin{itemize}
+      \item numeric: $X \in \mathbb{R}^D, Y \in \mathbb{R}^M$ (usually M=1)
+      \item discrete: $X \in \{ A, B, C,... \}$
+      \item ordinal: categories are ordered $A < B < C$
+      \item categorical: $X \in \{"red", "green", "blue" \}, Y \in \{"pea", "pear", "peach" \}$
+    \end{itemize}
+    if response is discrete $\Rightarrow$ classification \\
+    if response is numeric $\Rightarrow$ regression
+    \subsection*{Notation}
+    \begin{itemize}
+      \item instances in training set subscript $i \in \{ 1,..., N\}$
+      \item $X_{i}:$ features of training instance (row vector)
+      \item$Y_{i}:$ response
+      \item features we measure: subscript $j \in \{1,...,M\}$
+      \item $X_{j}:$ j-th feature of all instances (column vector)
+      \item $X_{ij}:$ j-th feature of instance i (a scalar)
+    \end{itemize}
+  \section*{Kinds of training data}
+    \begin{itemize}
+      \item supervised learning: $Y_{i}$ is known for all training instances
+        \begin{itemize}
+          \item possible if we can obtain $Y_{i}$ in a research setting
+          \item measuring, asking expert
+          \item measuring $Y_{i}$ is destructive (crash test)
+          \item $Y_{i}$ is only known in hind sight
+          \item we know the mapping $Y_{i} = f(Y_{i})$ for $TS\{(X_{i}, Y_{i})\}$
+          \item training strategies:
+          \begin{itemize}
+            \item watch training: TS is given beforehand
+            \item online training
+            \item active training
+          \end{itemize}
+        \end{itemize}
+        \item unsupervised learning: $X_{i}$ are known, $Y_{i}$ not ("data mining")
+        \begin{itemize}
+          \item group data by similarity
+          \item determine useful categories
+          \item find interesting features
+          \item estimate probability distribution $p(X)$
+          \item novely detection - find unusual X
+        \end{itemize}
+    \end{itemize}
+  \section{Classification}
+    \subsection{Rules}
+      \begin{itemize}
+        \item instances are i.i.d. (independent identically distributed)
+        \item Y is discrete with C categories $Y \in \{ 1, 2,..., C\}$ \\
+          $C = 2: Y \in \{ 0, 1\}, \{ -1, 1\}$
+        \item X is numeric or discrete
+        \item if the outcome is certain: estimate posterior probability $p(Y|X;\theta)$
+        \item but in many situations a hard decision is needed:
+      \end{itemize}
+      Example: hiring X, credentials: $p(Y=\text{will design good bike}|X)$
+      needs a hard decision function:
+      \begin{equation*}
+        f(x) =
+        \begin{cases}
+          \text{hire if X is convincing}\\
+          \text{not hire else}
+        \end{cases}
+      \end{equation*}
+    \subsection{How badly does a bad decision function perform?}
+      Suppose we know the prior probability of each category (prior - before,
+      without measuring X)
+      \begin{equation*}
+        p(Y=K) = \pi_{k} \quad k = 1,...,C
+      \end{equation*}
+      \begin{equation*}
+        \Rightarrow \text{most sensible decision function:} \quad f(k) = \argmax_{k} \pi_{k} = \hat{k}
+      \end{equation*}
+      \begin{equation*}
+        \text{success rate} = \pi_{\hat{k}}
+      \end{equation*}
+      \begin{equation*}
+        \text{error rate} = 1 - \pi_{\hat{k}} = 1 - \argmax_{k} \pi_{k}
+      \end{equation*}
+    \subsection{How good can a decision function perform in an uncertain environment?}
+      Sources of uncertainty:
+      \begin{itemize}
+        \item intrinsic uncertainty:
+        \begin{itemize}
+          \item fundamental(Q.M.)
+          \item noise (can measure X and Y only to certain accuracy)
+        \end{itemize}
+        \item insufficient knowledge:
+        \begin{itemize}
+          \item X may not have enough information to determine Y exactly
+          \item missing data
+        \end{itemize}
+        \item modelling uncertainty:
+        \begin{itemize}
+          \item $Y = f(X, \theta)$ may not be powered enough to express the true
+          relationship $Y = f^*(X)$
+          \item $\theta$ may not be set to the optimal values
+        \end{itemize}
+      \end{itemize}
+      Assume that there is no modelling error and no noise in Y, no missing data
+      \begin{equation*}
+        \Rightarrow \text{our posterior:} \quad \hat{p}(Y|X) = p^*(Y|X)
+      \end{equation*}
+      so we know the probability distribution. \\
+      What decision funtion $\hat{f}$ minimizes the error fo C = 2?
+      \begin{equation*}
+        p^*(Y=1|X) \quad p^*(Y=-1|X)
+      \end{equation*}
+      \begin{equation*}
+        \text{Two decision functions:}
+        \begin{cases}
+        f_{1}(X) = f(X;\theta_{1}) = 1 \\
+        f_{-1}(X) = f(X;\theta_{-1}) = -1
+        \end{cases}
+      \end{equation*}
+      choose $f_{1}$:
+      \begin{itemize}
+        \item a) true positive $Y^*(X) = 1$
+        \item b) false positive $Y^*(X) = -1$
+      \end{itemize}
+      choose $f_{-1}$:
+      \begin{itemize}
+        \item c) true negative $Y^*(X) = -1$
+        \item d) false negative $Y^*(X) = 1$
+      \end{itemize}
+      Probabilities: a) = d):\quad $p^*(Y=-1|X) = 1 - p^*(Y=1|X)$ \\
+      Success is maximized if we always decide fo most probable outcome, given X:
+      \begin{equation*}
+        \hat{Y} = \hat{f}(X) = \argmax_{k} p^*(Y=K|X) \quad \text{Bayes classifier rule}
+      \end{equation*}
+      \begin{equation*}
+        \begin{align*}
+        p(error_{Bayes}) &= \mathbb{E}_{x} [p(error(x))] \\
+        &= \int (1 - \max_{k}(y = k|x))p^*(x)dx
+        \quad x \in \mathbb{R}^{D}$ with $p^*(x)
+        \end{align*}
+      \end{equation*}
+
+      \textbf{Definition: Decision regions are connected regions
+       in $\mathbb{R}^D$ where $\hat{f}(x) = const$.}
+    \subsection{Discriminative vs. Generative models}
+      \\
+      \begin{equation*}
+        \text{Bayes Rule:} \quad p(Y|X) = \frac{p(X|Y)*p(Y)}{p(X)}
+      \end{equation*}
+      \begin{equation*}
+        \text{posterior}: p(Y|X) \quad \text{likelihood}: p(X|Y) \quad \text{prior}: p(Y)
+        \quad \text{data density/evidence}: p(X)
+      \end{equation*}
+      \textbf{discriminative model:} learn LHS of Bayes: p(Y|X) \\
+      \textbf{generative model:} learn RHS of Bayes: p(Y), p(X|Y), p(X)
+      \begin{equation*}
+        p(X) = \sum_{K=1}^{N} p(X|Y=K)p(Y=K)
+      \end{equation*}
+      $\Rightarrow$ can be used to create more data by simulation, disadvantage:
+      usually needs more training data for the same success rate
+      \begin{equation*}
+        C = \text{Bayes decision function} \quad f(x) = \begin{cases}
+        +1 & \text{if} \quad p(y=1|x) \geq p(y = -1|x) \\
+        -1 & else
+        \end{cases}
+      \end{equation*}
+      \begin{equation*}
+        \begin{align*}
+          \frac{p(x|y=1)p(y=1)}{p(x)} &> \frac{p(x|y=-1)p(y=-1)}{p(x)} \\
+          \iff \quad \frac{p(x|y=1) p(y=1)}{p(x|y=-1)p(y=-1)} &\geq 1 \\
+          \iff \quad \log(p(x|y=1)p(y=1)) - \log(p(x|y=-1)p(y=-1)) &\geq 0 \\
+          \iff \quad \log(\frac{p(x|y=1)}{p(x|y=-1)}) + log(\frac{\pi_{1}}{\pi_{-1}}) &\geq 0
+        \end{align*}
+      \end{equation*}
+      \begin{equation*}
+        \pi_{k} = \frac{1}{C} = const \quad \pi_{1} = \pi_{-1} = \frac{1}{C}
+      \end{equation*}
+      \begin{equation*}
+        \Rightarrow \quad \text{max. likelihood decision rule} \quad
+        f(x) = \begin{cases}
+        1 & if \frac{p(x|y=1)}{p(x|y=-1)} \geq 1 \\
+        -1 & else
+        \end{cases}
+      \end{equation*}
+      \textbf{Example:} Y $\in$ {red, blue}, X $\in$ {ball pen, marker}
+      \begin{equation*}
+        \pi_{red} = \pi_{blue} = 0.5
+      \end{equation*}
+      \begin{equation*}
+        p(marker|red) = \frac{5}{7} \quad p(marker|blue) = \frac{2}{7} \quad
+        p(ball|red) = \frac{2}{7} \quad p(ball|blue) = \frac{5}{7}
+      \end{equation*}
+      \begin{equation*}
+        \begin{align*}
+          p(ball) &= p(ball|y = red)*p(red) + p(ball|y = blue)*p(blue) \\
+          &= \frac{2}{7} * \frac{1}{2} + \frac{5}{7} * \frac{1}{2} = \frac{1}{2}
+        \end{align*}
+      \end{equation*}
+      \begin{equation*}
+        p(red|ball) = \frac{p(ball|red)}{p(ball)} = \frac{\frac{2}{7} * \frac{1}{2}}{\frac{1}{2}}
+      \end{equation*}
+      \begin{equation*}
+        p(blue|ball) = \frac{5}{7} \quad p(red|marker) = \frac{5}{7} \quad p(blue|marker) = \frac{2}{7}
+      \end{equation*}
+      $\Rightarrow$ Bayes decision: \\
+      \begin{equation*}
+        f(x=marker) = \argmax_{k} p(y=k|marker) \quad \text{= red}
+      \end{equation*}
+      \begin{equation*}
+        f(x=ball) = \argmax_{k} p(y=k)|ball)\quad \text{= blue}
+      \end{equation*}
+    \subsection{Nearest Neighbor Classification}
+      Intuition: in an unknown situation, act as you did in the most similar situation in the past
+      \begin{itemize}
+        \item 'past': training set
+        \item 'act as you did': copy the training label to the new instance
+      \end{itemize}
+      For 'most similar' we need  a distance function between features $d(x, x')$
+      \begin{equation*}
+        \text{decision rule}: f_{NN}(x) = y_{i}, \quad i = \argmin_{n \in Training set} d(x_{i}, x_{i'})
+      \end{equation*}
+      effect: split feature space according to the distanc to training examples
+      \begin{equation*}
+        neighbors(x_{i}) = \{ x|d(x, x_{i}) \leq d(x, x_{i'}) \} \quad \forall i \neq i'
+      \end{equation*}
+      'Voroni tessellation' with centers $\{ x_{i} \} _{i=1}^N$ \\
+      each region is a voroni cell of $x_{i}$ \\
+      decision boundaries: bisectors between centers
+      \subsubsection{Performance Analysis of NN classifier}
+        \begin{itemize}
+          \item derive analytic formulas for error for finite training set, this ist the
+          best, but usually very difficult
+          \item derive analytic error formulas in the limit for infinitly many training data
+          'asymptotic analysis', this is usually easier, but often unrealistic
+          (when error decreases slowly with N)
+          \item measure error empirically on independent test data('ground truth'):
+          most ralistic, but must be repeated for every model and application, beware
+          of the multiple testing bias if test data is reused
+        \end{itemize}
+        \paragraph{finite sample analysis}
+          example:
+          \begin{equation*}
+            C=2 \quad y \in \{0, 1\}, \quad p(y=0) = p(y=1) = \frac{1}{2}
+          \end{equation*}
+          \begin{equation*}
+            p(x|y=0) = 2 - 2x \quad p(x|y=1) = 2x
+          \end{equation*}
+          \begin{equation*}
+            \begin{align*}
+              \int_{0}^{1} P(x|y=0)dx &= \int_{0}^{1} (2-2x)dx \\
+              &= 2x - x^2  \Big | _{0}^{1} = 1
+            \end{align*}
+          \end{equation*}
+          \begin{equation*}
+            \begin{align*}
+              p(x) &= p(x|y=0)p(y=0) + p(x|y=1)p(y=1) \\
+                   &= (2-2x)\frac{1}{2} + 2x \frac{1}{2} \\
+                   &= 1 - x + x = 1
+            \end{align*}
+          \end{equation*}
+          \begin{equation*}
+            \begin{align*}
+              \text{postkrias} \quad p(y=0|x) &= \frac{p(x|y=0)p(y=0)}{p(x)} \\
+              &= \frac{(2 - 2x)\frac{1}{2}}{1} \\
+              &= 1 - x
+            \end{align*}
+          \end{equation*}
+          \begin{equation*}
+            \begin{align*}
+              p(y=1|x) = \frac{2x\frac{1}{2}}{1} = x
+            \end{align*}
+          \end{equation*}
+          define two decision rules with 'threshold' t:
+          \begin{equation*}
+            A: \quad f_{A}(x;t) = \begin{cases}
+            0 & \text{if $x\leq t$} \\
+            1 & \text{if $x > t$}
+            \end{cases}
+          \end{equation*}
+          \begin{equation*}
+            B: \quad f_{B}(x;t) = \begin{cases}
+            1 & \text{if $x\leq t$} \\
+            0 & \text{if $x > t$}
+            \end{cases}
+          \end{equation*}
+          \begin{equation*}
+            \mathbbm{1}[condition] = \begin{cases}
+              1 & \text{if condition = true} \\
+              0 & \text{if condition = false}
+            \end{cases}
+            \quad \text{'Indicator function'}
+          \end{equation*}
+          \begin{equation*}
+            \begin{align*}
+              p(A;t|error) &= \mathbb{E}_{x}[p(f_{A}(x;t) \neq Y^* |t)] \\
+              &= \mathbb{E}_{x}[p(y=1|x) \mathbbm{1} [x\leq t]]
+              + \mathbb{E}_{x}[p(y=0|x)\mathbbm{1} [x;t]] \\
+              &= \int_{0}^{1}p(y=1|x)\mathbbm{1}[x\leqt]p(x)dx
+              + \int_{0}^{1}p(y=0|x)\mathbbm{1}[x>t]p(x)dx \\
+              &= \int_{0}^{1}p(y=1|x)p(x)dx + \int_{t}^{1}p(y=0|x)p(x)dx \\
+              &= \int_{0}^{t}xdx + \int_{t}^{1} (1-x)dx \\
+              &= \frac{x^2}{2} \Big |_{0}^{t} + (x-\frac{x^2}{2}) \Big |_{t}^{1} \\
+              &= \frac{t^2}{2}-0+1-\frac{1}{2}-t+t^2 \\
+              &= t^2 -t + \frac{1}{2} = (t-\frac{1}{2})^2 + \frac{1}{4} \\
+              &= p(error|A,t)
+            \end{align*}
+          \end{equation*}
+          \begin{equation*}
+            p(error|B,t) = \frac{3}{4} - (t-\frac{1}{2})^2 = 1-p(error|A,t)
+          \end{equation*}
+          Bayes classifier(minimizes error): rate A with $t=\frac{1}{2}$
+          \begin{equation*}
+            p(error|A, t=\frac{1}{2}) = \frac{1}{4}
+          \end{equation*}
+          Error of NN classifier, simplest possible TS with N = 2:
+          \begin{itemize}
+            \item sample z = (x, y)
+            \item repeat: sample z' = (x', y') until $y'\neq y$, 'rejection sampling'
+          \end{itemize}
+          Two possible outputs:
+          \begin{equation*}
+            \begin{rcases*}
+              A: x_{0}(\corresponds y_{0} = 0) \leq x_{1} (\corresponds y_{1} = 1): rule A \\
+              B: x_{0}(\corresponds y_{0} = 0) > x_{1} (\corresponds y_{1} = 1): rule B
+            \end{rcases*}
+            t = \frac{x_{0} + x_{1}}{2}
+          \end{equation*}
+          \begin{equation*}
+            p(error) = \mathbb{E}_{TS}[p(error|TS)] = \mathbb{E}_{TS(A)}[p(error(A,t))] +
+            \mathbb{E}_{TS(B)}[p(error|B, t)]
+          \end{equation*}
+          \begin{equation*}
+            \begin{align}
+            \mathbb{E}_{A} &= \int_{0}^{1} \int_{0}^{1} \int_{0}^{1} \underbrace{p(error|A, t)}_{
+            = (t-\frac{1}{2})^2+\frac{1}{4}}\underbrace{p(A, t|x_{0}, x_{1})}_{
+            = \mathbbm{1}[x_{0} \leq x_{1}]\delta(t-\frac{x_{0}+x_{1}}{2})}
+            \underbrace{p(x_{0}, x_{1})}_{=p(x|y=0)p(x|y=1)}dt dx_{1} dx_{0} \\
+            &= \int_{0}^{1} p(x|y=0) \int_{x_{0}}^{1} p(x|y=1)p(error|A,t=\frac{x_{0}+x_{1}}{2})
+            dx_{1} dx_{0} \\
+            &= \int_{0}^{1} (2-2x) \int_{x_{0}}^{1} 2 x_{1}((\frac{x_{0}+x_{1}}{2} - \frac{1}{2})^2)
+            + \frac{1}{4})dx_{1} dx_{0} \\
+            &= \frac{83}{360}
+          \end{align}
+          \end{equation*}
+          \begin{equation*}
+            p(error|B) = \frac{43}{360} \Rightarrow p(error) = \frac{7}{20}
+          \end{equation*}
+        \paragraph{Cross Validation}
+          We need: generalization error (on unseen, new data) p(error) \\
+          We have: training error/fit error
+          \begin{equation*}
+            h_{TS} = \frac{1}{N} \sum_{i=1}^{N} \mathbbm{1}[f(x_{i}) \neq y_{i}']
+          \end{equation*}
+          \begin{equation*}
+            p_{error} = h_{TS} + w_{model optimism} \quad w \geq 0
+          \end{equation*}
+          if $p_{error} - h_{TS} = w$ is big, the model overfits the training set.
+          Many models tend to overfit quite badly. \\
+          $\Rightarrow$ solutions: \begin{itemize}
+            \item use more training data (expensive)
+            \item use better models
+            \item use regularization
+          \end{itemize}
+          e.q. nearest neighbor classifier $h_{TS}=0$ \\
+          how to estimate the error?
+          \begin{itemize}
+            \item split the training set at random in two subsets for training
+            and test
+            \item train on the training subset
+            \item calculate the error on the test subset
+          \end{itemize}
+          $\Rightarrow$ since the choice of training and testset was arbitrary,
+          reverse their roles and repeat and take the average of the two error
+          (2-fold cross validation) \\
+          results are improved (error more reliable) by using more subsets
+          'K-fold cross validation'
+          \begin{itemize}
+            \item bring data into a random order (random-shuffle)
+            \item put the first $\frac{N}{K}$ instances into fold 1
+            \item put the second $\frac{N}{k}$ instances into fold 2
+            \item repeat for $l = 1,...,K$
+            \item use all folds except fold l for training
+            \item use fold l for testing
+            \item compute means and variance of the K errors
+            \item popular $K=2, 5, 10$ K = N: 'leave-one-out-cross-validations'
+            for theoretical analysis
+          \end{itemize}
+        \paragraph{Asymptotic Analysis}
+          \begin{itemize}
+            \item find analytic formulas for how the method performs with
+            infinite training data
+            \item $N \rightarrow \infty$ (training data)
+            \item Definition: A learning algorithm is called consistent if
+            it converges to the optimal Bayes classifier as
+            $N \rightarrow \infty$
+            \item prove now: NN classifier is \underline{not} consistent, but
+            not too far of (a factor of 2): $p_{00}^{NN} \leq 2p*$
+            \item let $p(error|x, x')$ be the expected error for test point
+            x, when x' is its nearest training point
+            \item let p(x|x') be the probabilty that x' is n.n. of test point
+          \end{itemize}
+          \begin{equation*}
+            \begin{align}
+              p(error|y) &= \int p(error|x, x')p(x'|x)dx' \quad \text{(marginalize over
+              unknown point x')} \\
+              &= \mathbb{E}_{x'}[p(error|x, x')]
+            \end{align}
+          \end{equation*}
+        \paragraph{1)}
+          If density p(x) is continous and positive:
+          \begin{equation*}
+            \lim_{N \to \infty} p(x'|x) = \delta(x-x')
+          \end{equation*}
+          Let $p_{\varepsilon}(x)$ be the probability that an $\varepsilon$-ball around x:
+          \begin{equation*}
+            B_{\varepsilon}(x) = \{ x'| \lVert x-x' \rVert \leq \varepsilon \}
+          \end{equation*}
+          contains at least one training point. Then $(1-p_{\varepsilon})^N$
+          is the probabilty, that none of N training points is in $B_{\varepsilon}(x)$
+          \begin{equation*}
+            \text{By assumption} \quad \forall \varepsilon > 0 \quad p_{\varepsilon}(x)
+            = \int_{B_{\varepsilon}(x)} p(x') dx' > 0
+          \end{equation*}
+          \begin{equation*}
+            \lim_{N \to \infty} (1-p_{\varepsilon}(x))^N = 0 \Rightarrow
+            \forall \varepsilon > 0 \quad \text{there is a point in $B_{\varepsilon}(x)$}
+          \end{equation*}
+        \paragraph{2)}
+          \begin{equation*}
+            \begin{align}
+              p(error|x,x') &= 1-p(correct|x,x') \\
+              &= 1-\sum_{k=1}^{c}p(y=k,y'=k|x,x') \\
+              &= 1-\sum_{k=1}^{c}p(y=k|x)p(y'=k|x') \quad \text{due to i.i.d.}
+            \end{align}
+          \end{equation*}
+        \paragraph{3)}
+          \begin{equation*}
+            \begin{align*}
+              \text{Insert:} \quad p_{\infty}(error|x) &= \int \underbrace{
+              p(error|x,x')}_{1-\sum_{i}^{c}}\underbrace{p(x'|x)}_{\delta(x-x')}dx' \\
+              &= 1- \sum_{k=1}^{c}p(y=k|x)^2 \quad \text{Gini impurity at point x}
+            \end{align*}
+          \end{equation*}
+          \begin{itemize}
+            \item if data at point x are pure, i.e. only one class occurs,
+            say $y=k^* \Rightarrow p(y=k^*|x)=1$ and $p(y=k|x)=0$ for $k\neq k^*
+            \Rightarrow p_{\infty}(error|x) = 0$
+            \item worst: data are impure, i.e. all classes gave same probability
+            $p(y=k|x) = \frac{1}{c} \Rightarrow$
+            \begin{equation*}
+              p_{\infty}(error|x)=1-\sum_{k}^{c} \frac{1}{c^2} = 1-\frac{1}{c}
+              = \frac{c-1}{c} \geq \frac{1}{2}
+            \end{equation*}
+          \end{itemize}
+        \paragraph{4)}
+          Derive worst case behavior aver all x as a function of Bayes error
+          $p^*$
+          \begin{equation*}
+            p_{\infty}(error) = \mathbb{E}_{x}[p_{\infty}(error|x)]
+          \end{equation*}
+          Let $p(y=\hat{k}|x)$ be the Bayes decision at x, $\hat{k} =
+          \argmax_{k}p(y=k|x)$ \\
+          $\Rightarrow$ Bayes error at x:
+          \begin{equation*}
+            p^*(error|x) = 1-p(y=\hat{k}|x)
+          \end{equation*}
+          \begin{equation*}
+            \sum_{k=1}^{c} p(y=k|x)^2 = (1-p^*(error|x))^2 + \sum_{k=\hat{k}}
+            p(y=k|x)^2
+          \end{equation*}
+          worst case analysis: make the error big, i.e. make this sum small
+          \begin{equation*}
+            \text{Probability:} \quad \sum_{k} p_{k}^2 \quad \text{is minimized
+            under constrains} \quad p_{k} \geq 0 \quad \text{and}\quad \sum_{k}p_{k}=const
+          \end{equation*}
+          \begin{equation*}
+            if \quad p_{k}=p_{k}' \forall k, k' \quad p_{k} = p^*(error|x)
+          \end{equation*}
+          \begin{equation*}
+            \Rightarrow p_k = \frac{p^*(error|x)}{c}
+          \end{equation*}
+          worst case error:
+          \begin{equation*}
+            \begin{align*}
+            \sum_{k=1}^{c} p(y=k|x) &\geq (1-p^*(error|x))^2 + \sum_{k=k'}
+            (\frac{p^*(error|x)}{c- \frac{1}{2}})^2 \\
+            &=1-2p^*(error|x)+p^*(error|x)+\frac{p^*(error|x)^2}{c-1}
+            &=1-2p^*(error|x) + \frac{c}{c-1}p^*(error|x)^2
+            \end{align*}
+          \end{equation*}
+        \paragraph{5)}
+          Inserting gives the relationship between error of NN classifier and
+          Bayes classifier:
+          \begin{equation*}
+            \begin{align*}
+              p_{\infty}(error|x)=1-\sum_{k}^{c}p(y=k|x) &\leq 1-(1-2p^*(error
+              |x))+\frac{c}{c-1}p^*(error|x)^2 \\
+              &=2p^*(error|x)-\frac{c}{c-1}p^*(error|x)^2
+            \end{align*}
+          \end{equation*}
+        \paragraph{6)}
+          Total error = expectation over x
+          \begin{equation*}
+            \begin{align*}
+              p_\infty(error)&=\mathbb{E}_x[p_\infty(error|x)] = \int p_\infty
+              (error|x)p(x)dx \\
+              &\leq \int 2p^*(error|x)p(x)dx-\int \frac{c}{c-1}p^*(error|x)^2
+              p(x)dx \\
+              &=2\mathbb{E}_x[p^*(error|x)]-p^*(error)  \\
+              &\leq2p^*(error)-\frac{c}{c-1}p^*(error)^2
+            \end{align*}
+          \end{equation*}
+          simplified by non neg. of variance:
+          \begin{equation*}
+            \begin{multlined}
+              \int(p^*(error|x)-p^*(error))^2 p(x)dx \geq 0 \\
+              \leftrightarrow \int p^*(error|x)^2p(x)dx \geq p^*(error)^2
+            \end{multlined}
+          \end{equation*}
+          \begin{equation*}
+            \text{Result:} \quad p^*(error) \leq p_\infty^NN (error) \leq p^*(error)(2-\frac{c}{c-1}
+            p^*(error))
+          \end{equation*}
+          Special Cases:
+          \begin{itemize}
+            \item best case: $p^*=0 \Rightarrow p^\infty \leq 0 \quad 0(2-\frac{c}
+            {c-1}0)=0 \quad \text{NN is perfect}$
+            \item worst case: $p^*=\frac{c-1}{c} \quad \text{(pure guessing)}
+            \Rightarrow$
+            \begin{equation*}
+              \begin{align*}
+                p_\infty &< \frac{c-1}{c}(2-\frac{c}{c-1}\frac{c-1}{c}) \\
+                &= \frac{c-1}{c}
+              \end{align*}
+            \end{equation*}
+            \item normal case: Bayes classifier performs well, but not perfect:
+            \begin{equation*}
+              \begin{multlined}
+                p^* = \varepsilon \ll 1 \forall c \geq 2: \frac{c}{c-1} \leq 2 \\
+                p_\infty \leq \varepsilon(2-\underbracket{\frac{c}{c-1}\varepsilon}_{\ll 1})
+                \leq 2\varepsilon = 2p^*
+              \end{multlined}
+            \end{equation*}
+            Advantages of NN-method:
+            \begin{itemize}
+              \item simple and intuitive
+              \item often easy to implement
+              \item performs elecently in practice
+            \end{itemize}
+          \end{itemize}
+      \subsubsection{Limitations of Nearest Neighbor Classifier}
+        \paragraph{1.}
+          NN is not consistent: $p_\infty(error) \leq 2p^*(error)$ (consistent:
+          $p_\infty(error) = p^*(error)$) \\
+          solution: K-nearest neighbor algorithm:
+          \begin{itemize}
+            \item find the k nearest neighbors
+            \item take majority vote
+            \item is consistent if $k(N)$ such that
+            \begin{equation*}
+              \lim_{N \to \infty} k(N) = \infty, \quad \lim_{N \to \infty}
+              \frac{k(N)}{N}=0
+            \end{equation*}
+            \item e.g. k(N) $\log N$
+          \end{itemize}
+        \paragraph{2.}
+          nearest neighbor search is expensive: naive algorithm $\mathcal{O}
+          (D*N)$ D: #feature dimension, N: #instances \\
+          solutions:
+          \begin{itemize}
+            \item reduce D:
+            \begin{itemize}
+              \item dimension reduction(later, ch.'unsupervised learning')
+              \item relevant feature selection
+            \end{itemize}
+            \item reduce N, relevant instance selection e.g.:
+            \begin{itemize}
+              \item sort TS randomly
+              \item memorize the next instance only if the memorized
+              set so far classifies incorrect
+            \end{itemize}
+          \end{itemize}
+          exactly:
+          \begin{itemize}
+            \item compute Voronoi tesselation
+            \item drop all instances whose neighbors all have the same class
+            \item clustering: find groups of similar instances ('clusters')
+            which can be replaced by simple representative (later in chapter
+            'unsupervised learning')
+          \end{itemize}
+          use an efficient search algorithm: D-dimensional search trees('k-d
+          tree, x tree, $R^H$ tree') \\
+          use approximate n.n. search: find a near neighbor fast and with high
+          probability of being correct $\Rightarrow$ several ANN libraries in
+          the internet
+        \paragraph{3.}
+          nearest neighbor selection depends on the distance function $d(x,x')$.
+          How to define a 'good' $d()$? \\
+          Depending on units, different neighbor might minimize $d(x,x')$
+          solution. Therefor use dimensionless features, i.e. standardize data.
+          Divide each feature by its TS standard deviation [actually, also
+          substract means - 'centralization'] \\
+          Better solution: learn the metric from the TS (or from additional
+          TS with 'is similar'/'is not similar')-labels. \\
+          $\Rightarrow$ research area: 'metric learning' \\
+          Much of the success of neural networks is their ability to
+          implicilly find a good set of intermediate features and metric.
+    \subsection{Quadratic and Linear Discriminant Analysis}
+      \subsubsection{Motivation}
+        In nearest neighbors, we can reduce search time by reducing N
+        $\Rightarrow$ extreme case: One representatice per label. \\
+        Obvious choice is the mean of each class:
+        \begin{equation*}
+          \forall k \in 1,...,c: \quad \mu_k = \frac{1}{N_k} \sum_{i:y_i=k}x_i
+          \quad N_k = \text{#instances in class k}
+        \end{equation*}
+        This works well, if clusters are roughly circular. \\
+        To find the desired decision bound, we neet to consider the
+        actual shape of the class $\Rightarrow$ correction for non-circularity \\
+        Simplest generalization: approximate cluster shape by an ellipse instead
+        of circle (higher dimension: ellipsoid) \\
+        $\Rightarrow$ Natural choice: multi-dimensional Gaussian distribution
+      \subsubsection{QDA}
+        assumptions:
+        \begin{itemize}
+          \item each class prior $p(y=k)$ is well approcimatet by the TS
+          proportion $\hat{p}(y=k)=\frac{N_k}{N}=\pi_k$
+          \item the data likelihood for each class p(x|y=k) is well approximated
+          by a Gaussian distribution
+        \end{itemize}
+        $\Rightarrow$ generative model:
+        \begin{equation*}
+           p(y=k|x) = \frac{p(x|y=k)p(y=k)}{p(x)}
+        \end{equation*}
+        \begin{equation*}
+          p(x) = \sum_{k=1}^{c}p(x|y=k)p(y=k)
+        \end{equation*}
+        \paragraph{Gaussian distribution}
+          \begin{equation*}
+            p(x) = \frac{1}{\sqrt{2\pi\sigma^2}}e^{\frac{x-\mu}{2\sigma^2}}
+          \end{equation*}
+          generalization of $\sigma^2$: $\Sigma$ covariance matrix D x D,
+          symmetric, positive definite
+          \begin{equation*}
+            \Sigma = \frac{1}{N}\sum_i(x_i-\mu)(x_i-\mu)^T
+          \end{equation*}
+          \begin{equation*} \text{for example:} \quad
+            \Sigma = R^{-1}\begin{pmatrix}
+            \sigma_1^2 & 0 \\
+            0 & \sigma_2^2
+            \end{pmatrix} R
+          \end{equation*}
+          principle axes of ellipse: directin of largest and smallest width
+          $\leftrightarrow$ eigenvectors of covariance matrix $\Sigma$
+          \begin{equation*}
+            \text{multivariable Gaussian} \quad p(x;\vec{\mu},\Sigma) =
+            \frac{1}{\sqrt{det(2\pi\Sigma)}}e^{-\frac{1}{2}(x-\vec{\mu})^T
+            \Sigma^{-1}(x-\vec{\mu})}
+          \end{equation*}
+          To find $p(x|y=k)$, we must define $\underbrace{\vec{\mu_{k}}}_{\text
+          {cluster pos.}}, \underbrace{\Sigma_{k}}_{cluster shape}$ for
+          each k:
+        \paragraph{How to fit a multi-dim. Gaussian}
+          Let $\{ x_{i}\}_{i=1}^N$ be the instance of just a single class (drop
+          index k for clarity).
+          \begin{equation*}
+            p(x) = \text{multi-dim. Gaussian}
+          \end{equation*}
+          Fit according to maximum likelihood principle assumed that TS is
+          typical for true (unknown) distribution. \\
+          $\Rightarrow$ we want the TS to be typical for our model as well,
+          when simulating our model, the TS should occur with high (maximum)
+          probability.
+          \begin{equation*}
+            \begin{align*}
+              p(TS) &\hspace{1ex}= p(x_1,...,x_N) \Rightarrow \text{maximized under our model} \\
+              &\stackrel{i.i.d.}{=} p(x_1;\mu,\Sigma)p(x_2;\mu,\Sigma)...p(x_N,\mu,\Sigma)
+            \end{align*}
+          \end{equation*}
+          \begin{equation*}
+            \log(p(x_1,...,x_N)) = \sum_{i=1}^{N}\log(p(x_i;\mu,\Sigma))
+          \end{equation*}
+          To maximize, take derivatives with respect to parameter set to 0 \\
+          $\Rightarrow$ system of equations, solve to find
+          $\hat{\mu}, \hat{\Sigma}$
+          \begin{equation*}
+            \frac{d\sum_i\log(x_i;\mu,\Sigma)}{d\mu} \stackrel{!}{=} 0 \quad
+            \frac{d\sum_i\log(x_i;\mu,\Sigma)}{d\Sigma} \stackrel{!}{=} 0
+          \end{equation*}
+        \paragraph{How to fit a Gaussian?}
+          maximize likelihood of TS:
+          \begin{equation*}
+            \begin{align*}
+              \hat{\Theta} &\hspace{1ex}= \argmax \log p(x_1,...x_n|\Theta) \\
+              &\stackrel{i.i.d.}{=} \argmax \sum_{i=1}^{N} \log p(x_1,...x_n|\Theta)
+            \end{align*}
+          \end{equation*}
+          \begin{equation*}
+            p(x_i;\Theta) = \frac{1}{\sqrt{\text{det}(2\pi\Sigma)}}e^{-
+            \frac{1}{2}(x_i-\mu)^T\Sigma^{-1}(x_i-\mu)}
+          \end{equation*}
+          \textbf{Define: } $K=\Sigma^{-1} \quad$ 'precession matrix'
+          \begin{equation*}
+            \text{Lin. Algebra:} \quad \text{det}(a*A) = a^D\text{det}A \quad \text{det}
+            (A^{-1})=\frac{1}{\text{det}(A)} \quad \text{a: Scalar, A: D*D Matrix}
+          \end{equation*}
+          \begin{equation*}
+            \Rightarrow \frac{1}{\sqrt{\text{det}(2\pi\Sigma)}}=
+            (2\pi)^{-\frac{D}{2}}\frac{1}{\sqrt{\text{det}(K^{-1})}}=
+            (2\pi)^{-\frac{D}{2}}\text{det}(K)^{\frac{1}{2}}}
+          \end{equation*}
+          \begin{equation*}
+            \log p(x_i;\mu,K)=\sum_{i=1}^{N}-\frac{D}{2}\log2\pi+\frac{1}{2}
+            \log\text{det}(K)-\frac{1}{2}(x_i-\mu)^TK(x_i-\mu)
+          \end{equation*}
+          \begin{equation*}
+            \begin{align*}
+              \text{find $\mu$ by} \quad &\frac{\partial}{\partial \mu}
+              \log p(x_i,...x_n) \overset{!}{=} 0 \\
+              \iff &\sum_{i=1}^{N}-K(x_i-\mu) = 0 \\
+              \iff &\sum_{i=1}^{N}(x_i-\mu)=0 \\
+              \iff &\sum_{i=1}^{N}x_i = \sum_{i=1}^{N}\mu = N\mu \\
+              \implies &\mu =\frac{1}{N}\sum_{i=1}^{N}x_i \quad
+              \text{empirical mean of TS}
+            \end{align*}
+          \end{equation*}
+          \begin{equation*}
+            \text{Lin. Algebra:} \quad \frac{\partial}{\partial v}v^TAv=2Av
+          \end{equation*}
+          \begin{equation*}
+            \begin{align*}
+              \text{find K:} \quad &\frac{\partial}{\partial K}
+              \log p(x_1,...,x_N) \overset{!}{=}0 \\
+              \iff &\sum_{i=1}^{N}(\frac{1}{2}K^{-1}-\frac{1}{2}z_iz_i^T)=0 \quad
+              \text{centered coordinate } z_i=x_i-\mu
+            \end{align*}
+          \end{equation*}
+          \begin{equation*}
+            \text{Matrix calculus:} \quad \frac{\partial}{\partial K} \log\text{det}(K^T)^{-1}=(K^T)^{-1}=K^{-1}=\Sigma
+          \end{equation*}
+          \begin{equation*}
+            \frac{\partial}{\partial A} v^TAv=vv^T
+          \end{equation*}
+          \begin{equation*}
+            N\Sigma=\sum_{i=1}^{N}\Sigma=\sum_{i=1}^{N}\underbrace{(x_i-\mu)(x_i-\mu)^T}_{scatter matrix}
+          \end{equation*}
+          \begin{equation*}
+            \Sigma=\frac{1}{N}\sum_{i=1}^{N}(x_i-\hat{\mu})(x_i-\hat{\mu})^T
+            \quad \text{sample/empirical covariance matrix}
+          \end{equation*}
+
+        \paragraph{Training of QDA} \\
+          Repeat this for every class to get $\mu_1,\Sigma_1,...,\mu_c,\Sigma_c$ \\
+          QDA prediction: -generative model:
+          \begin{equation*}
+            \begin{align*}
+              \hat{k} &= \argmax_k p(y=k]x) \\
+              &= \argmax_k \frac{p(x|y=k)p(y=k)}{p(x)} \\
+              &= \argmax_k \underbrace{p(x|y=k)}_{Gauss(x,\mu_k,\Sigma_k)}\underbrace{p(y=k)}_{\pi_k= \frac{N_k}{N}} \\
+              &= \argmin_k -\log p(y=k|x) \\
+              &= \argmin_k \frac{D}{2} \log 2\pi+\frac{1}{2} \log \text{det} \Sigma_k+\frac{1}{2}(x-\mu_k)^T\Sigma_k^{-1}(x-\mu_k)-\log \pi_k \\
+              &= \argmin_k \cancel{\frac{1}{2}}\underbrace{\log \text{det} \Sigma_k -2 \log \pi_k}_{=b_k} + \cancel{\frac{1}{2}} (x-\mu_k)^T\Sigma_k^{-1}(x-\mu_k) \\
+              &= \argmin_k \underbrace{(x-\mu_k)^T\Sigma_k^{-1}(x-\mu_k)}_{\text{squared Mambalanbis distance btw. }x \text{ and } \mu_k} + b_k
+            \end{align*}
+          \end{equation*}
+          Euclidean: $\Sigma = \mathbbm{1} \quad \sigma \neq \mathbbm{1} \quad$ adjust for elliptic cluster sphere. \\ \\
+          Define square root of matrix $A^{\frac{1}{2}} \iff A=(A^{\frac{1}{2}})^T(A^{\frac{1}{2}})$ \\ \\
+          Find $\Sigma^{-1}$ by decomposition $z_k=\Sigma_k^{-\frac{1}{2}}(x-\mu_k)$ \\
+          \begin{equation*}
+            \Rightarrow z_k^Tz_k=(x-\mu_k)^T\frac{\Sigma_k^{-\frac{1}{2}T}\Sigma_k^{-\frac{1}{2}}}{\Sigma_k^{-\frac{1}{2}}}(x-\mu_k)
+          \end{equation*}
+          $\Rightarrow$ can use standard nordmed of $z_k$
+
+
+      \subsubsection{LDA Linear Discriminant Analysis}
+        simplifications: assume that clusters have the same size elliptic shape
+        \begin{equation*}
+          \forall k, k' \quad \Sigma_k = \Sigma_{k'} = \Sigma
+        \end{equation*}
+        \begin{equation*}
+          QDA: \quad \hat{k} = \argmin_{k}(x-\mu_k)^T\Sigma_k^{-1}(x-\mu_k)+b_k
+        \end{equation*}
+        \begin{equation*}
+          \begin{align*}
+            LDA: \quad \hat{k} &=\argmin_k(x-\mu_k)^T\Sigma^{-1}(x-\mu_k) \\
+            &=\argmin_k x^T\Sigma^{-1}x-\Sigma\mu_k^T\Sigma^{-1}x+\mu_k^T\Sigma^{-1}\mu_k \\
+            &=\argmin_k -\Sigma \mu_k^T\Sigma^{-1}x+\mu_k^T\Sigma^{-1}\mu_k+b_k \\
+            &=\argmin_k w_k^Tx+b_k'
+          \end{align*}
+        \end{equation*}
+        \textbf{New variables:} $\quad w_k^T=\Sigma\mu_k^T\Sigma^{-1}
+        \quad b_k'=-\mu_k^T\Sigma^{-1}\mu_k-b_k$ \\
+        LDA is a particular way to define $w_k$ and $b_k'$. There are many other
+        possible ways, e.g. logistic regression. \\ \\
+        \underline{Special case}: C=2
+        \begin{equation*}
+          \begin{align*}
+          \hat{k} &=
+            \begin{cases}
+              0 & \text{if} \quad w_0^Tx+b_0' > w_1^Tx+b_1' \\
+              1 & \text{if} \quad w_0^Tx+b_0' < w_1^Tx+b_1'
+            \end{cases} \\
+            &=\begin{cases}
+              0 & \text{if} \quad (w_0^T-w_1^T)x+b_0'-b_1' > 0 \\
+              1 & \text{otherwise}
+            \end{cases} \\
+            &=\begin{cases}
+              0 & \text{if} \quad w^Tx+b' > 0 \\
+              1 & \text{if} \quad w^Tx + b' < 0
+            \end{cases}
+          \end{align*}
+        \end{equation*}
+        \textbf{Define:} $w=w_1-w_0 \quad b'=b_1'-b_0'$ \\
+        $a=w^Tx$ is a 1D projection of x onto the vector w \\
+        $\Rightarrow$ apply the mean classifier to the a value
+      \subsubsection{LDA}
+      Two classes C = 2
+      \begin{equation*}
+        \hat{y} = \begin{cases}
+        1 & \text{if } w^Tx + b \geq 0 \\
+        0 & else
+        \end{cases}
+      \end{equation*}
+      \underline{Three different derivations of how to choose the best w and b}: \\
+      \paragraph{1.}
+        our derivation: LDA is the same as QDA with all classes having the same
+        cluster shape $\Rightarrow$ we just fit a Gaussian distribution to within - class
+        covariance
+        \begin{equation*}
+          \hat{\Sigma} = \frac{1}{N} \Sigma_{i=1}^{N} (x_{i} - \mu_{k = y_{i}}) ( x_{i} - \mu_{y_{i}})^T
+        \end{equation*}
+        \begin{equation*}
+          w^T = 2(\mu_{1} - \mu_{0}) \hat{\Sigma}^{-1}
+        \end{equation*}
+      \paragraph{2.}
+        R. Fishers original derivation: we seek the optimal 1-dimensional
+        projection of D-dimensional data
+        \begin{itemize}
+          \item compute $\mu_{0}, \mu_{1}, \Sigma$
+          \item define 1-D projection $z_{1} = w^Tx_{i} \Rightarrow$ projected
+          means $m_{k} = w^T\mu_{k}$, 1-D variance $\sigma^2 = w^T\Sigma$
+          \item determine w such that the $z_{i}$ are seperated as good as possible
+          \begin{equation*}
+            m_{0} - m_{1} = w^T(\mu_{1} - \mu_{0})
+          \end{equation*}
+          \item Fisher criterion: Choose w that maximizes $\frac{(m_{1} - m_{0})^2}{\sigma^2}$
+        \end{itemize}
+      \paragraph{3.}
+        derivation via least-squares regression \\
+        define class labels $Y \in \{ -1, 1\}$ \\
+        LSQ: find w, b that minimzes:
+        \begin{equation*}
+          \sum_{i=1}^{N}(w^Tx_{i} + b_{i} - y_{i})^2
+        \end{equation*}
+        if classes are balanced: $N_{-1} = N_{+1}$ \\
+        $\Rightarrow$ optimal solution is again the same $\Rightarrow$ proof: home-work
+    \subsection{Logistic Regression LR}
+      \begin{itemize}
+        \item Not really regression, because it's a classifier, term is partially justified because LR
+          predicts class probabilities. It actually computs the posterior $p(Y|X)$
+        \item generative model (LDA) vs. discriminative model (LR)
+        \item LDA:
+        \begin{itemize}
+          \item define RHS of Bayes theorem (likelihood and prior)
+          \item learn the parameters of RHS (fit a Gaussian for every class)
+          \item  apply Bayes to compute the posterior
+        \end{itemize}
+        \item LR
+        \begin{itemize}
+          \item define RHS of Bayes
+          \item apply Bayes to compute posterior (LHS)
+          \item learn parameters of the LHS
+          \item or: merge first two steps and define LHS model directly (e.g. NN)
+        \end{itemize}
+      \end{itemize}
+      derive LR from LDA: 2 classes C=2, equal priors $p(y=0) = p(y=1) = \frac{1}{2}$,
+      cluster shape (e.g. covariance $\Sigma$ of both classes equal)
+      \begin{equation*}
+        \begin{align*}
+          p(y=1|x) &= \frac{p(x|y=1)\cancel{p(y=1)}}{p(x|y=0)\cancel{p(y=0)} + p(y|y=1)\cancel{p(y=1)}} \\
+          &= \frac{p(x|y=1)}{p(x]y=0) + p(x|y=1)} \\
+          &= \frac{p(x|y=1)}{p(x|y=1)} * \frac{1}{\frac{p(x|y=0)}{p(x|y=1)} + 1}
+        \end{align*}
+      \end{equation*}
+      Gaussian likelihoods:
+      \begin{equation*}
+        p(x|y=0) = \frac{1}{\sqrt{det(2\pi\Sigma)}} e^{-\frac{1}{2}(x-\mu_{0})^T\Sigma^{-1}(x - \mu_{0})}
+      \end{equation*}
+      \begin{equation*}
+        p(x|y=1) = \frac{1}{\sqrt{det(2\pi\Sigma)}} e^{-\frac{1}{2}(x-\mu_{1})^T\Sigma^{-1}(x - \mu_{1})}
+      \end{equation*}
+      \begin{equation*}
+        \mu = p(y=0)\mu_{0} + p(y=1)\mu_{1} = \frac{\mu_{0} + \mu_{1}}{2} = 0
+      \end{equation*}
+      assume that dara are centered $\Rightarrow \mu = 0$
+      \begin{equation*}
+        \begin{align*}
+        p(y=1|x) &= \frac{1}{1 + \frac{p(x|y=0)}{p(x|y=1)}} \\
+        &= \frac{1}{1 +\exp(-0.5[(x_\mu_{1})^T\Sigma^{-1}(x+
+        \mu_{1})- (x-\mu_{1})^T\Sigma^{-1}(x-\mu_{1})])} \\
+        &= \frac{1}{1 + exp(-0.5[4\mu_{1}^T\Sigma^{-1}x])} \\
+        &= \frac{1}{1 + exp(-2\mu_{1}^T\Sigma^{-1}x)} \\
+        &= \frac{1}{1 + exp(-w^Tx)}
+        \end{align*}
+      \end{equation*}
+      \begin{equation*}
+        w^T = 2\mu_{1}^T\Sigma^{-1}
+      \end{equation*}
+      \begin{equation*}
+        p(y=0|x) = 1 - p(y=1|x)
+      \end{equation*}
+      \begin{equation*}
+        \underline{Decision rule}: \quad \hat{y} \begin{cases}
+        1 & if \quad p(y=1|x) \geq p(y=0|x) = 1-p(y=1|x) \\
+        0 & otherwise
+        \end{cases}
+      \end{equation*}
+      \begin{equation*}
+        \text{logistic sigmoid function :} \quad \sigma(t) = \frac{1}{1 + exp(-t)}
+      \end{equation*}
+      Properties:
+      \begin{equation*}
+        \sigma(-t) = 1 - \sigma(t)
+      \end{equation*}
+      \begin{equation*}
+        \sigma(-t) = \frac{1}{1 + exp(t)} = 1- \frac{1}{1+ exp(-t)} = \frac{exp(-t)}{1+ exp(-t)} = \frac{1}{exp(t) + 1}
+      \end{equation*}
+      Derivative:
+      \begin{equation*}
+        \frac{d}{dt} \sigma(t) = \frac{d}{dt} (1+exp(-t))^{-1} = (1+exp(-t))^{-2}exp(-t) = \sigma(t)\sigma(-t) = \sigma(t)(1 - \sigma(t))
+      \end{equation*}
+      \subsubsection{Learning LR}
+        \begin{itemize}
+          \item maximum likelihood principle: choose the model such that the training data are a typical
+          realization means:
+          \begin{equation*}
+            \begin{align*}
+              \hat{w} &= \argmax_{w} p((x_{1}, y_{1}), ..., (x_{n}, y_{n})|w) \\
+              &= \argmin_{w} - \log p((x_{i}, y_{i})|w) \\
+              &\stackrel{i.i.d.}{=} \argmin_{w} -\Sigma_{i=1}^{N} \log p(y=y_{i}|x_i,w) \\
+              &= \argmin_{w} -[\Sigma_{i, y_{i} = 1} \log p(y=1|x_{i},w) +
+               \Sigma_{i, y_{i} = 0} \log(1-p(y=1|x_{i},w))] \\
+              &= \argmin_{w}  = -\Sigma_{i=1}^{N} [y_{i} \log p(y=1|x_{i},w) +
+              (1- y_{i})\log(1-p(y=1|x_{i},w))]
+            \end{align*}
+          \end{equation*}
+        \end{itemize}
+        \paragraph{Find w}
+
+        \begin{equation*}
+          \begin{align*}
+          \frac{\partial}{\partial w} -\sum_{i=1}^{N}... &= -\sum_{i=1}^{N}[y_i \frac{1}{\sigma(w^Tx_i)}\sigma(w^tx_i)\sigma(-w^Tx_i)x_i +
+          (1-y_i) \frac{1}{1-\sigma(w^Tx_i)}(-1)\sigma(w^Tx_i)\sigma(-w^Tx_i)x_i] \\
+          &= -\sum_{i=1}^{N} (y_{i} \underbrace{\sigma(-w^T x_i)}_{1-\sigma(w^Tx_i)}x_i - (1- y_i)\sigma(w^T x_i)x_i) \\
+          &= - \sum_{i=1}^{N} y_i x_i - y_i\sigma(w^T x_i) x_i - \sigma(w^Tx_i)x_i + y_i \sigma(w^T x_i) x_i \\
+          &= \sum_{i=1} (y_i - \sigma(w^T x_i)) x_i \overset{!}{=} 0
+          \end{align*}
+        \end{equation*}
+
+        no analytical solution $\Rightarrow$ need to solve numerically \\
+        Numerical algorithms:
+        \begin{itemize}
+          \item classical: few training data $N \leq 1000 \Rightarrow$ use Newton-Raphson algorithm $\Rightarrow$ Iterative Reweighted Least Squares (RLS $\Rightarrow$ later)
+          \begin{itemize}
+            \item advantage: needs few iterations
+            \item drawback: each iteration is expensive when N gets bigger $\mathcal{O}(N^3)$ or $\mathcal{O}(N^2)$ with tricks
+          \end{itemize}
+          \item modern: lots of training data: stochastic gradient descent
+          \begin{itemize}
+            \item choose initial guess for $w^{(0)}$ e.g. $w^{(0)} = 0 \Rightarrow \sigma(w^T x) = \frac{1}{2} \quad \forall x \Rightarrow p(y=1|x) = p(y=0|x)$
+            \item for t = 1, ..., T (or until convergence)
+            \begin{itemize}
+              \item bring TS into random order (e.g. random shuffle) of indices
+              \item for i = 1,..., N: $w' = w - \tau(y_{i} - \sigma(w^T x_{i})x_{i}), \quad \tau: \text{learning rate}$
+              \item reduce learning rate $ \tau \leftarrow \frac{t}{t-1} \tau$
+            \end{itemize}
+          \end{itemize}
+        \end{itemize}
+    \subsection{Histogramms and Density Trees}
+      \subsubsection{Introduction}
+        \begin{itemize}
+          \item we had: generative models vs. discriminative models (learn LHS or RHS of Bayes)
+          \item new distinction:
+          \begin{itemize}
+            \item parametric models: choose probabilities from a family with analytic formula (Gaussian)
+            and we learn its parameters (Gaussian: $\mu,\Sigma$)
+            \item non-parametric models: don't restrict the probability - 'universal model'
+            (neural net) and learn many more parameters (network weights)
+          \end{itemize}
+        \end{itemize}
+
+        \begin{center}
+          \begin{tabular}{ |c|c|c|c| }
+            \hline
+              & generative & discriminative  \\
+            \hline
+            \multirow {}  parametric & LDA and QDA & LR \\
+            non-parametric & histogramm, density tree & nearest neighbors \\
+            \hline
+          \end{tabular}
+        \end{center}
+        \begin{itemize}
+          \item histogramm: count the frequency of random events: \\
+          \begin{equation*}
+            \frac{\sum_{i=1}\mathbbm{1}[x_i=z]}{N}
+          \end{equation*}
+            z: events considered and create table for all events
+           \item x is discrete, throwing dice:  $z \in \{ 1,...,6\}$
+           \begin{equation*}
+              \text{hist}(z)=\frac{#[x=z]}{N}
+           \end{equation*}
+           \item x is continous $x \in R \Rightarrow$ discretize into \underline{bins}
+           \begin{equation*}
+             b_l = \{x|\underbrace{x_{min}+l\Delta x}_{x_l} \leq x \leq \underbrace{x_{min}+(l+1)\Delta x}_{x_{l+1}}\}
+           \end{equation*}
+           \item find bin index of x:
+           \begin{equation*}
+             l = \floor*{\frac{x-x_{min}}{\Delta x}} \quad \Delta x: \text{ bin width}\quad  \floor*{}:\text{ floor function}
+           \end{equation*}
+           \begin{equation*}
+             \mathbbm{1}[a] = \begin{cases}
+             1 & \text{if a is true} \\
+             0 & \text{else}
+             \end{cases}
+           \end{equation*}
+           $p_l$= prob for X in bin l
+           \item approx likelihood:
+           \begin{equation*}
+             p(x|y) \approx \sum_l p(l) \mathbbm{1} \floor*{x \in b_l}
+           \end{equation*}
+           \item meaning: piecewise constant approximation
+           $\Rightarrow$ can make error arbitrarily small by choosing more bins, but not
+           more than the TS allows
+           \item optimal approx, given TS and $\Delta$x
+           \end{itemize}
+           \begin{equation*}
+             \hat{p}=\argmin_p Error = \int\underbrace{(p^*(x)-p(x))^2dx}_{\cancel{p^*(x)^2}-2p^*(x)p(x)+p(x)^2} \quad p^*: \text{ truth} \quad \hat{p}: \text{ best approx.}
+           \end{equation*}
+           \begin{equation*}
+             \begin{align*}
+               -2\intp^*(x)p(x)dx &= -2 \int p^*(x)\sum_l p(l) \mathbbm{1}[x\in b_l]dx \\
+               &=-2\sum_l p(l) \int p^*(x) \mathbbm{1}[x \in b_l] dx \\
+               &=-2 \sum_l p(l) \int_{x_l}^{x_{l+1}} p^*(x)dx \\
+               &=-2 \sum_l p(l) \mathbb{E}_{p^*(x)}[\mathbbm{1}[x \in b_l]]
+             \end{align*}
+           \end{equation*}
+           \begin{equation*}
+             \begin{align*}
+               \mathbb{E}_{p^*(x)}[\mathbbm{1}(x \in b_l)] \approx \frac{N_l}{N} \quad \N_l=#(x \text{ is in }l)
+             \end{align*}
+           \end{equation*}
+           \begin{equation*}
+             \mathbbm{1}[x \in b_l]^2 = \mathbbm{1}[x \in b_l] \quad l\neq l': \quad \mathbbm{1}[x \in b_l]\mathbbm{1}[x \in b_{l'}]=0
+           \end{equation*}
+           \begin{equation*}
+             \begin{align*}
+               \int p(x)^2dx &= \int(\sum_l p_l \mathbb{1}[x \in b_l])^2 \\
+               &=\int \sum_l p_l^2 \mathbbm{1}[x \in b_l]dx \\
+               &= \sum_l p_l^2 \int \mathbbm{1}[x \in b_l] dx \\
+               &= \sum_l p_l^2 \int_{x_l}^{x_{l+1}}1dx \\
+               &= \sum_l p_l^2 \Delta x
+             \end{align*}
+           \end{equation*}
+           \begin{equation*}
+             Error = \p^*(x)^2dx-2 \sum_l p_l \frac{N_l}{N} + \sum_l p_l^2 \Delta x
+           \end{equation*}
+           \begin{equation*}
+             \hat{p_l} = \argmin \text{Error} = \argmax_{p_l} \sum_l p_l^2 \Delta x - 2\sum_l p_l \frac{N_l}{N}
+           \end{equation*}
+           \begin{equation*}
+             \frac{\partial}{\partial p_l}... = 2 p_l \Delta x - 2 \frac{N_l}{N} \overset{!}{=} 0
+           \end{equation*}
+           \begin{equation*}
+             p_l = \frac{N_l}{N\Delta x} \quad \text{probability density estimate}
+           \end{equation*}
+           insert into error:
+           \begin{equation*}
+             \begin{align*}
+               Error &= \int p^*(x)^2dx-2 \sum_l \frac{N_l}{N\Delta x}\frac{N_l}{N} + \sum_l(\frac{N_l}{N\Delta x})^2 \Delta x \\
+               &= \int p^*(x)^2dx - \sum_l(\frac{N_l}{N})^2\frac{1}{\Delta x} \\
+               &= \int p^*(x)^2dx - \sum_l \hat{p_l}^2 \Delta x
+             \end{align*}
+           \end{equation*}
+           \begin{itemize}
+             \item how to choose $\Delta x$: Difficult, rules of thumb:
+             \begin{itemize}
+               \item Scotts's rule:
+               \begin{equation*}
+                 \Delta x = \frac{3.5 \sigma}{\sqrt[3]{N}} \quad \text{exactly optimal if $p^*$ is Gaussian)}
+               \end{equation*}
+               \item Freedman-Diaconis rule:
+               \begin{equation*}
+                 \Delta x = \frac{2\text{IQR}(x)}{\sqrt[3]{N}}
+               \end{equation*}
+               IQR: inter-quartile range:
+               place data in sorted order: $x_{[1]},x_{[2]},...,x_{[N]}$
+               \begin{equation*}
+                 IQR = x_{[\frac{3}{4}N]}-x_{[\frac{1}{4}N]}
+               \end{equation*}
+               \item Shimazaki/Shinomoto rule:
+               \begin{equation*}
+                 \hat{\Delta x}= \argmax_{\Delta x} \frac{2m-v}{(\Delta x)^2} \quad \text{$m$: mean bin count, $v$: variance}
+               \end{equation*}
+               \item cross-validation: split into training sets of size N and test sets of size M \\
+               for each candidate $\delta x$ compute error
+               \begin{equation*}
+                 \sum_l \frac{1}{\Delta x}(\frac{N_l}{N}-\frac{M_l}{M})^2
+               \end{equation*}
+               and choose $\Delta x$ that minimizes error \\
+               in general: if $\varphi$ is a hyperparameter (here: $\Delta x$): use Cross Validation
+               and grid search
+              \end{itemize}
+             \item typical bin counts (e.g. Freedman-Diaconis): scale x such that IQR $(x)=\frac{1}{2}$
+             \begin{equation*}
+               \Rightarrow \Delta x = \frac{1}{\sqrt[3]{N}}
+             \end{equation*}
+             if data are uniformely distributed:
+             \begin{equation*}
+               x_{max}-x_{min} = 2 \text{IQR}{x} = 1
+             \end{equation*}
+             \begin{equation*}
+               \text{bin count} \quad \frac{x_{max}-x_{min}}{\Delta x} = \frac{1}{\Delta x} = \sqrt[3]{N}
+             \end{equation*}
+             \begin{equation*}
+               N = 1000 \Rightarrow 10 \text{ bins} \quad N=10^6 \Rightarrow 100 \text{ bins}
+             \end{equation*}
+             \item generalize to the multi-dimensional case $x \in \mathbb{R}^D$ \\
+             naive solution: split each dimension according to Freedman/Diaconis \\
+             $\Rightarrow$ 10 bins per dimension $\Rightarrow 10^D$ bins in total \\
+             $\Rightarrow$ no TS can ever fill $10^D$ bins $\Rightarrow$ most are empty $\Rightarrow$ no estimate \\
+             $\Rightarrow$ doesn't work
+
+             \begin{itemize}
+               \item use a 1-dimensional histogram for each dimension (only 10*D bins)
+               \item only use 1-D histogramms, one per feature per class
+               \item probabalistic interpretation: if we know the class y, all fearture dimension
+               are statistically independent
+               \begin{equation*}
+                 p(x|y)=p(\{ x_j\}|y)=p(x_{j=1}|y)p(x_{j=2}|y)p(x_{j=D}|y)
+               \end{equation*}
+               \item density trees: place bins adaptively: many bins in subregions with many data bins,
+               few bins in subregions with few data points
+             \end{itemize}
+            \subsubsection{Naive Bayes}
+              Using one histogramm per dimension $\iff$ assumption that values of different features are independent,
+              given the class $\iff$ if we know the class label $y_i$, then knowing the feature $x_{i1}$ doesn't tell us anything about other feature values $x_{ij} \quad j\neq 1$ \\
+              This assumption is often violated, e.g. in images. Consider an image region with class
+              label 'sky'. Let one pixel in the sky have color 'blue'. Than it's likely that the neighbor pixels
+              are probably also 'blue'. The same applies to other colors (e.g. grey for clouds or red for sunset).
+              If assumption is true, joint probability
+              \begin{equation*}
+                p(x_i=[x_{i1},...,x_{iD}]|y_i) = \Pi_{j=1}^{D}p_j(x_{ij}|y_i)
+              \end{equation*}
+              \begin{equation*}
+                \text{Bayes:} \quad p(y_i|x_i) = \frac{p(x_i|y_i)p(y_i)}{p(x_i)} \overset{\text{naive}}{=}
+                \frac{\Pi_{j=1}^D p_j(x_{ij}|y_i)p(y_i)}{p(x_i)}
+              \end{equation*}
+              \begin{equation*}
+                \text{simplify} \quad p(y_j) = p(y_{ji})=\frac{1}{C} \quad \text{uniform priors}
+              \end{equation*}
+              \begin{equation*}
+                \begin{align*}
+                  \text{decision rule:} \quad \hat{y_i} &= \argmax_k p(y_i=k|x_i) \\
+                  &= \argmax_k \Pi_{j=1}^D p_j(x_{ij}|y_i=k) \\
+                  &= \argmax_k \sum_{j=1}^D \log p_j(x_{ij}|y_i=k)
+                \end{align*}
+              \end{equation*}
+              training: for $k=1,...C$ for $j=1,...,D$: fit 1-D histogram $p_j(x_{ij}|y_i=k)$ using the
+              j-th feature of all instances of class k
+
+              \paragraph{Variant:} Instead of 1-D histogramms, fit 1-D Gaussian distributions
+              $\Rightarrow$ naive BAyes becomes equivalent to QDA with constraint that covariance matrices
+              $\Sigma_k$ are all diagonal $\iff$ axes of ellipses are parallel to coordinate axes.
+          \subsubsection{Density trees}
+            \begin{itemize}
+              \item idea: place bins adaptively, small bins where there are many datapoints,
+              big bins where there are few
+              \item how to find the bin for a data point efficently:
+              \begin{equation*}
+                1-D \quad l=\floor*{\frac{x-x_{min}}{\Delta x}}}
+              \end{equation*}
+              \item higher dimensions: represent binning by a binary tree \\
+              \begin{forest}[$x_{i1} < 0.4$ ?[$x_{i2} < 0.7$ ?[bin 1][bin 2]][$x_{i2} < 0.7$ ?[bin 3][bin 4]]]
+              \end{forest}
+              \item bin index for L bins can be found with $\mathcal{O}(\log L)$ decisions (if tree balanced) - 'recursive subdivision'
+              \item training
+              \begin{itemize}
+                \item build the tree
+                \item define response ($\hat{p_l}$) of the leaves, e.g. as in 1-D histograms
+                \begin{equation*}
+                  \hat{p_l} = \frac{N_l}{N V_l} \quad \text{$N_l$ # instances in bin l, $V_l$ volume of bin l}
+                \end{equation*}
+                or: fit Gaussian to each bin (adjust normalization for finite bin size)
+              \end{itemize}
+            \end{itemize}
+            Build tree by 'recursive best-first expansion' \\
+            Init:
+            \begin{itemize}
+              \item put all data into a single bin (root of tree), size: bounding rectangle of data points
+              \item fix #bins $L=\tau \sqrt[3]{N}$
+              \item for $t=1,...,L-1$
+              \begin{itemize}
+                \item compute 'score' of all current leave modes
+                \item split best leaf into two children (original leaf is now an interior node)
+              \end{itemize}
+            \end{itemize}
+            score of a leaf: maximal improvement of our objective funtion (e.g. error) if we would split this leaf)
+            \begin{itemize}
+              \item Criminisi et al.: try a number of random splits and remember the best (allow oblique splits)
+              \item exhaustive search for best split (preferable when we split axis orthogonal)
+            \end{itemize}
+            \paragraph{exhaustive search:} give leaf with boundaries $x_j \in [m_j, M_j]$, $N_l =$ # instances in this leaf \\
+              for each feature $j \in 1,...,D$:
+              \begin{itemize}
+                \item define candidate split thresholds
+                \begin{equation*}
+                  s_j = \{ s_{ja},...,s_{j(N_l+1)} \}: \quad \text{sort data according to feature j}
+                \end{equation*}
+                \begin{equation*}
+                  x_{[0]j} = m_j = x_{[1]j} \leq x_{[2]j} \leq ... \leq x_{[N_l]j} \leq M_j = X_{[N_l+1]j}
+                \end{equation*}
+                place candidate threshold in the middle of each pair
+                \item compute the score of every candidate split
+                return dimension j and threshold $s_{ja}$ and score $g_{ja}$ of best candidate split (among $D(N_l+1)$)
+              \end{itemize}
+              scores:
+              \begin{itemize}
+                \item minimize squared error of histogram:
+                \begin{equation*}
+                  \begin{align*}
+                  \text{error} &= \int p^*(x)^2dx - \sum_l^{L_t} \hat{p_l}^2 V_l \quad \text{before split} \\
+                  \text{error'} &= \int p^*(x)^2dx - \sum_{l=1}^{L_t+1} \hat{p_l'}^2 V_l
+                  \end{align*}
+                \end{equation*}
+                suppose split leaf l into $\lambda$ and $\rho$
+                \begin{equation*}
+                  \text{gain } g = \text{error}-\text{error'} = -\hat{p_l}^2V_l+\hat{p_{\lambda}}^2 V_{\lambda}+\hat{p_{\rho}}^2 V_{\rho}
+                \end{equation*}
+                \item split nodes where data distribution is far from uniform $\iff \frac{N_l}{N} \sim V_l$
+                \begin{equation*}
+                  \text{non-uniformity}: \abs*{\frac{N_{\lambda}}{N_l} - \frac{V_{\lambda}}{V_l}}
+                \end{equation*}
+                \item split to minimize etropy (ex. fit Gaussian)
+                \begin{equation*}
+                  H = \frac{1}{2} \log(\text{det}(2\pi e \Sigma))
+                \end{equation*}
+                \begin{equation*}
+                  g = H_l - \frac{N_{\lambda}}{N}H_{\lambda}-\frac{N_{\rho}}{N}H_{\rho}
+                \end{equation*}
+              \end{itemize}
+              density trees tend to overfit:
+              \begin{itemize}
+                \item traditional: pruning $\widehat{=}$ cut-off subtrees with high overfitting and replace by single leaf
+                \item modern: density forest $\widehat{=}$ train many trees and take their average probability ('ensemble method' $\Rightarrow$ later) \\
+                how to make the trees different:
+                \begin{enumerate}
+                  \item train every tree on a random subset of the training data (bootstrap sampling)
+                  \item consider a random subset of the features inthe split: search algorithm
+                \end{enumerate}
+              \end{itemize}
+  \section{Regression}
+    \subsection{Introduction}
+      \begin{itemize}
+        \item Learn model $y = f(x): X \in \mathbb{R}^D \Rightarrow y \in \mathbbm{R}^{D'} (D'=1)$
+        \item training set $\{ (\underbrace{x_i}_{\text{D-dim features}}, \underbrace{y_i}_{
+        \text{real-valued true response}}) \}_{i=1}^N \quad \text{assume i.i.d.} $
+        - matrix notation
+      \end{itemize}
+
+      \begin{forest}
+        [model class $f(X;\Theta)$
+          [linear
+            [noise
+              [non-Gaussian
+                [Poisson noise
+                  [transform additive Gaussian noise via Anscombe transform]
+                ]
+                [other known noise model
+                  [Maximum likelihood estiamtion]
+                ]
+                [outiers]
+              ]
+              [Gaussian additive
+                [is only Y noisy?
+                  [yes: is system under-determined D >> N
+                    [no: Have all $y_i$ same noise variance?
+                      [no: weighted least squares]
+                      [yes: ordinary least squares OLS]]
+                    [yes: regularized/constrained least squares]
+                  ]
+                  [no: total least squares errors in variance model]
+                ]
+              ]
+            ]
+          ]
+          [non-linear
+            [Gaussian additive noise
+              [yes: non linear least-squares
+                [neural networks with squared loss funtion]
+              ]
+            ]
+            [no: linear regression in non-linearity augmented feature space
+              [kernel regression]
+            ]
+            [no/don't care: regression neural networks]
+          ]
+        ]
+      \end{forest}
+    \subsection{Ordinary Least Squares (OLS)}
+      \begin{itemize}
+        \item linear model with additive Gaussian noise, X is noise-free,
+        all Y have same noise variance
+        \begin{equation*}
+          Y = \underbrace{X}_{\text{row vector D-dim features}} \underbrace
+          {\beta}_{column vector of D-dim weights/activations} +
+          \underbrace{\varepsilon}_{Gaussian distributed scalar}
+        \end{equation*}
+        \begin{equation*}
+          \varepsilon \sim N(0, \sigma^2) \iff y \sim N(X\beta, \sigma^2)
+        \end{equation*}
+        \item find best $\hat{\beta}$ via Maximum Likelihood principle $\hat{=}$
+        make training set typical under the model \\
+        compute the residuals
+        \begin{equation*}
+          r_i = y_i - x_i\beta
+        \end{equation*}
+        If the model is correct ($\hat{\beta}=\beta^*$): $r_i \sim N(0, \sigma^2)$ \\
+        If model is correct and we know the truth $\beta = \beta^* \rightarrow r_i =
+        \varepsilon_i$, we only have $\beta = \hat{\beta} \rightarrow r_i \sim \varepsilon_i$
+        \item ML principle
+        \begin{equation*}
+          \begin{align*}
+            \hat{\beta}&= \argmax_{\beta} p(\{ y_1,...,y_N\} |\{ x_1,...,x_N\};\beta) \\
+            &= \argmax_{\beta} \prod_{i=1}^{N} \underbrace{p(y_i|x_i;\beta)}_{
+            y*e^{\frac{-(y_i-x_i\beta)^2}{2\sigma^2}}}
+             \\
+            &= \argmin_{\beta} - \sum_{i=1}^N \log p(y_i|x_i; \beta) \\
+            &= \argmin_{\beta} \sum_{i=1}^N \frac{(y_i-x_i\beta)^2}{2\sigma^2} -
+            N \log v \\
+            &= \argmin_{\beta} \sum_{i=1}^N (y_i-x_i\beta)^2 \quad \text{least-squares objective}
+          \end{align*}
+        \end{equation*}
+        \item example: fit a line in 2D $X \in \mathbb{R}$
+        \begin{equation*}
+          Y = [X;1][a;b]^T + \varepsilon
+        \end{equation*}
+        \begin{equation*}
+          Y = aX + b + \varepsilon
+        \end{equation*}
+        \begin{equation*}
+          \hat{a}, \hat{b} = \argmin_{a,b} \underbrace{\sum_{i=1}^N (Y_i-aX_i-b)^2}_{
+          \text{Loss}}
+        \end{equation*}
+        \begin{equation*}
+          \frac{\partial \text{Loss}}{\partial b} = \sum \sum_{i=1}^N (Y_i-aX_i-b)
+          (-1)\overset{!}{=}0
+        \end{equation*}
+        \begin{equation*}
+          \sum_iY_i-a\sum_iX_-\sum_ib=0
+        \end{equation*}
+        \begin{equation*}
+          \frac{1}{N}\sum_iY_i=a\frac{1}{N}\sum_iX_i+b
+        \end{equation*}
+        \begin{equation*}
+          \bar{Y} = a\bar{X}+b
+        \end{equation*}
+        Regressionline always goes through the origin
+        $\Rightarrow$ always center data(i.e. $\bar{X}=0, \bar{Y}=0)$
+        \begin{itemize}
+          \item regression goes through origin $\Rightarrow$ no need for
+          intercept b
+          \item numbers get smaller $\Rightarrow$ regression is numerically more stable
+        \end{itemize}
+        $\Rightarrow$ assume $X \Rightarrow X-\bar{X}, Y \Rightarrow Y-\bar{Y}$
+      \end{itemize}
+      rewrite objective in matrix form
+      \begin{equation*}
+        \hat{\beta} = \argmin_{\beta}(Y-X\beta)^T(Y-X\beta)
+      \end{equation*}
+      \begin{equation*}
+        \frac{\partial \text{Loss}}{\partial \beta} = 2X^T(Y-X\beta) \overset{!}{=}0
+      \end{equation*}
+      \begin{equation*}
+        \underbrace{X^TX}_{\text{scatter matrix}}\beta = X^TY \quad \text{linear system of equations 'normal equations'}
+      \end{equation*}
+      $\Rightarrow$ solve for $\beta$ \\
+      possibilities to solve:
+      \begin{enumerate}
+        \item formal solution:
+        \begin{equation*}
+          \underbrace{(X^TX)^{-1}(X^TX)}_{\mathbbm{1}}\beta = (X^TX)^{-1}X^TY
+        \end{equation*}
+        $(X^TX)^{-1}$ exists if X has full rank description
+        \begin{equation*}
+          \hat{\beta}= \underbrace{(X^TX)^{-1}X^T}_{X^+}Y
+        \end{equation*}
+        \begin{equation*}
+          X^+ = (X^TX)^{-1}X^T: \quad \text{Moore-Penrose pseudo-inverse, inverse to rectangular matrices}
+        \end{equation*}
+        \item Cholesky factorization: $X^TX$ is positive definite symmetric \\
+        for every such matrix, there is a decomposition:
+        \begin{equation*}
+          R^TR=X^TX \quad R:D*D \text{ upper triangular}
+        \end{equation*}
+        \begin{equation*}
+          R^TR\beta = X^TY \quad \text{define } Z=R\beta
+        \end{equation*}
+        \begin{equation*}
+          R^TZ=X^TY=F\quad \text{linear equations in Z}
+        \end{equation*}
+        \begin{enumerate}
+          \item solve for Z by forward substitution because $R^T$ is lower triangular
+          \item solve $R\beta=Z$ by backward substitution because R is upper triangular
+        \end{enumerate}
+      \end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+  \end{document}
