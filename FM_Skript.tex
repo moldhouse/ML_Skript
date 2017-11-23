@@ -10,6 +10,9 @@
 \usepackage[T1]{fontenc}
 \usepackage{fancyhdr}
 \usepackage[makeroom]{cancel}
+\usepackage{tikz}
+\tikzset{node distance = 1cm and 5cm}
+\usetikzlibrary{trees}
 \usepackage[a4paper,bindingoffset=0.2in,
             left=1in,right=1in,top=1.2in,bottom=1in,
             footskip=.25in]{geometry}
@@ -1327,54 +1330,51 @@
         \text{real-valued true response}}) \}_{i=1}^N \quad \text{assume i.i.d.} $
         - matrix notation
       \end{itemize}
-
-      \begin{forest}
-        [model class $f(X;\Theta)$
-          [linear
-            [noise
-              [non-Gaussian
-                [Poisson noise
-                  [transform additive Gaussian noise via Anscombe transform]
-                ]
-                [other known noise model
-                  [Maximum likelihood estiamtion]
-                ]
-                [outiers]
-              ]
-              [Gaussian additive
-                [is only Y noisy?
-                  [yes: is system under-determined D >> N
-                    [no: Have all $y_i$ same noise variance?
-                      [no: weighted least squares]
-                      [yes: ordinary least squares OLS]]
-                    [yes: regularized/constrained least squares]
-                  ]
-                  [no: total least squares errors in variance model]
-                ]
-              ]
-            ]
-          ]
-          [non-linear
-            [Gaussian additive noise
-              [yes: non linear least-squares
-                [neural networks with squared loss funtion]
-              ]
-            ]
-            [no: linear regression in non-linearity augmented feature space
-              [kernel regression]
-            ]
-            [no/don't care: regression neural networks]
-          ]
-        ]
-      \end{forest}
+      \begin{tikzpicture}[sibling distance=2cm,level distance=3.5cm,
+        box/.style={
+             shape=rectangle,
+             font=\small,
+             draw,
+             align=center,
+             minimum height=1.5cm,
+             text width=1.5cm,
+             top color=white,
+             bottom color=white}
+      ]
+      \node  [box,text width=3cm] [sibling distance=8cm] {model class $f(X;\Theta)$} [edge from parent fork down]
+        child [sibling distance=7cm] { node [box] {linear}
+             child { node [box] {Gaussian additive noise}
+                  child [sibling distance=2.5cm]{ node [box] {Is only Y noisy?}
+                        child [sibling distance=2cm]{ node [box] {Yes: Is model under-deter-mined D>>N ?}
+                              child [sibling distance=2cm] { node [box] {No: Have all $y_i$ same noise variance?}
+                                    child [sibling distance=2cm] { node [box] {No: weighted least squares}}
+                                    child { node [box] {Yes: ordinary least squares OLS}}}
+                              child { node [box] {Yes: regularized, constrained least squares}}}
+                        child { node [box] {No: total least squares errors in variance model}}}}
+             child [sibling distance=2cm]{ node [box] {Non-Gaussian noise}
+                  child { node [box] {Poisson noise}
+                        child { node [box] {transform additive Gaussian noise via Anscombe transform }}}
+                  child { node [box] {Other known noise model}
+                        child { node [box] {Maximum likelihood estimation}}}}}
+        child [sibling distance=5cm] { node [box] (lat) {non-linear}
+              child [sibling distance=4cm]  { node [box] {Gaussian additive noise?}
+                   child [sibling distance=2cm] { node [box] {Yes: non linear least-squares}
+                        child { node [box] {neural networks with squared loss function}}}
+                   child [sibling distance=2cm] { node [box] {No: linear regression in non-linearity feature space}
+                        child { node [box] {Kernel regression}}}
+                   child [sibling distance=2cm] { node [box] {No/don't care: regression neural networks}}}};
+      \end{tikzpicture}
     \subsection{Ordinary Least Squares (OLS)}
       \begin{itemize}
         \item linear model with additive Gaussian noise, X is noise-free,
         all Y have same noise variance
         \begin{equation*}
-          Y = \underbrace{X}_{\text{row vector D-dim features}} \underbrace
-          {\beta}_{column vector of D-dim weights/activations} +
-          \underbrace{\varepsilon}_{Gaussian distributed scalar}
+          Y = \underbrace{X}_{\substack{\text{Row vector} \\
+          \text{D-dim} \\ \text{feature}}} \underbrace
+          {\beta}_{\substack{\text{column vector} \\
+          \text{of D-dim weights/} \\ \text{activations}}} +
+          \underbrace{\varepsilon}_{\substack{\text{Gaussian} \\
+          \text{distributed} \\ \text{scalar}}}
         \end{equation*}
         \begin{equation*}
           \varepsilon \sim N(0, \sigma^2) \iff y \sim N(X\beta, \sigma^2)

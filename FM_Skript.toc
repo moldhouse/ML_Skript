@@ -42,4 +42,4 @@
 \contentsline {paragraph}{exhaustive search:}{24}
 \contentsline {section}{\numberline {2}Regression}{25}
 \contentsline {subsection}{\numberline {2.1}Introduction}{25}
-\contentsline {subsection}{\numberline {2.2}Ordinary Least Squares (OLS)}{26}
+\contentsline {subsection}{\numberline {2.2}Ordinary Least Squares (OLS)}{27}
