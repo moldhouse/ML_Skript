@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.2)  23 NOV 2017 08:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.2)  28 NOV 2017 08:41
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1091,35 +1091,57 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \Gm@layouthoffset=\dimen269
 \Gm@layoutvoffset=\dimen270
 \Gm@dimlist=\toks48
-) (./FM_Skript.aux)
+) (/usr/local/texlive/2017/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count197
+\lst@gtempboxa=\box77
+\lst@token=\toks49
+\lst@length=\count198
+\lst@currlwidth=\dimen271
+\lst@column=\count199
+\lst@pos=\count266
+\lst@lostspace=\dimen272
+\lst@width=\dimen273
+\lst@newlines=\count267
+\lst@lineno=\count268
+\lst@maxwidth=\dimen274
+(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+\c@lstnumber=\count269
+\lst@skipnumbers=\count270
+\lst@framebox=\box78
+) (/usr/local/texlive/2017/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2015/06/04 1.6 listings configuration
+))
+Package: listings 2015/06/04 1.6 (Carsten Heinz)
+(./FM_Skript.aux)
 \openout1 = `FM_Skript.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
 ABD: EveryShipout initializing macros (/usr/local/texlive/2017/texmf-dist/tex/c
 ontext/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count197
-\scratchdimen=\dimen271
-\scratchbox=\box77
-\nofMPsegments=\count198
-\nofMParguments=\count199
-\everyMPshowfont=\toks49
-\MPscratchCnt=\count266
-\MPscratchDim=\dimen272
-\MPnumerator=\count267
-\makeMPintoPDFobject=\count268
-\everyMPtoPDFconversion=\toks50
+\scratchcounter=\count271
+\scratchdimen=\dimen275
+\scratchbox=\box79
+\nofMPsegments=\count272
+\nofMParguments=\count273
+\everyMPshowfont=\toks50
+\MPscratchCnt=\count274
+\MPscratchDim=\dimen276
+\MPnumerator=\count275
+\makeMPintoPDFobject=\count276
+\everyMPtoPDFconversion=\toks51
 ) (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -1193,11 +1215,12 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 38.
+\c@lstlisting=\count277
+LaTeX Font Info:    Try loading font information for U+msa on input line 77.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 38.
+LaTeX Font Info:    Try loading font information for U+msb on input line 77.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
@@ -1214,12 +1237,12 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [2]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 49.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 88.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 49.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 88.
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -1242,7 +1265,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.204         \end{align*}
+l.243         \end{align*}
                           
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1250,7 +1273,7 @@ If that doesn't work, type  X <return>  to quit.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.204         \end{align*}
+l.243         \end{align*}
                           
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -1261,7 +1284,7 @@ my insertion and my current dilemma will both disappear.
 ! Missing { inserted.
 <inserted text> 
                 {
-l.204         \end{align*}
+l.243         \end{align*}
                           
 I've put in what seems to be necessary to fix
 the current column of the current alignment.
@@ -1274,7 +1297,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.211       \begin
+l.250       \begin
                   {equation*}
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1295,7 +1318,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.237         \end{align*}
+l.276         \end{align*}
                           
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1308,13 +1331,13 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.261         \end{align*}
+l.300         \end{align*}
                           
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 268--270
+Underfull \hbox (badness 10000) in paragraph at lines 307--309
 
  []
 
@@ -1333,7 +1356,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.316             \end{align*}
+l.355             \end{align*}
                               
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1346,7 +1369,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.323             \end{align*}
+l.362             \end{align*}
                               
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1359,7 +1382,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.330             \end{align*}
+l.369             \end{align*}
                               
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1372,7 +1395,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.335             \end{align*}
+l.374             \end{align*}
                               
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1384,7 +1407,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [7]
-LaTeX Font Info:    Try loading font information for U+bbm on input line 351.
+LaTeX Font Info:    Try loading font information for U+bbm on input line 390.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/bbm-macros/ubbm.fd
 File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
 )
@@ -1396,7 +1419,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.370             \end{align*}
+l.409             \end{align*}
                               
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1404,7 +1427,7 @@ If that doesn't work, type  X <return>  to quit.
 ! Undefined control sequence.
 <argument> ..._{0}^{1}p(y=1|x)\mathbbm {1}[x\leqt 
                                                   ]p(x)dx + \int _{0}^{1}p(y...
-l.370             \end{align*}
+l.409             \end{align*}
                               
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1413,7 +1436,7 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 ! Undefined control sequence.
-l.387               A: x_{0}(\corresponds
+l.426               A: x_{0}(\corresponds
                                           y_{0} = 0) \leq x_{1} (\correspond...
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1422,7 +1445,7 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 ! Undefined control sequence.
-l.387 ...ponds y_{0} = 0) \leq x_{1} (\corresponds
+l.426 ...ponds y_{0} = 0) \leq x_{1} (\corresponds
                                                    y_{1} = 1): rule A \\
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1431,7 +1454,7 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 ! Undefined control sequence.
-l.388               B: x_{0}(\corresponds
+l.427               B: x_{0}(\corresponds
                                           y_{0} = 0) > x_{1} (\corresponds y...
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1440,7 +1463,7 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 ! Undefined control sequence.
-l.388 ...responds y_{0} = 0) > x_{1} (\corresponds
+l.427 ...responds y_{0} = 0) > x_{1} (\corresponds
                                                    y_{1} = 1): rule B
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1456,7 +1479,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.407           \end{align}
+l.446           \end{align}
                            
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1483,7 +1506,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.471             \end{align}
+l.510             \end{align}
                              
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1496,7 +1519,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.498             \end{align}
+l.537             \end{align}
                              
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1509,7 +1532,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.506             \end{align*}
+l.545             \end{align*}
                               
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1529,13 +1552,13 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.553             \end{align*}
+l.592             \end{align*}
                               
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-Overfull \hbox (62.80788pt too wide) detected at line 554
+Overfull \hbox (62.80788pt too wide) detected at line 593
 [][]
  []
 
@@ -1547,7 +1570,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.563             \end{align*}
+l.602             \end{align*}
                               
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1560,7 +1583,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.575             \end{align*}
+l.614             \end{align*}
                               
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1573,7 +1596,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.598               \end{align*}
+l.637               \end{align*}
                                 
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1586,7 +1609,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [11]
 ! You can't use `macro parameter character #' in horizontal mode.
-l.632           (D*N)$ D: #
+l.671           (D*N)$ D: #
                            feature dimension, N: #instances \\
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -1594,7 +1617,7 @@ If you're in the wrong mode, you might be able to
 return to the right one by typing `I}' or `I$' or `I\par'.
 
 ! You can't use `macro parameter character #' in horizontal mode.
-l.632           (D*N)$ D: #feature dimension, N: #
+l.671           (D*N)$ D: #feature dimension, N: #
                                                   instances \\
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -1611,7 +1634,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 ! You can't use `macro parameter character #' in restricted horizontal mode.
 <argument> ##
              instances in class k
-l.679 ... \quad N_k = \text{#instances in class k}
+l.718 ... \quad N_k = \text{#instances in class k}
                                                   
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -1621,7 +1644,7 @@ return to the right one by typing `I}' or `I$' or `I\par'.
 ! You can't use `macro parameter character #' in restricted horizontal mode.
 <argument> \firstchoice@false ##
                                 instances in class k
-l.679 ... \quad N_k = \text{#instances in class k}
+l.718 ... \quad N_k = \text{#instances in class k}
                                                   
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -1631,7 +1654,7 @@ return to the right one by typing `I}' or `I$' or `I\par'.
 ! You can't use `macro parameter character #' in restricted horizontal mode.
 <argument> \firstchoice@false ##
                                 instances in class k
-l.679 ... \quad N_k = \text{#instances in class k}
+l.718 ... \quad N_k = \text{#instances in class k}
                                                   
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -1641,7 +1664,7 @@ return to the right one by typing `I}' or `I$' or `I\par'.
 ! You can't use `macro parameter character #' in restricted horizontal mode.
 <argument> \firstchoice@false ##
                                 instances in class k
-l.679 ... \quad N_k = \text{#instances in class k}
+l.718 ... \quad N_k = \text{#instances in class k}
                                                   
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -1663,7 +1686,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.742             \end{align*}
+l.781             \end{align*}
                               
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1676,13 +1699,13 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.760             \end{align*}
+l.799             \end{align*}
                               
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 ! Extra }, or forgotten $.
-l.774 ...-\frac{D}{2}}\text{det}(K)^{\frac{1}{2}}}
+l.813 ...-\frac{D}{2}}\text{det}(K)^{\frac{1}{2}}}
                                                   
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1705,7 +1728,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.789             \end{align*}
+l.828             \end{align*}
                               
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1718,7 +1741,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.800             \end{align*}
+l.839             \end{align*}
                               
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1730,7 +1753,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.817           R
+l.856           R
                  epeat this for every class to get $\mu_1,\Sigma_1,...,\mu_c...
 
 Your command was ignored.
@@ -1745,7 +1768,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.828             \end{align*}
+l.867             \end{align*}
                               
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1757,17 +1780,17 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 829--833
+Underfull \hbox (badness 10000) in paragraph at lines 868--872
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 829--833
+Underfull \hbox (badness 10000) in paragraph at lines 868--872
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 829--833
+Underfull \hbox (badness 10000) in paragraph at lines 868--872
 
  []
 
@@ -1779,13 +1802,13 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.853           \end{align*}
+l.892           \end{align*}
                             
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 854--860
+Underfull \hbox (badness 10000) in paragraph at lines 893--899
 
  []
 
@@ -1797,7 +1820,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.875           \end{align*}
+l.914           \end{align*}
                             
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1809,12 +1832,12 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [16]
-Underfull \hbox (badness 10000) in paragraph at lines 887--889
+Underfull \hbox (badness 10000) in paragraph at lines 926--928
 
  []
 
 
-Overfull \hbox (13.88945pt too wide) in paragraph at lines 900--902
+Overfull \hbox (13.88945pt too wide) in paragraph at lines 939--941
  \T1/cmr/bx/n/10.95 2.[] \T1/cmr/m/n/10.95 R. Fis-hers ori-gi-nal de-ri-va-ti-o
 n: we seek the op-ti-mal 1-dimensional pro-jec-ti-on of D-dimensional
  []
@@ -1834,7 +1857,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.947         \end{align*}
+l.986         \end{align*}
                           
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1847,16 +1870,16 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.968         \end{align*}
-                          
+l.1007         \end{align*}
+                           
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 ! Double subscript.
 <argument> 1 +\exp (-0.5[(x_\mu _
                                  {1})^T\Sigma ^{-1}(x+ \mu _{1})- (x-\mu _{1...
-l.968         \end{align*}
-                          
+l.1007         \end{align*}
+                           
 I treat `x_1_2' essentially like `x_1{}_2'.
 
 
@@ -1874,7 +1897,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1009             \end{align*}
+l.1048             \end{align*}
                                
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1887,13 +1910,13 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1021           \end{align*}
+l.1060           \end{align*}
                              
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-Overfull \hbox (40.65245pt too wide) detected at line 1022
+Overfull \hbox (40.65245pt too wide) detected at line 1061
 [][]
  []
 
@@ -1907,7 +1930,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 ! Undefined control sequence.
 <recently read> \multirow 
                           
-l.1061             \multirow
+l.1100             \multirow
                              {}  parametric & LDA and QDA & LR \\
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1916,14 +1939,14 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1067--1068
+Underfull \hbox (badness 10000) in paragraph at lines 1106--1107
 
  []
 
 ! You can't use `macro parameter character #' in math mode.
 <argument> ##
              [x=z]
-l.1074 ...         \text{hist}(z)=\frac{#[x=z]}{N}
+l.1113 ...         \text{hist}(z)=\frac{#[x=z]}{N}
                                                   
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -1945,7 +1968,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1109              \end{align*}
+l.1148              \end{align*}
                                 
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1953,7 +1976,7 @@ If that doesn't work, type  X <return>  to quit.
 ! Undefined control sequence.
 <argument>  -2\intp 
                     ^*(x)p(x)dx &= -2 \int p^*(x)\sum _l p(l) \mathbbm {1}[x...
-l.1109              \end{align*}
+l.1148              \end{align*}
                                 
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1969,7 +1992,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1114              \end{align*}
+l.1153              \end{align*}
                                 
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1977,7 +2000,7 @@ If that doesn't work, type  X <return>  to quit.
 ! Undefined control sequence.
 <argument> ...l)] \approx \frac {N_l}{N} \quad \N 
                                                   _l=##(x \text { is in }l) 
-l.1114              \end{align*}
+l.1153              \end{align*}
                                 
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -1988,7 +2011,7 @@ and I'll forget about whatever was undefined.
 ! You can't use `macro parameter character #' in math mode.
 <argument> ...approx \frac {N_l}{N} \quad \N _l=##
                                                   (x \text { is in }l) 
-l.1114              \end{align*}
+l.1153              \end{align*}
                                 
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -2003,13 +2026,13 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1126              \end{align*}
+l.1165              \end{align*}
                                 
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 ! Undefined control sequence.
-l.1129              Error = \p
+l.1168              Error = \p
                               ^*(x)^2dx-2 \sum_l p_l \frac{N_l}{N} + \sum_l ...
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2025,7 +2048,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1146              \end{align*}
+l.1185              \end{align*}
                                 
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -2052,13 +2075,13 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1230                 \end{align*}
+l.1269                 \end{align*}
                                    
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 ! Extra }, or forgotten $.
-l.1244 ...d l=\floor*{\frac{x-x_{min}}{\Delta x}}}
+l.1283 ...d l=\floor*{\frac{x-x_{min}}{\Delta x}}}
                                                   
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -2076,7 +2099,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 ! You can't use `macro parameter character #' in restricted horizontal mode.
 <argument> $N_l$ ##
                     instances in bin l, $V_l$ volume of bin l
-l.1255 ...stances in bin l, $V_l$ volume of bin l}
+l.1294 ...stances in bin l, $V_l$ volume of bin l}
                                                   
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -2086,7 +2109,7 @@ return to the right one by typing `I}' or `I$' or `I\par'.
 ! You can't use `macro parameter character #' in restricted horizontal mode.
 <argument> \firstchoice@false $N_l$ ##
                                        instances in bin l, $V_l$ volume of b...
-l.1255 ...stances in bin l, $V_l$ volume of bin l}
+l.1294 ...stances in bin l, $V_l$ volume of bin l}
                                                   
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -2096,7 +2119,7 @@ return to the right one by typing `I}' or `I$' or `I\par'.
 ! You can't use `macro parameter character #' in restricted horizontal mode.
 <argument> \firstchoice@false $N_l$ ##
                                        instances in bin l, $V_l$ volume of b...
-l.1255 ...stances in bin l, $V_l$ volume of bin l}
+l.1294 ...stances in bin l, $V_l$ volume of bin l}
                                                   
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -2106,7 +2129,7 @@ return to the right one by typing `I}' or `I$' or `I\par'.
 ! You can't use `macro parameter character #' in restricted horizontal mode.
 <argument> \firstchoice@false $N_l$ ##
                                        instances in bin l, $V_l$ volume of b...
-l.1255 ...stances in bin l, $V_l$ volume of bin l}
+l.1294 ...stances in bin l, $V_l$ volume of bin l}
                                                   
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -2114,7 +2137,7 @@ If you're in the wrong mode, you might be able to
 return to the right one by typing `I}' or `I$' or `I\par'.
 
 ! You can't use `macro parameter character #' in horizontal mode.
-l.1264               \item fix #
+l.1303               \item fix #
                                 bins $L=\tau \sqrt[3]{N}$
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -2122,7 +2145,7 @@ If you're in the wrong mode, you might be able to
 return to the right one by typing `I}' or `I$' or `I\par'.
 
 ! You can't use `macro parameter character #' in horizontal mode.
-l.1276 ...undaries $x_j \in [m_j, M_j]$, $N_l =$ #
+l.1315 ...undaries $x_j \in [m_j, M_j]$, $N_l =$ #
                                                    instances in this leaf \\
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -2137,7 +2160,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1297                   \end{align*}
+l.1336                   \end{align*}
                                      
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -2149,12 +2172,12 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [24]
-Overfull \hbox (1.47676pt too wide) in paragraph at lines 1365--1365
+Overfull \hbox (1.47676pt too wide) in paragraph at lines 1404--1404
  [][][][]\T1/cmr/m/n/10 Maximum 
  []
 
 
-Overfull \hbox (51.76273pt too wide) in paragraph at lines 1366--1367
+Overfull \hbox (51.76273pt too wide) in paragraph at lines 1405--1406
 [] 
  []
 
@@ -2180,7 +2203,7 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1402           \end{align*}
+l.1441           \end{align*}
                              
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -2192,9 +2215,19 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [27]
-Overfull \hbox (24.0989pt too wide) detected at line 1460
+Overfull \hbox (24.0989pt too wide) detected at line 1499
 \OML/cmm/m/it/10.95 X[] \OT1/cmr/m/n/10.95 = (\OML/cmm/m/it/10.95 X[]X\OT1/cmr/
 m/n/10.95 )[]\OML/cmm/m/it/10.95 X[] \OT1/cmr/m/n/10.95 :  []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1517--1523
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1533--1536
+
  []
 
 
@@ -2204,14 +2237,74 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [28]
+! Undefined control sequence.
+l.1551 ...\Lambda^T\cdot U^T = V\cdot\Lambda\cdotU
+                                                  ^T
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-! LaTeX Error: \begin{itemize} on input line 1148 ended by \end{document}.
+
+! Package amsmath Error: Erroneous nesting of equation structures;
+(amsmath)                trying to recover with `aligned'.
+
+See the amsmath package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1570           \end{align*}
+                             
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Undefined control sequence.
+<argument> V^T\cdotV 
+                     
+l.1570           \end{align*}
+                             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! Package amsmath Error: Erroneous nesting of equation structures;
+(amsmath)                trying to recover with `aligned'.
+
+See the amsmath package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1598           \end{align*}
+                             
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[29]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[30]
+
+! LaTeX Error: \begin{itemize} on input line 1187 ended by \end{document}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1488   \end{document}
+l.1660   \end{document}
                        
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2220,13 +2313,13 @@ or  <return>  to continue without it.
 (./FM_Skript.aux) )
 (\end occurred inside a group at level 1)
 
-### semi simple group (level 1) entered at line 1148 (\begingroup)
+### semi simple group (level 1) entered at line 1187 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 32977 strings out of 492995
- 736335 string characters out of 6132705
- 785518 words of memory out of 5000000
- 36102 multiletter control sequences out of 15000+600000
+ 34331 strings out of 492995
+ 755507 string characters out of 6132705
+ 807527 words of memory out of 5000000
+ 37444 multiletter control sequences out of 15000+600000
  20019 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  121i,18n,153p,10383b,1995s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -2256,10 +2349,10 @@ cm-super/sfrm1000.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/cm
 -super/sfrm1095.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/cm-s
 uper/sfrm1200.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/cm-sup
 er/sfrm1728.pfb>
-Output written on FM_Skript.pdf (28 pages, 382282 bytes).
+Output written on FM_Skript.pdf (30 pages, 391234 bytes).
 PDF statistics:
- 200 PDF objects out of 1000 (max. 8388607)
- 142 compressed objects within 2 object streams
+ 206 PDF objects out of 1000 (max. 8388607)
+ 146 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  19 words of extra memory for PDF output out of 10000 (max. 10000000)
 

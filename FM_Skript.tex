@@ -29,6 +29,45 @@
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}
 
+% Custom colors
+\usepackage{color}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+
+\usepackage{listings}
+
+% Python style for highlighting
+\newcommand\pythonstyle{\lstset{
+language=Python,
+basicstyle=\ttm,
+otherkeywords={self},             % Add keywords here
+keywordstyle=\ttb\color{deepblue},
+emph={MyClass,__init__},          % Custom highlighting
+emphstyle=\ttb\color{deepred},    % Custom highlighting style
+stringstyle=\color{deepgreen},
+frame=tb,                         % Any extra options here
+showstringspaces=false            %
+}}
+
+
+% Python environment
+\lstnewenvironment{python}[1][]
+{
+\pythonstyle
+\lstset{#1}
+}
+{}
+
+% Python for external files
+\newcommand\pythonexternal[2][]{{
+\pythonstyle
+\lstinputlisting[#1]{#2}}}
+
+% Python for inline
+\newcommand\pythoninline[1]{{\pythonstyle\lstinline!#1!}}
+
+
 
 \title{Fundamentels of Machine Learning}
 \author{Ullrich Köthe}
@@ -1473,7 +1512,140 @@
           \item solve for Z by forward substitution because $R^T$ is lower triangular
           \item solve $R\beta=Z$ by backward substitution because R is upper triangular
         \end{enumerate}
+        advantages:
+        \begin{itemize}
+          \item easy to construct: $S=X^TX$, we don't have to construct X first \newline
+            for k from 1 to D: \newline
+            \-\hspace{1cm}  for l from 1 to D: \newline
+            \-\hspace{2cm}      $s_{kl}$ = 0 \newline
+            \-\hspace{2cm}     for i from 1 to N: \newline
+            \-\hspace{3cm}         $s_{kl} += x_{ik}x_{il}$ \newline
+        \end{itemize}
+        disadvantages:
+        \begin{itemize}
+          \item loss of precision: condition number of metric x
+          \begin{equation*}
+            K = \norm{x}_F\norm{x^+}_{F (Frobenius Norm)}
+          \end{equation*}
+          \begin{equation*}
+            \text{Frobenius norm} \quad \norm{x}_f = \sqrt{\sum_{k,l} x_{kl}^2}
+          \end{equation*}
+          \item condition of $S = x^Tx$ \\
+          $\Rightarrow$ number of significant digits: $m\beta \approx \kappa^2\varepsilon$ \\
+          $\varepsilon: $ machine precision, type double: $10^{-16}$ \\
+          \begin{equation*}
+            x^+ = (x^Tx)^{-1}x^T \quad \text{pseudo inverse}
+          \end{equation*}
+          $\Rightarrow \kappa = 10^8 \Rightarrow \kappa^2\varepsilon \approx 1$
+        \end{itemize}
+        \item singular value decomposition (SVD) of x: \\
+        Theorem: every matrix can be expressed as
+        \begin{equation*}
+          \underbrace{X}_{N \times D} = \underbrace{U}_{\substack{N \times D \\ \text{orthogonal}}} \cdot
+          \underbrace{\Lambda}_{\substack{D \times D \\ \text{diagonal matrix} \\
+          \text{of 'singular values'}}} \cdot \underbrace{V^T}_{\substack{\text{orthogonal} \\ D \times D}}
+          \quad \text{orthogonal: } U^{-1} = U^T
+        \end{equation*}
+        If x is square and symmetric: $X=U \cdot \underbrace{\Lambda}_{Eigenvalues} \cdot U^T$ 'Eigenvaluedecomposition'
+        \begin{equation*}
+          X^T = (U \cdot \Lambda \cdot V^T)^T = (V^T)^T\cdot\Lambda^T\cdot U^T = V\cdot\Lambda\cdotU^T
+        \end{equation*}
+        \begin{equation*}
+          S = X^T \cdot X = V \cdot \Lambda \cdot \underbrace{U^T}_{U^{-1}} \cdot
+          U \cdot \Lambda \cdot V^T = V \cdot \Lambda^2\cdot V^T
+        \end{equation*}
+        \begin{equation*}
+          S^{-1} = (V^T)^{-1} \cdot (\Lambda^2)^{-1}\cdot V^{-1} = V \cdot
+          \Lambda^{-2}\cdot V^T
+        \end{equation*}
+        \begin{equation*}
+          \beta = S^{-1} \cdot X^T \cdot Y
+        \end{equation*}
+        \begin{equation*}
+          \begin{align*}
+            S^{-1}\cdot X^T &=V\cdot\Lambda^{-2}\cdot\underbrace{V^T\cdotV}_{\mathbbm{1}}
+            \cdot\Lambda\cdot U^T \\
+            &= V \cdot \Lambda^{-2} \cdot V \cdot U^T \\
+            &= V \cdot \Lambda^{-1}\cdot U^T = X^T
+          \end{align*}
+        \end{equation*}
+        \begin{equation*}
+          \boxed{\beta = V\cdot\Lambda^{-1}\cdot U^T \cdot Y}
+        \end{equation*}
+        disadvantage: complicated algorithm to find $U, V, \Lambda$ \\
+        advantages: \begin{itemize}
+          \item numerically most stable method
+          \item also works if X does not have full rank (rank $D^* < D \Rightarrow
+          D-D^*$ of the singular values $\Lambda$ are 0) \\
+          $\Rightarrow$ drop rows of U, columns of $\Lambda$ and $V^T$ with 0
+          singular value
+        \end{itemize}
+        \item \textbf{QR decomposition} (standard, because good compromise between
+        numeric stability and effort) \\
+        Theorem: every X has a decomposition
+        \begin{equation*}
+          X = \underbrace{Q}_{\substack{N \times N \\ \text{orthogonal}}} \cdot
+          \underbrace{R}_{\substack{N \times D \\ \text{upper triangular}}}
+        \end{equation*}
+        \begin{equation*}
+          \begin{align*}
+            X^T &= R^T \cdot Q^T \\
+            X^TX &= R^T\cdot Q^T\cdot Q \cdot R = R^T\cdot R \\
+            (X^T \cdot X)^{-1} &= R^{-1}\cdot R^{-T} \\
+            (X^T\cdot X)^{-1}\cdot X^T &= R^{-1} \cdot R^{-T} \cdot R^T \cdot Q^T =
+            R^{-1} \cdot Q^T \\
+            \beta &= R^{-1} \cdot Q^T\cdot Y \iff R\cdot \beta = Q^T \cdot Y
+          \end{align*}
+        \end{equation*}
+        solve by backwards substitution \\
+        algorithm: construct R one column at a time, immediatly apply the corresponding
+        update to RHS (never construct Q)
+        \item if X doesn't fit into memory: LSQR algorithm
+        \begin{itemize}
+          \item variant of conjugate gradient algorithm to solve linear systems of eg., modified for least squares
+          probability
+          \item matrix X is only ever accessed via matrix-vector products
+          $X \cdot U$ and $X^T \cdot V$ (only vectors M memory) \\
+          $\Rightarrow$ pass subroutines for these products to algorithm instead
+          of matrix data structure \\
+          $\Rightarrow$ algorithm never sees matrix Y and its complicated handling
+        \end{itemize}
       \end{enumerate}
+      \paragraph{Theorem} Every X has a decomposition
+      \begin{equation*}
+        X = \underbrace{U}_{orthogonal} \cdot \underbrace{B}_
+        {\substack{\text{bi-diagonal} \\ \text{matrix}}} \cdot \underbrace{V^T}_
+        {bi-diagonal}
+      \end{equation*}
+      $\Rightarrow$ solve the linear system by forward substitution
+      and each iteration only needs z columns of $\beta$ \\
+      $\Rightarrow$ construct $U \cdot B \cdot V^T$ one column/row
+      at at time, immediately carry out next itereation of substitution \\
+      $\Rightarrow$ one only needs columns/rows t, t-1\\
+      $\Rightarrow$ never need full decomposition in memory
+    \subsubsection{Computer Topography}
+    Consider a single ray from X-ray source
+    \begin{equation*}
+      I = I_0e^{-\int\mu(x)da}
+    \end{equation*}
+    goal: use many different directions to find $\mu(x,y)$
+    \begin{equation*}
+      \boxed{I(b)=I_0e^{-\int \mu(a,b)da}}
+    \end{equation*}
+    Radon transform of $\mu(a,b)$ \\
+    $\Rightarrow$ Task: invert Radon-transformation
+    \begin{equation*}
+    \log(I(b)) = \log(I_0) - \int \mu(a,b)da
+    \end{equation*}
+    \begin{equation*}
+      Y = \int \mu(a,b)da = -\log \frac{I}{I_0} + \underbrace{\varepsilon}_{Noise}
+    \end{equation*}
+    Y: response of least squares problem \\
+    get X (features) by discretizing the problem; a, b and integral
+
+
+
+
 
 
 

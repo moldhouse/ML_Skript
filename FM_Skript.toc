@@ -43,3 +43,5 @@
 \contentsline {section}{\numberline {2}Regression}{25}
 \contentsline {subsection}{\numberline {2.1}Introduction}{25}
 \contentsline {subsection}{\numberline {2.2}Ordinary Least Squares (OLS)}{27}
+\contentsline {paragraph}{Theorem}{30}
+\contentsline {subsubsection}{\numberline {2.2.1}Computer Topography}{30}

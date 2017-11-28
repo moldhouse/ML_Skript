@@ -235,6 +235,12 @@ INPUT /usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifvtex.sty
 INPUT /usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifvtex.sty
 INPUT /usr/local/texlive/2017/texmf-dist/tex/generic/ifxetex/ifxetex.sty
 INPUT /usr/local/texlive/2017/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+INPUT /usr/local/texlive/2017/texmf-dist/tex/latex/listings/listings.sty
+INPUT /usr/local/texlive/2017/texmf-dist/tex/latex/listings/listings.sty
+INPUT /usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstmisc.sty
+INPUT /usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstmisc.sty
+INPUT /usr/local/texlive/2017/texmf-dist/tex/latex/listings/listings.cfg
+INPUT /usr/local/texlive/2017/texmf-dist/tex/latex/listings/listings.cfg
 INPUT FM_Skript.aux
 INPUT FM_Skript.aux
 OUTPUT FM_Skript.aux
