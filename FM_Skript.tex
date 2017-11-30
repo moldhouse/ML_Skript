@@ -11,6 +11,13 @@
 \usepackage{fancyhdr}
 \usepackage[makeroom]{cancel}
 \usepackage{tikz}
+\usepackage{enumitem}
+\usepackage{ulem}
+\input ulem.sty
+
+\newlist{arrowlist}{itemize}{1}
+\setlist[arrowlist]{label=$\Rightarrow$}
+
 \tikzset{node distance = 1cm and 5cm}
 \usetikzlibrary{trees}
 \usepackage[a4paper,bindingoffset=0.2in,
@@ -28,6 +35,7 @@
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}
+
 
 % Custom colors
 \usepackage{color}
@@ -1364,9 +1372,10 @@ showstringspaces=false            %
   \section{Regression}
     \subsection{Introduction}
       \begin{itemize}
-        \item Learn model $y = f(x): X \in \mathbb{R}^D \Rightarrow y \in \mathbbm{R}^{D'} (D'=1)$
-        \item training set $\{ (\underbrace{x_i}_{\text{D-dim features}}, \underbrace{y_i}_{
-        \text{real-valued true response}}) \}_{i=1}^N \quad \text{assume i.i.d.} $
+        \item Learn model $y = f(x) \quad x \in \mathbb{R}^D \Rightarrow y \in \mathbbm{R}^{D'} (D'=1)$
+        \item training set $\{ (\underbrace{x_i}_{\substack{\text{D-dim} \\ \text{features}}},
+        \underbrace{y_i}_{\substack{
+        \text{real-valued} \\ \text{true response}}}) \}_{i=1}^N \quad \text{assume i.i.d.} $
         - matrix notation
       \end{itemize}
       \begin{tikzpicture}[sibling distance=2cm,level distance=3.5cm,
@@ -1409,14 +1418,14 @@ showstringspaces=false            %
         all Y have same noise variance
         \begin{equation*}
           Y = \underbrace{X}_{\substack{\text{Row vector} \\
-          \text{D-dim} \\ \text{feature}}} \underbrace
+          \text{D-dim} \\ \text{feature}}} \cdot \underbrace
           {\beta}_{\substack{\text{column vector} \\
           \text{of D-dim weights/} \\ \text{activations}}} +
           \underbrace{\varepsilon}_{\substack{\text{Gaussian} \\
           \text{distributed} \\ \text{scalar}}}
         \end{equation*}
         \begin{equation*}
-          \varepsilon \sim N(0, \sigma^2) \iff y \sim N(X\beta, \sigma^2)
+          \varepsilon \sim N(0, \sigma^2) \iff Y \sim N(X\beta, \sigma^2)
         \end{equation*}
         \item find best $\hat{\beta}$ via Maximum Likelihood principle $\hat{=}$
         make training set typical under the model \\
@@ -1424,8 +1433,10 @@ showstringspaces=false            %
         \begin{equation*}
           r_i = y_i - x_i\beta
         \end{equation*}
-        If the model is correct ($\hat{\beta}=\beta^*$): $r_i \sim N(0, \sigma^2)$ \\
-        If model is correct and we know the truth $\beta = \beta^* \rightarrow r_i =
+        \begin{equation*}
+          \text{If the model is correct } (\hat{\beta}=\beta^*):\quad r_i \sim N(0, \sigma^2)
+        \end{equation*}
+        If model is correct and we know the truth:  $\beta = \beta^* \rightarrow r_i =
         \varepsilon_i$, we only have $\beta = \hat{\beta} \rightarrow r_i \sim \varepsilon_i$
         \item ML principle
         \begin{equation*}
@@ -1611,11 +1622,11 @@ showstringspaces=false            %
           $\Rightarrow$ algorithm never sees matrix Y and its complicated handling
         \end{itemize}
       \end{enumerate}
-      \paragraph{Theorem} Every X has a decomposition
+      \paragraph{Theorem:} Every X has a decomposition
       \begin{equation*}
-        X = \underbrace{U}_{orthogonal} \cdot \underbrace{B}_
+        X = \underbrace{U}_{\text{orthogonal}} \cdot \underbrace{B}_
         {\substack{\text{bi-diagonal} \\ \text{matrix}}} \cdot \underbrace{V^T}_
-        {bi-diagonal}
+        {\text{bi-diagonal}}
       \end{equation*}
       $\Rightarrow$ solve the linear system by forward substitution
       and each iteration only needs z columns of $\beta$ \\
@@ -1623,25 +1634,241 @@ showstringspaces=false            %
       at at time, immediately carry out next itereation of substitution \\
       $\Rightarrow$ one only needs columns/rows t, t-1\\
       $\Rightarrow$ never need full decomposition in memory
-    \subsubsection{Computer Topography}
-    Consider a single ray from X-ray source
-    \begin{equation*}
-      I = I_0e^{-\int\mu(x)da}
-    \end{equation*}
-    goal: use many different directions to find $\mu(x,y)$
-    \begin{equation*}
-      \boxed{I(b)=I_0e^{-\int \mu(a,b)da}}
-    \end{equation*}
-    Radon transform of $\mu(a,b)$ \\
-    $\Rightarrow$ Task: invert Radon-transformation
-    \begin{equation*}
-    \log(I(b)) = \log(I_0) - \int \mu(a,b)da
-    \end{equation*}
-    \begin{equation*}
-      Y = \int \mu(a,b)da = -\log \frac{I}{I_0} + \underbrace{\varepsilon}_{Noise}
-    \end{equation*}
-    Y: response of least squares problem \\
-    get X (features) by discretizing the problem; a, b and integral
+      \subsubsection{Computer Topography}
+      Consider a single ray from X-ray source
+      \begin{equation*}
+        I = I_0e^{-\int\mu(x)da}
+      \end{equation*}
+      goal: use many different directions to find $\mu(x,y)$
+      \begin{equation*}
+        \boxed{I(b)=I_0e^{-\int \mu(a,b)da}}
+      \end{equation*}
+      Radon transform of $\mu(a,b)$ \\
+      $\Rightarrow$ Task: invert Radon-transformation
+      \begin{equation*}
+      \log(I(b)) = \log(I_0) - \int \mu(a,b)da
+      \end{equation*}
+      \begin{equation*}
+        Y = \int \mu(a,b)da = -\log \frac{I}{I_0} + \underbrace{\varepsilon}_{Noise}
+      \end{equation*}
+      Y: response of least squares problem \\
+      get X (features) by discretizing the problem; a, b and integral
+
+      \paragraph{Wiederholung Computer Tomography}
+      \begin{itemize}
+        \item estimate X-ray absorption as a function of location $\mu(a, b)$
+        \item measure path integrals:
+        \begin{equation*}
+          I = I_0 e^{\int_{ray} \mu(a,b) dray}
+        \end{equation*}
+        \begin{equation*}
+          \iff \ln \frac{I_0}{I} = \int_{ray} \mu(a, b) dray
+        \end{equation*}
+        \item to make this solvable, we need many rays
+        \item to make this solvable with least squares, we must discretize
+      \end{itemize}
+      \paragraph{Step 1} use detector array and $N_p$ parallel rays
+      \paragraph{Step 2} use $N_0$ different orientations \\
+      $\Rightarrow$ $\#$ of measurements $N=N_p \cdot N_0$
+      \begin{equation*}
+        \text{instance index} \quad i = \underbrace{i_p}_{detector index} + N_p
+        \cdot \underbrace{i_0}_{angel index}
+      \end{equation*}
+      \paragraph{Step 3} discretize $\mu(a,b)$:
+      \begin{equation*}
+        \begin{align*}
+          a &= a_0 + j_a \Delta a \\
+          b &= b_0 + j_b \Delta b
+        \end{align*}
+      \end{equation*}
+      unknown:
+      \begin{equation*}
+        \mu(j_a, j_b) \iff B_j \quad \text{with} j = j_a + D_a \cdot j_b \quad
+        \text{'flattening of image'}
+      \end{equation*}
+      \paragraph{Step 4} discretize Integral: relax $\delta((a,b) \in ray)$ \\
+      $\Rightarrow$ triangular shape, change integral into sum:
+      \begin{equation*}
+        \begin{align*}
+        y_i &= \int \mu(a,b) \delta((a,b) \in ray) da db \\
+        &\approx \sum_{j_a, j_b} \underbrace{\mu(j_a, j_b)}_{\beta_j} \cdot
+        \underbrace{\text{weight}((j_a, j_b), ray)}_{x_{ij}} +
+        \underbrace{\varepsilon_i}_{\text{noise}}
+        \end{align*}
+      \end{equation*}
+      \begin{equation*}
+        x_{ij} = \text{triangle} (\text{dist}(a=a_0+j_a \Delta a, b= b_0+j_b \Delta b), ray_i)
+      \end{equation*}
+      Matrix Notation:
+      \begin{equation*}
+        Y = X\beta + \varepsilon
+      \end{equation*}
+      This is LSQ! solve with your favorite LSQ method
+      \subsubsection{Different $Y_i$ have different noise level $\sigma_i$}
+      \paragraph{Case 1:} simple analytic formula for $\sigma_i$ or $\sigma_i^2$ \\
+      $\Rightarrow$ variance stabilizing transformation (almost equal) \\
+      example: Anscombe transform: $Y \sim \text{Poisson}(Y^*)$
+      \begin{equation*}
+        \Rightarrow \text{mean} = Y^*, \text{variance} = Y^*
+      \end{equation*}
+      Transform:
+      \begin{equation*}
+        \begin{align*}
+        \tilde{y} &= 2\sqrt{y+\frac{3}{8}} \sim \mathcal{N}(2
+        \sqrt{y^*+\frac{3}{8}}-\frac{1}{4\sqrt{y^*}}, \sigma^2) \\
+        &=1+\underbrace{\mathcal{O}\left(\frac{1}{y^*^4}\right)}_{\text{correction term}}
+        \end{align*}
+      \end{equation*}
+      $\Rightarrow$ apply OLS to $\tilde{y}$ \\
+      \paragraph{But:} If y is amplified:
+      \begin{equation*}
+        y' = ay + b \quad a: \text{amplification factor} \quad b: \text{dark signal}
+      \end{equation*}
+      Anscomb (y') gives rubbish (not Poisson) \\
+      \begin{equation*}
+        \Rightarrow \text{apply} \quad \text{Anscomb} \left(\frac{y'-b}{a}\right)
+      \end{equation*}
+      \paragraph{Case 2} We know $\sigma_i$ for all i:
+      \begin{equation*}
+        y_i = \left(b \pm \underbrace{0.4}_{\sigma_i}\right) cm
+      \end{equation*}
+      \begin{equation*}
+        \Rightarrow \mathbb{E} \abs{(x_i\beta^+-y_i)^2} = \sigma_i^2 = \mathbbm{E}(r_i^2)
+      \end{equation*}
+      \begin{equation*}
+        \Rightarrow \mathbb{E} \floor*{\frac{r_i^2}{\sigma_i^2}} = 1 = const
+      \end{equation*}
+      non-parametric stabilization \\
+      $\Rightarrow$ weighted least squares:
+      \begin{equation*}
+        \boxed{\hat{\beta} = \argmin_{\beta} \sum_i \frac{(x_i\beta-y_i)^2}{\sigma_i^2}}
+      \end{equation*}
+      Matrix notation: covariance matrix:
+      \begin{equation*} S =
+        \left[
+        \begin{array}{ccc}
+          \sigma_1^2 & & 0 \\
+          & \sigma_2^2 & \\
+          0 & & \ddots
+        \end{array}
+        \right]
+      \end{equation*}
+      \begin{equation*}
+        \begin{align*}
+          \hat{\beta} &= \argmin (X\beta-Y)^T S^{-1} (X\beta-Y) \\
+          &= \underbrace{(X^TS^{-1}X)^{-1}X^TS^{-1}}_{\text{weighted pseudo-inverse}}Y
+        \end{align*}
+      \end{equation*}
+      aquivalent to change of variables:
+      \begin{equation*}
+        \begin{align*}
+          \tilde{X} &= S^{-\frac{1}{2}}X \\
+          \tilde{Y} &= S^{-\frac{1}{2}}Y \\
+          S^{-\frac{1}{2}} &= \left[
+          \begin{array}{ccc}
+            \frac{1}{\sigma_1} & & 0 \\
+            & \frac{1}{\sigma_2} & \\
+            0 & & \ddots
+          \end{array}
+          \right] \\
+          \beta &= (\tilde{X^T}\tilde{X})^{-1}\tilde{X^T}\tilde{Y}
+        \end{align*}
+      \end{equation*}
+      \paragraph{Case 3:} We don't know $\sigma_i \Rightarrow$ we need additional
+      assumptions, e.g. noise independent for all:
+      \begin{arrowlist}
+        \item cov-matrix s is diagonal, as in case 2
+        \item estimate $\sigma_i$ together with $\beta$
+        \item \uwave{Iteratively Re-weighted least squares} \\
+        \end{arrowlist}
+      Mit: $\sigma_i^{(0)} = 1$ \\ \\
+      for $t=1,...,T_{max}$: \\ \\
+      \-\hspace{1cm} $\hat{\beta}^{(t)} = \argmin_{\beta} \sum_i
+      \frac{(x_i\beta-y_i)^2}{(\sigma_i^{(t-1)})^2}$    \\
+      \-\hspace{1cm} $\sigma_i^{(t)} = \abs{x_i\hat{\beta}^{(t)}-y_i}$ \\ \\
+      in the limit $N \to \infty$ \\ \\
+      \-\hspace{1cm} $\sigma_i^{(2)} = \sigma_i^* \quad$ (ture $\sigma_i$ found) \\ \\
+      for finite N (and slight violation of assumption): \\ \\
+      \-\hspace{1cm} use a few more iterations
+    \subsection{If both Y and X are noisy - Total Least Squares (TLS)} $\hat{=}$
+      errors-in-variables-model
+      \begin{itemize}
+        \item standard interpretation of OLS:
+        \begin{itemize}
+          \item eq. $X\beta=Y$ has no solution \\
+          $\Rightarrow$ minimize sq difference between LHS ans RHS $(X\beta-Y)^2$
+        \end{itemize}
+        \item alternative interpretation of OLS:
+        \begin{itemize}
+          \item find $\tilde{Y}$ such that $X\beta=\tilde{Y}$ is solvable
+          \item make the difference between Y and $\tilde{Y}=Y+R$ small
+          $\Rightarrow$ minimize the correction $\min_R \norm{R}_2^2$
+        \end{itemize}
+        \item if X is also noisy:
+        \begin{itemize}
+          \item find $\tilde{X}$ and $\tilde{Y}$ such that $\tilde{X}\beta=\tilde{Y}$
+          is solvable
+          \item define $\tilde{X}=X+E, \quad \tilde{Y}=Y+R$
+          \item define correction matrix $T=[E R]$ $\Rightarrow \min_T \norm{T}_F^2$
+        \end{itemize}
+      \end{itemize}
+      \paragraph{Formal definition of optimization problem}
+      \begin{equation*}
+        \hat{T}, \hat{\beta} = \argmin_{T, \beta} \norm{T}_F^2 \text{ with } T=[E R]
+        \text{ subject to } (X+E)\beta=Y+R
+      \end{equation*}
+      \paragraph{Theorem: }\\
+      Let $z=[X Y] \leftarrow N \times (D+1)$ \underline{after} centralization of
+      X and Y
+      \begin{equation*}
+        \text{SVD of} \quad Z = \underbrace{U}_{\substack{\text{orthogonal} \\ N\times (D+1)}}
+        \cdot \underbrace{\Lambda}_{\substack{\text{diagonal} \\ (D+1)\times(D+1)}} \cdot
+        \underbrace{V^T}_{\substack{\text{orthogonal} \\ (D+1)(D+1)}}
+      \end{equation*}
+      \begin{equation*}
+        \left(
+        \begin{array}{ccc}
+          \lambda_1 & & 0 \\
+          & \ddots & \\
+          0 & & \lambda_{D+1}
+        \end{array}
+        \right)
+      \end{equation*}
+      \begin{equation*}
+        \text{Then } \min \norm{T}_F^2 = \min_j(\lambda_j^2)
+      \end{equation*}
+      \begin{equation*}
+        \text{Let }  \hat{j} = \argmin_j \lambda_j^2 \quad \Rightarrow \quad \hat{v} =
+        v_{\hat{j}} \text{of matrix V}
+      \end{equation*}
+      \begin{equation*}
+        \text{corresponding singular vector} \quad \hat{v} = \left[
+        \begin{array}{c}
+          w \\
+          \alpha
+        \end{array}
+        \right]
+      \end{equation*}
+      \begin{equation*}
+        \Rightarrow \quad \boxed{\hat{\beta} = -\frac{w}{\alpha}}
+      \end{equation*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -43,5 +43,18 @@
 \contentsline {section}{\numberline {2}Regression}{25}
 \contentsline {subsection}{\numberline {2.1}Introduction}{25}
 \contentsline {subsection}{\numberline {2.2}Ordinary Least Squares (OLS)}{27}
-\contentsline {paragraph}{Theorem}{30}
+\contentsline {paragraph}{Theorem:}{30}
 \contentsline {subsubsection}{\numberline {2.2.1}Computer Topography}{30}
+\contentsline {paragraph}{Wiederholung Computer Tomography}{31}
+\contentsline {paragraph}{Step 1}{31}
+\contentsline {paragraph}{Step 2}{31}
+\contentsline {paragraph}{Step 3}{31}
+\contentsline {paragraph}{Step 4}{31}
+\contentsline {subsubsection}{\numberline {2.2.2}Different $Y_i$ have different noise level $\sigma _i$}{31}
+\contentsline {paragraph}{Case 1:}{31}
+\contentsline {paragraph}{But:}{32}
+\contentsline {paragraph}{Case 2}{32}
+\contentsline {paragraph}{Case 3:}{33}
+\contentsline {subsection}{\numberline {2.3}If both Y and X are noisy - Total Least Squares (TLS)}{33}
+\contentsline {paragraph}{Formal definition of optimization problem}{33}
+\contentsline {paragraph}{Theorem: }{33}
