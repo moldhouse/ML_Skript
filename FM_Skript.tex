@@ -35,6 +35,7 @@
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}
+\DeclareMathOperator{\rank}{rank}
 
 
 % Custom colors
@@ -1420,7 +1421,7 @@ showstringspaces=false            %
           Y = \underbrace{X}_{\substack{\text{Row vector} \\
           \text{D-dim} \\ \text{feature}}} \cdot \underbrace
           {\beta}_{\substack{\text{column vector} \\
-          \text{of D-dim weights/} \\ \text{activations}}} +
+          \text{of D-dim weights} \\ \text{activations}}} +
           \underbrace{\varepsilon}_{\substack{\text{Gaussian} \\
           \text{distributed} \\ \text{scalar}}}
         \end{equation*}
@@ -1453,7 +1454,11 @@ showstringspaces=false            %
         \end{equation*}
         \item example: fit a line in 2D $X \in \mathbb{R}$
         \begin{equation*}
-          Y = [X;1][a;b]^T + \varepsilon
+          Y = [X;1]
+          \left[ \begin{array}{c}
+          a \\
+          b
+          \end{array}\right] + \varepsilon
         \end{equation*}
         \begin{equation*}
           Y = aX + b + \varepsilon
@@ -1467,7 +1472,7 @@ showstringspaces=false            %
           (-1)\overset{!}{=}0
         \end{equation*}
         \begin{equation*}
-          \sum_iY_i-a\sum_iX_-\sum_ib=0
+          \sum_iY_i-a\sum_iX_i-\sum_ib=0
         \end{equation*}
         \begin{equation*}
           \frac{1}{N}\sum_iY_i=a\frac{1}{N}\sum_iX_i+b
@@ -1536,16 +1541,16 @@ showstringspaces=false            %
         \begin{itemize}
           \item loss of precision: condition number of metric x
           \begin{equation*}
-            K = \norm{x}_F\norm{x^+}_{F (Frobenius Norm)}
+            K = \norm{X}_F\norm{X^+}_{F (Frobenius Norm)}
           \end{equation*}
           \begin{equation*}
-            \text{Frobenius norm} \quad \norm{x}_f = \sqrt{\sum_{k,l} x_{kl}^2}
+            \text{Frobenius norm} \quad \norm{X}_F = \sqrt{\sum_{k,l} X_{kl}^2}
           \end{equation*}
-          \item condition of $S = x^Tx$ \\
+          \item condition of $S = X^TX$ \\
           $\Rightarrow$ number of significant digits: $m\beta \approx \kappa^2\varepsilon$ \\
           $\varepsilon: $ machine precision, type double: $10^{-16}$ \\
           \begin{equation*}
-            x^+ = (x^Tx)^{-1}x^T \quad \text{pseudo inverse}
+            X^+ = (X^TX)^{-1}X^T \quad \text{pseudo inverse}
           \end{equation*}
           $\Rightarrow \kappa = 10^8 \Rightarrow \kappa^2\varepsilon \approx 1$
         \end{itemize}
@@ -1559,7 +1564,7 @@ showstringspaces=false            %
         \end{equation*}
         If x is square and symmetric: $X=U \cdot \underbrace{\Lambda}_{Eigenvalues} \cdot U^T$ 'Eigenvaluedecomposition'
         \begin{equation*}
-          X^T = (U \cdot \Lambda \cdot V^T)^T = (V^T)^T\cdot\Lambda^T\cdot U^T = V\cdot\Lambda\cdotU^T
+          X^T = (U \cdot \Lambda \cdot V^T)^T = (V^T)^T\cdot\Lambda^T\cdot U^T = V\cdot\Lambda\cdot U^T
         \end{equation*}
         \begin{equation*}
           S = X^T \cdot X = V \cdot \Lambda \cdot \underbrace{U^T}_{U^{-1}} \cdot
@@ -1574,7 +1579,7 @@ showstringspaces=false            %
         \end{equation*}
         \begin{equation*}
           \begin{align*}
-            S^{-1}\cdot X^T &=V\cdot\Lambda^{-2}\cdot\underbrace{V^T\cdotV}_{\mathbbm{1}}
+            S^{-1}\cdot X^T &=V\cdot\Lambda^{-2}\cdot\underbrace{V^T\cdot V}_{\mathbbm{1}}
             \cdot\Lambda\cdot U^T \\
             &= V \cdot \Lambda^{-2} \cdot V \cdot U^T \\
             &= V \cdot \Lambda^{-1}\cdot U^T = X^T
@@ -1668,13 +1673,13 @@ showstringspaces=false            %
         \item to make this solvable with least squares, we must discretize
       \end{itemize}
       \paragraph{Step 1} use detector array and $N_p$ parallel rays
-      \paragraph{Step 2} use $N_0$ different orientations \\
+      \paragraph{Step 2} use $N_0$ different orientations
       $\Rightarrow$ $\#$ of measurements $N=N_p \cdot N_0$
       \begin{equation*}
         \text{instance index} \quad i = \underbrace{i_p}_{detector index} + N_p
         \cdot \underbrace{i_0}_{angel index}
       \end{equation*}
-      \paragraph{Step 3} discretize $\mu(a,b)$:
+      \paragraph{Step 3} Discretize $\mu(a,b)$:
       \begin{equation*}
         \begin{align*}
           a &= a_0 + j_a \Delta a \\
@@ -1683,11 +1688,11 @@ showstringspaces=false            %
       \end{equation*}
       unknown:
       \begin{equation*}
-        \mu(j_a, j_b) \iff B_j \quad \text{with} j = j_a + D_a \cdot j_b \quad
+        \mu(j_a, j_b) \iff \beta_j \quad \text{with } j = j_a + D_a \cdot j_b \quad
         \text{'flattening of image'}
       \end{equation*}
-      \paragraph{Step 4} discretize Integral: relax $\delta((a,b) \in ray)$ \\
-      $\Rightarrow$ triangular shape, change integral into sum:
+      \paragraph{Step 4} Discretize Integral: relax $\delta((a,b) \in ray)$ to
+      $\Rightarrow$ triangular shape $\iff$ change integral into sum:
       \begin{equation*}
         \begin{align*}
         y_i &= \int \mu(a,b) \delta((a,b) \in ray) da db \\
@@ -1703,11 +1708,11 @@ showstringspaces=false            %
       \begin{equation*}
         Y = X\beta + \varepsilon
       \end{equation*}
-      This is LSQ! solve with your favorite LSQ method
+      This is LSQ! Solve with your favorite LSQ method
       \subsubsection{Different $Y_i$ have different noise level $\sigma_i$}
-      \paragraph{Case 1:} simple analytic formula for $\sigma_i$ or $\sigma_i^2$ \\
-      $\Rightarrow$ variance stabilizing transformation (almost equal) \\
-      example: Anscombe transform: $Y \sim \text{Poisson}(Y^*)$
+      \paragraph{Case 1:} simple analytic formula for $\sigma_i$ or $\sigma_i^2$
+      $\Rightarrow$ variance stabilizing transformation (almost equal).
+      Example: Anscombe transform: $Y \sim \text{Poisson}(Y^*)$
       \begin{equation*}
         \Rightarrow \text{mean} = Y^*, \text{variance} = Y^*
       \end{equation*}
@@ -1793,11 +1798,8 @@ showstringspaces=false            %
     \subsection{If both Y and X are noisy - Total Least Squares (TLS)} $\hat{=}$
       errors-in-variables-model
       \begin{itemize}
-        \item standard interpretation of OLS:
-        \begin{itemize}
-          \item eq. $X\beta=Y$ has no solution \\
-          $\Rightarrow$ minimize sq difference between LHS ans RHS $(X\beta-Y)^2$
-        \end{itemize}
+        \item standard interpretation of OLS: $X\beta=Y$ has no solution
+          $\Rightarrow$ minimize difference between LHS ans RHS $(X\beta-Y)^2$
         \item alternative interpretation of OLS:
         \begin{itemize}
           \item find $\tilde{Y}$ such that $X\beta=\tilde{Y}$ is solvable
@@ -1818,7 +1820,7 @@ showstringspaces=false            %
         \text{ subject to } (X+E)\beta=Y+R
       \end{equation*}
       \paragraph{Theorem: }\\
-      Let $z=[X Y] \leftarrow N \times (D+1)$ \underline{after} centralization of
+      Let $Z=[X Y] \leftarrow N \times (D+1)$ \underline{after} centralization of
       X and Y
       \begin{equation*}
         \text{SVD of} \quad Z = \underbrace{U}_{\substack{\text{orthogonal} \\ N\times (D+1)}}
@@ -1852,16 +1854,162 @@ showstringspaces=false            %
       \begin{equation*}
         \Rightarrow \quad \boxed{\hat{\beta} = -\frac{w}{\alpha}}
       \end{equation*}
-
-
-
-
-
-
-
-
-
-
+    \subsection{Total Least Squares}
+    If Y and X are noisy:
+    \begin{itemize}
+      \item find corrections $\tilde{X}=X+E, \tilde{Y}=Y+R$ such that $\tilde{X}
+      \beta=\tilde{Y}$ is solvable
+      \item minimize corrections
+      \item algorithm:
+      \begin{enumerate}
+        \item centralize X and Y
+        \item concatenate $[X Y]=Z$
+        \item find the singular value of Z with \underline{smallest magnitude}
+        and corresponding singular vector $\hat{v}$
+        \item
+        \begin{equation*}
+          \hat{\beta}=-\frac{\hat{v}_{1...D}} {v_{1+D}} \quad
+          \hat{v} =
+          \left[ \begin{array}{c}
+            \hat{v}_{1...D} \\
+            v_{1+D}
+          \end{array}
+          \right]
+        \end{equation*}
+      \end{enumerate}
+      \end{itemize}
+      \paragraph{OLS:} Only Y noisy $\Rightarrow$ correct only Y (move values
+      in Y-directions)
+      \paragraph{TLS:} X and Y must be corrected (move points in X,Y direction).
+      Correction must be perpendicular to regression line $\Rightarrow$ best
+      correction direction is the smallest singular vector
+      \paragraph{Intuitive Interpretation:} Fit the data cloud with an ellipsoid
+      (as in QDA) defined by the SVD (singular vector decomposition) of Z (or
+      eigendecomposition of $Z^TZ$) $\Rightarrow$ correction direction $\widehat{=}$
+      \underlined{normal} of regression hyperplane $\widehat{=}$ smallest ellipsoid radius
+    \subsection{The linear system is underdetermined $\Rightarrow$ Regularization}
+    What is underdetermined?
+    \begin{equation*}
+      \beta \in \mathbb{R}^D \Rightarrow \text{want to find D unknown numbers}
+    \end{equation*}
+    But the data doesn't have enough information to find D unknowns
+    \paragraph{Case 1:} $X \in \mathbb{R}^{N\times D} \text{with} N<D$
+    \begin{equation*}
+      \text{In general:} \quad \rank(X) \leq \min(N,D)=N<D
+    \end{equation*}
+    Rank measures the amount of information contained in X
+    \paragraph{Case 2:} D $\geq$N, but $\kappa(X)$ (condition number) is bad
+    $\widehat{=}$ several columns of X are almost linearly dependent $\widehat{=}
+    $ \underline{effective} rank $D^* <D$, $D^* \widehat{=}$ number of singular
+    values of X that are significantly different from zero $\widehat{=}D-D^*$
+    singular calues are effectively 0 \\
+    $\Rightarrow$ we need additional information to compute D numbers $\Rightarrow$
+    refularization provides this info
+    \paragraph{Bias-Variance Trade-Off:} \textbf{Bias} (systematic errors): intrinsic error of
+    the model, doesn't disappear for $N \to \infty$. \textbf{Variance} (random errors):
+    error caused by finite N \\
+    \underline{\textbf{Intuition:}} \begin{itemize}
+      \item modeling & training effort is mose efficiently spend when both
+      errors are about equal
+      \item let $TS_N$ be a training set of size N.
+      \begin{equation*}
+        \text{If data are i.i.d. :} \quad p(TS_N) = \prod_i p(X_i, Y_i)=p(X,Y)^N
+      \end{equation*}
+      \item let $\beta^*$ be the (unknown) optimal model parametes, $\hat{\beta}$
+      solution from $TS_N$
+      \item suppose we can repeat experiment with many random $TS_N$
+      \item determine the expected squared error of
+      \begin{equation*}
+        \hat{\beta}: \mathbb{E}_{TS_N} [(\hat{\beta}-\beta^*)^2] \text{'Mean
+        squared error (MSE) of $\hat{\beta}$'}
+      \end{equation*}
+    \end{itemize}
+    \begin{equation*}
+      \begin{align*}
+        \mathbb{E}_{TS_N}[(\hat{\beta}-\beta^*)^2] &= \mathbb{E}[((\hat{\beta}-\mathbb{E}
+        [\hat{\beta}])+(\mathbb{E}[\hat{\beta}]-\beta^*))^2] \\
+        &= \underbrace{\mathbb{E}[(\hat{\beta}-\mathbb{E}[\hat{\beta}])^2]}_{
+        \text{variance of $\hat{\beta}$}}+\underbrace{\mathbb{E}[(\mathbb{E}[\hat{\beta}]-\beta^*)^2]}_{
+        \text{squared bias of $\hat{\beta}$}} + 2\mathbb{E}[(\hat{\beta}-\mathbb{E}
+        [\hat{\beta}])(\mathbb{E}[\hat{\beta}]-\beta^*)] \\
+        &= \mathbb{E}[\hat{\beta}](\mathbb{E}[\hat{\beta}]\beta^*)-\underbrace
+        {\mathbb{E}[\mathbb{E}[\hat{\beta}]]}_{\mathbb{E}[\hat{\beta}]}(\mathbb
+        {E}[\hat{\beta}-\beta^*]) = 0
+      \end{align*}
+    \end{equation*}
+    \begin{equation*}
+      \Rightarrow \boxed{\mathbb{E}[(\hat{\beta}-\beta^*)^2] = \mathbb{E}[(
+      \hat{\beta}-\mathbb{E}[\hat{\beta}])^2]-\mathbb{E}[(\mathbb{E}
+      [\hat{\beta}]-\beta^*)^2]}
+    \end{equation*}
+    Application of OLS:
+    \begin{equation*}
+      Y=X\beta+\varepsilon
+    \end{equation*}
+    \begin{equation*}
+      \begin{align*}
+        \mathbb{E}[\hat{\beta}]&=\mathbb{E}[(X^TX)^{-1}X^TY] \\
+        &= \underbrace{\mathbb{E}[\underbrace{(X^TX)^{-1}X^TX}_{\mathbbm{1}}\beta^*]}
+        _{\mathbb{E}(\beta^*)=\beta^*}+\underbrace{\mathbb{E}[(X^TX)^{-1}X^T\varepsilon]}
+        _{=(X^TX)^{-1}\underbrace{\mathbb{E}[\varepsilon]}_{0}} \\
+        &= \beta^*
+      \end{align*}
+    \end{equation*}
+    \begin{equation*}
+      \Rightarrow \mathbb{E}[(\mathbb{E}[\hat{\beta}]-\beta^*)^2]=\mathbb{E}[(
+      \beta^*-\beta^*)^2]=0
+    \end{equation*}
+    $\Rightarrow$ OLS is unbiased. Covariance matrix of $\beta$:
+    \begin{equation*}
+      \begin{align*}
+        \mathbb{E}[(\hat{\beta}-\mathbb{E}[\hat{\beta}])(\hat{\beta}-\mathbb{E}
+        [\hat{\beta}])^T] &= \mathbb{E}[(\hat{\beta}-\beta^*)(\hat{\beta}-\beta^*)^T] \\
+        &= \mathbb{E}[(X^TX)^{-1}X^T\varepsilon \varepsilon^TX(X^TX)^{-1}] \\
+        &= (X^TX)^{-1}X^T \underbrace{\mathbb{E}[\varepsilon \varepsilon^T]}_{\substack{\text
+        {covariance of noise} \\ =\sigma^2 \mathbbm{1}}}X(X^TX)^{-1} \\
+        &= \sigma^2 \underbrace{(X^TX)^{-1}X^TX}_{\mathbbm{1}}(X^TX)^{-1}
+      \end{align*}
+    \end{equation*}
+    \begin{equation*}
+      \Rightarrow \boxed{\mathbb{E}[(\hat{\beta}-\beta^*)(\hat{\beta}-\beta^*)^T]
+      =\sigma^2(X^TX)^{-1}}
+    \end{equation*}
+    This is the error propagation formula from Y to $\hat{\beta}$. We used:
+    \begin{equation*}
+      \begin{align*}
+        \hat{\beta} &=(X^TX)^{-1}X^T(X\beta^*+\varepsilon) \\
+        \beta^* &= (X^TX)^{-1}X^TX\beta^* \\
+        \hat{\beta}-\beta^* &= (X^TX)^{-1}X^T\varepsilon
+      \end{align*}
+    \end{equation*}
+    $\varepsilon$ $\widehat{=}$ vector of independent zero-mean Gaussian noise values
+    with varians $\sigma^2$
+    \[ \Rightarrow \hat{\beta} \sim \mathcal{N}(\beta^*,\sigma^2(XX^T)^{-1})\]
+    $\Rightarrow \hat{\beta}$ of OLS has high variance when codition $\kappa(X)$
+    is bad (effective rank of X is < D)
+    \begin{itemize}
+      \item If X has bad condition, two (one more) columns are almost linearly
+      dependent, e.g. j and $j'$ \\
+      OLS can learn parameters $\beta_j$ and $\beta_{j'}$ suc that
+      \[\sum_i (X_i\beta_j+X_i\beta_{j'}) = 0\] on the training set but $\beta_j$
+      and $\beta_{j'}$ are big numbers that cancel on TS \Rightarrow $\sum_i
+      (X_i\beta_j+X_i\beta_{j'})$ on \underline{test set} is huge $\Rightarrow$
+      overfitting
+      \item Intuition: To reduce overfitting we must prevent big coefficients $\beta_j$
+      \item restricting the magnitude of $\beta$ may mean, that $\hat{\beta} \approx
+      \beta^*$ is no longer achievable $\Rightarrow$ introduced bias. But if the
+      bias is less then variance, this doesn't matter, 'trade-off'
+      \item penalize such that both error contributions are roughly equal
+      \item only meaningful if the $\beta_j$ have equal importance/scale to makeroompenalties comparable
+      \item always standardize X beforehand
+      \begin{equation*}
+        X_j \to \frac{X_j}{\text{stdDev}[X_j]}
+      \end{equation*}
+      $\Rightarrow$ each column now has unit variance $\widehat{=}$ comparable scales
+      \item combine this with centralization $\Rightarrow$ data have zero mean,
+      unit variance (standard data preprocessing)
+      \item apply inverse transform to $\beta$ at the end
+    \end{itemize}
 
 
 

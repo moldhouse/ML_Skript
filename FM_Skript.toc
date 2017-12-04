@@ -58,3 +58,11 @@
 \contentsline {subsection}{\numberline {2.3}If both Y and X are noisy - Total Least Squares (TLS)}{33}
 \contentsline {paragraph}{Formal definition of optimization problem}{33}
 \contentsline {paragraph}{Theorem: }{33}
+\contentsline {subsection}{\numberline {2.4}Total Least Squares}{34}
+\contentsline {paragraph}{OLS:}{34}
+\contentsline {paragraph}{TLS:}{34}
+\contentsline {paragraph}{Intuitive Interpretation:}{34}
+\contentsline {subsection}{\numberline {2.5}The linear system is underdetermined $\Rightarrow $ Regularization}{34}
+\contentsline {paragraph}{Case 1:}{35}
+\contentsline {paragraph}{Case 2:}{35}
+\contentsline {paragraph}{Bias-Variance Trade-Off:}{35}

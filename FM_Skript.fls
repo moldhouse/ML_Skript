@@ -329,6 +329,7 @@ INPUT /usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm1
 INPUT /usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT /usr/local/texlive/2017/texmf-dist/fonts/tfm/public/bbm/bbm10.tfm
 INPUT /usr/local/texlive/2017/texmf-dist/fonts/tfm/public/bbm/bbm7.tfm
+INPUT /usr/local/texlive/2017/texmf-dist/fonts/tfm/public/bbm/bbm12.tfm
 INPUT FM_Skript.aux
 INPUT /usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc
 INPUT /Users/moritzalthaus/Library/texlive/2017/texmf-var/fonts/pk/ljfour/public/bbm/bbm8.600pk
