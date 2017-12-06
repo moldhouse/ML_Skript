@@ -2095,7 +2095,7 @@ showstringspaces=false            %
       \end{equation*}
       \begin{equation*}
         \begin{align*}
-          (X^TX+\tau\mathbbm{1})^{-1}X^T=Vdiag\left(\frac{\lambda_j}{\lambda_j^2+\tau}\right) \cancel{V^TV\Lambda}V^T
+          (X^TX+\tau\mathbbm{1})^{-1}X^T=Vdiag\left(\frac{\lambda_j}{\lambda_j^2+\tau}\right) \cancel{V^TV\Lambda}U^T
         \end{align*}
       \end{equation*}
       \begin{equation*}
@@ -2109,7 +2109,7 @@ showstringspaces=false            %
     \end{enumerate}
     Bayesian interpretation of ridge regression:
     \begin{equation*}
-      \text{Let } p(\beta|Y) \text{be the probability for the solution $\beta$ given data Y}
+      \text{Let } p(\beta|Y) \text{ be the probability for the solution $\beta$ given data Y}
     \end{equation*}
     We want the maximum likelihood $\hat{\beta}=\argmax_\beta p(\beta|Y)=\argmin_\beta
     -\log p(\beta|Y)$.
@@ -2121,7 +2121,7 @@ showstringspaces=false            %
         &=\argmin_\beta - \log p(Y|\beta)p(\beta) \\
         &=\argmin_\beta -\log \underbrace{p(Y|\beta^*)}_{
         \mathcal{N}(X\beta^*,\sigma^2)}-\log \underbrace{p(\beta^*)}_{\text{prior belief}} \\
-        &= (X\beta^*-Y)^2 + const
+        &= \argmin_\beta (X\beta^*-Y)^2 + const
       \end{align*}
     \end{equation*}
     \begin{equation*}
@@ -2150,7 +2150,7 @@ showstringspaces=false            %
     \underline{Init:}
     \begin{itemize}
       \item $X \in \mathbb{R}^{N\cross D}, Y \in \mathbb{R}^N, T:$ threshold for
-      number of non-zeor elements of $\beta$.
+      number of non-zero elements of $\beta$.
       \item set of active column indices of X: $A^{(0)} = \cancel{O}$
       \item set of inactive column indices of X: $B^{(0)} = \{ j:j=1...D \}$
       \item initial residual: $r^{(0)}=y$
