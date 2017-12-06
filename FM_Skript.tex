@@ -13,6 +13,15 @@
 \usepackage{tikz}
 \usepackage{enumitem}
 \usepackage{ulem}
+
+\expandafter\def\expandafter\normalsize\expandafter{%
+    \normalsize
+    \setlength\abovedisplayskip{20pt}
+    \setlength\belowdisplayskip{15pt}
+    \setlength\abovedisplayshortskip{15pt}
+    \setlength\belowdisplayshortskip{13pt}
+}
+
 \input ulem.sty
 
 \newlist{arrowlist}{itemize}{1}
@@ -735,7 +744,7 @@ showstringspaces=false            %
       \subsubsection{QDA}
         assumptions:
         \begin{itemize}
-          \item each class prior $p(y=k)$ is well approcimatet by the TS
+          \item each class prior $p(y=k)$ is well approximatet by the TS
           proportion $\hat{p}(y=k)=\frac{N_k}{N}=\pi_k$
           \item the data likelihood for each class p(x|y=k) is well approximated
           by a Gaussian distribution
@@ -1241,6 +1250,7 @@ showstringspaces=false            %
              $\Rightarrow$ 10 bins per dimension $\Rightarrow 10^D$ bins in total \\
              $\Rightarrow$ no TS can ever fill $10^D$ bins $\Rightarrow$ most are empty $\Rightarrow$ no estimate \\
              $\Rightarrow$ doesn't work
+           \end{itemize}
 
              \begin{itemize}
                \item use a 1-dimensional histogram for each dimension (only 10*D bins)
@@ -1539,12 +1549,12 @@ showstringspaces=false            %
         \end{itemize}
         disadvantages:
         \begin{itemize}
-          \item loss of precision: condition number of metric x
+          \item Loss of precision: Condition number of metric X
           \begin{equation*}
-            K = \norm{X}_F\norm{X^+}_{F (Frobenius Norm)}
+            \kappa = \norm{X}_F\norm{X^+}_{F}
           \end{equation*}
           \begin{equation*}
-            \text{Frobenius norm} \quad \norm{X}_F = \sqrt{\sum_{k,l} X_{kl}^2}
+            \text{Frobenius norm:} \quad \norm{X}_F = \sqrt{\sum_{k,l} X_{kl}^2}
           \end{equation*}
           \item condition of $S = X^TX$ \\
           $\Rightarrow$ number of significant digits: $m\beta \approx \kappa^2\varepsilon$ \\
@@ -1554,7 +1564,7 @@ showstringspaces=false            %
           \end{equation*}
           $\Rightarrow \kappa = 10^8 \Rightarrow \kappa^2\varepsilon \approx 1$
         \end{itemize}
-        \item singular value decomposition (SVD) of x: \\
+        \item \textbf{Singular Value Decomposition} (SVD) of X: \\
         Theorem: every matrix can be expressed as
         \begin{equation*}
           \underbrace{X}_{N \times D} = \underbrace{U}_{\substack{N \times D \\ \text{orthogonal}}} \cdot
@@ -1893,19 +1903,19 @@ showstringspaces=false            %
       \beta \in \mathbb{R}^D \Rightarrow \text{want to find D unknown numbers}
     \end{equation*}
     But the data doesn't have enough information to find D unknowns
-    \paragraph{Case 1:} $X \in \mathbb{R}^{N\times D} \text{with} N<D$
+    \paragraph{Case 1:} $X \in \mathbb{R}^{N\times D} \text{ with } N<D$
     \begin{equation*}
       \text{In general:} \quad \rank(X) \leq \min(N,D)=N<D
     \end{equation*}
     Rank measures the amount of information contained in X
-    \paragraph{Case 2:} D $\geq$N, but $\kappa(X)$ (condition number) is bad
+    \paragraph{Case 2:} $D\geq N$, but $\kappa(X)$ (condition number) is bad
     $\widehat{=}$ several columns of X are almost linearly dependent $\widehat{=}
     $ \underline{effective} rank $D^* <D$, $D^* \widehat{=}$ number of singular
     values of X that are significantly different from zero $\widehat{=}D-D^*$
     singular calues are effectively 0 \\
     $\Rightarrow$ we need additional information to compute D numbers $\Rightarrow$
     refularization provides this info
-    \paragraph{Bias-Variance Trade-Off:} \textbf{Bias} (systematic errors): intrinsic error of
+    \subsubsection{Bias-Variance Trade-Off:} \textbf{Bias} (systematic errors): intrinsic error of
     the model, doesn't disappear for $N \to \infty$. \textbf{Variance} (random errors):
     error caused by finite N \\
     \underline{\textbf{Intuition:}} \begin{itemize}
@@ -1918,23 +1928,25 @@ showstringspaces=false            %
       \item let $\beta^*$ be the (unknown) optimal model parametes, $\hat{\beta}$
       solution from $TS_N$
       \item suppose we can repeat experiment with many random $TS_N$
-      \item determine the expected squared error of
+      \item determine the expected squared error of $\hat{\beta}$:
       \begin{equation*}
-        \hat{\beta}: \mathbb{E}_{TS_N} [(\hat{\beta}-\beta^*)^2] \text{'Mean
+         \mathbb{E}_{TS_N} [(\hat{\beta}-\beta^*)^2] \quad \text{'Mean
         squared error (MSE) of $\hat{\beta}$'}
       \end{equation*}
     \end{itemize}
     \begin{equation*}
       \begin{align*}
         \mathbb{E}_{TS_N}[(\hat{\beta}-\beta^*)^2] &= \mathbb{E}[((\hat{\beta}-\mathbb{E}
-        [\hat{\beta}])+(\mathbb{E}[\hat{\beta}]-\beta^*))^2] \\
+        [\hat{\beta}])^2+(\mathbb{E}[\hat{\beta}]-\beta^*))^2] \\
         &= \underbrace{\mathbb{E}[(\hat{\beta}-\mathbb{E}[\hat{\beta}])^2]}_{
         \text{variance of $\hat{\beta}$}}+\underbrace{\mathbb{E}[(\mathbb{E}[\hat{\beta}]-\beta^*)^2]}_{
         \text{squared bias of $\hat{\beta}$}} + 2\mathbb{E}[(\hat{\beta}-\mathbb{E}
         [\hat{\beta}])(\mathbb{E}[\hat{\beta}]-\beta^*)] \\
-        &= \mathbb{E}[\hat{\beta}](\mathbb{E}[\hat{\beta}]\beta^*)-\underbrace
+        \mathbb{E}[(\hat{\beta}-\mathbb{E}
+        [\hat{\beta}])(\mathbb{E}[\hat{\beta}]-\beta^*)]
+        &= \mathbb{E}[\hat{\beta}](\mathbb{E}[\hat{\beta}]-\beta^*)-\underbrace
         {\mathbb{E}[\mathbb{E}[\hat{\beta}]]}_{\mathbb{E}[\hat{\beta}]}(\mathbb
-        {E}[\hat{\beta}-\beta^*]) = 0
+        {E}[\hat{\beta}]-\beta^*) = 0
       \end{align*}
     \end{equation*}
     \begin{equation*}
@@ -1942,7 +1954,7 @@ showstringspaces=false            %
       \hat{\beta}-\mathbb{E}[\hat{\beta}])^2]-\mathbb{E}[(\mathbb{E}
       [\hat{\beta}]-\beta^*)^2]}
     \end{equation*}
-    Application of OLS:
+    \paragraph{Application of OLS:}
     \begin{equation*}
       Y=X\beta+\varepsilon
     \end{equation*}
@@ -1983,24 +1995,27 @@ showstringspaces=false            %
       \end{align*}
     \end{equation*}
     $\varepsilon$ $\widehat{=}$ vector of independent zero-mean Gaussian noise values
-    with varians $\sigma^2$
+    with variance $\sigma^2$
     \[ \Rightarrow \hat{\beta} \sim \mathcal{N}(\beta^*,\sigma^2(XX^T)^{-1})\]
     $\Rightarrow \hat{\beta}$ of OLS has high variance when codition $\kappa(X)$
     is bad (effective rank of X is < D)
     \begin{itemize}
       \item If X has bad condition, two (one more) columns are almost linearly
       dependent, e.g. j and $j'$ \\
-      OLS can learn parameters $\beta_j$ and $\beta_{j'}$ suc that
+      OLS can learn parameters $\beta_j$ and $\beta_{j'}$ such that
       \[\sum_i (X_i\beta_j+X_i\beta_{j'}) = 0\] on the training set but $\beta_j$
-      and $\beta_{j'}$ are big numbers that cancel on TS \Rightarrow $\sum_i
-      (X_i\beta_j+X_i\beta_{j'})$ on \underline{test set} is huge $\Rightarrow$
-      overfitting
+      and $\beta_{j'}$ are big numbers that cancel on training set
+      \begin{equation*}
+        \Rightarrow \sum_i
+        (X_i\beta_j+X_i\beta_{j'}) \text{ on \underline{test set} is huge $\Rightarrow$
+        overfitting}
+      \end{equation*}
       \item Intuition: To reduce overfitting we must prevent big coefficients $\beta_j$
       \item restricting the magnitude of $\beta$ may mean, that $\hat{\beta} \approx
       \beta^*$ is no longer achievable $\Rightarrow$ introduced bias. But if the
       bias is less then variance, this doesn't matter, 'trade-off'
       \item penalize such that both error contributions are roughly equal
-      \item only meaningful if the $\beta_j$ have equal importance/scale to makeroompenalties comparable
+      \item only meaningful if the $\beta_j$ have equal importance/scale to make penalties comparable
       \item always standardize X beforehand
       \begin{equation*}
         X_j \to \frac{X_j}{\text{stdDev}[X_j]}
@@ -2010,6 +2025,148 @@ showstringspaces=false            %
       unit variance (standard data preprocessing)
       \item apply inverse transform to $\beta$ at the end
     \end{itemize}
+    Allow some bias to achieve a big reduction in variance, total error reduction
+    \subsubsection{Ridge Regression}
+    Solve constrained least squares problem:
+    \begin{equation*}
+      \hat{\beta}=\argmin_\beta (X\beta-Y)^2 \quad s.t. \quad \norm{\beta}_2^2=\beta^T\beta \leq t
+    \end{equation*}
+    Mathematically aquivalent formulation: Add constraint to the loss via Lagrange multiplier $\tau$
+    \begin{equation*}
+      \hat{\beta}_\tau = \argmin_\beta \underbrace{(X\beta-Y)^2}_{\text{data term}} +
+      \underbrace{\tau \beta^T\beta}_{\text{regularization term}}
+    \end{equation*}
+    Theorem: For each t from the original problem, there is a $\tau$ such that
+    the solutions are the same. There are different solution methods
+    \begin{enumerate}
+      \item via regularized pseudo-inverse
+      \begin{equation*}
+        \frac{\partial Loss}{\partial \beta}=2X^T(X\beta-Y)+2\tau\beta\overset{!}{=}0
+      \end{equation*}
+      \begin{equation*}
+        (X^TX+\tau\mathbbm{1})\beta=X^TY
+      \end{equation*}
+      \begin{equation*}
+        \boxed{\hat{\beta}=\underbrace{(X^TX+\tau\mathbbm{1})^{-1}X^T}_{X_\tau^+}Y}
+      \end{equation*}
+      \begin{equation*}
+        X_\tau^+: \quad \text{regularized pseudo-inverse}
+      \end{equation*}
+      \item via reduction to OLS, define:
+      \begin{equation*}
+        \tilde{X} = \left[
+          \begin{array}{c}
+            X \\
+            \sqrt{\tau}\mathbbm{1}
+          \end{array}
+        \right]
+        \quad
+        \tilde{Y} = \left[
+          \begin{array}{c}
+            Y \\
+            0
+          \end{array}
+        \right]
+      \end{equation*}
+      \begin{equation*}
+        (\tilde{X}\beta-\tilde{Y})^T(\tilde{X}\beta-\tilde{Y}) =
+        (X\beta-Y)^T(X\beta-Y)+\tau \beta^T\beta
+      \end{equation*}
+      \begin{equation*}
+        \Rightarrow \hat{\beta}_\tau= \argmin_\beta (\tilde{X}\beta-Y)^2 \quad
+        \text{This is OLS problem}
+      \end{equation*}
+      Now just use any OLS solver
+      \item via Singular Value Decomposition:
+      \begin{equation*}
+        X=U\Lambda V^T\quad X^T=V \Lambda U^T \quad X^TX=V\Lambda^2 V^T
+      \end{equation*}
+      \begin{equation*}
+        \begin{align*}
+        X^TX+\tau\mathbbm{1}&=V\Lambda^2V^T+VV^T\tau\mathbbm{1}VV^T \\
+        &= V(\Lambda^2+\tau V^T\mathbbm{1}V)V^T \\
+        &= V\underbrace{(\Lambda^2+\tau\mathbbm{1})}_{diag\left( \lambda_j^2+\tau \right) }V^T
+        \end{align*}
+      \end{equation*}
+      \begin{equation*}
+        \begin{align*}
+          (X^TX+\tau\mathbbm{1})^{-1}=V diag\left(\frac{1}{\lambda_j^2+\tau}\right) V^T
+        \end{align*}
+      \end{equation*}
+      \begin{equation*}
+        \begin{align*}
+          (X^TX+\tau\mathbbm{1})^{-1}X^T=Vdiag\left(\frac{\lambda_j}{\lambda_j^2+\tau}\right) \cancel{V^TV\Lambda}V^T
+        \end{align*}
+      \end{equation*}
+      \begin{equation*}
+        \boxed{(X^TX+\tau\mathbbm{1})^{-1}X^T=Vdiag\left(\frac{\lambda_j}{\lambda_j^2+\tau}\right) U^T=X_\tau^+}
+      \end{equation*}
+    If $\lambda_j \approx 0: \text{OLS}(\tau=0) \quad \frac{1}{\lambda_j} \approx \infty \Rightarrow
+    $ instable solution. \\
+     Ridge Regression$(\tau>0) \quad \frac{\lambda_j}{\lambda_j^2+\tau} \approx
+    \frac{\lambda_j}{\tau} \approx 0 \Rightarrow$ no exploding singular values, stable
+    \item Solution via the dual optimization problem $\Rightarrow$ next week
+    \end{enumerate}
+    Bayesian interpretation of ridge regression:
+    \begin{equation*}
+      \text{Let } p(\beta|Y) \text{be the probability for the solution $\beta$ given data Y}
+    \end{equation*}
+    We want the maximum likelihood $\hat{\beta}=\argmax_\beta p(\beta|Y)=\argmin_\beta
+    -\log p(\beta|Y)$.
+    Now we expand p by Bayes theorem:
+    \begin{equation*}
+      \begin{align*}
+        \hat{\beta}&=\argmax_\beta p(\beta|Y) \\
+        &=\argmin_\beta -\log p(\beta|Y) \\
+        &=\argmin_\beta - \log p(Y|\beta)p(\beta) \\
+        &=\argmin_\beta -\log \underbrace{p(Y|\beta^*)}_{
+        \mathcal{N}(X\beta^*,\sigma^2)}-\log \underbrace{p(\beta^*)}_{\text{prior belief}} \\
+        &= (X\beta^*-Y)^2 + const
+      \end{align*}
+    \end{equation*}
+    \begin{equation*}
+      \text{We used the uninformative prior:} \quad p(\beta^*)=const \Rightarrow -\log p(\beta^*)=const
+    \end{equation*}
+    \begin{equation*}
+      \text{Gaussian prior:} \quad p(\beta^*)=\mathcal{N}(0, \frac{1}{\tau})
+    \end{equation*}
+    \begin{equation*}
+      \Rightarrow -\log p(\beta^*)= \tau\beta^T\beta+const
+    \end{equation*}
+    \subsubsection{Sparse Regression}
+    We change the regularization term: either use threshhold $\norm{\beta}_p \leq t$ or use
+    $+\tau \norm{\beta}_p$ lagrange multiplier:
+    \begin{itemize}
+      \item $p=2 \Rightarrow$ ridge regression.
+      \item $p=1 \Rightarrow \text{L1 regularization} \widehat{=} LASSO$
+      \item $p=0$ counting regularization
+      \begin{equation*}
+        \norm{\beta}_0=\sum_j\mathbbm{1}[\beta_j\neq 0] \quad \text{count non-zero elements}
+      \end{equation*}
+    \end{itemize}
+    Optimizing the problem under the $L_0$ ist NP-hard. The $L_1$ is always sparse
+    if t is small enough, because optimum is at the corner of teasible region.
+    \paragraph{Approximation algorithm:} Orthogonal Matching Pursuit OMP
+    \underline{Init:}
+    \begin{itemize}
+      \item $X \in \mathbb{R}^{N\cross D}, Y \in \mathbb{R}^N, T:$ threshold for
+      number of non-zeor elements of $\beta$.
+      \item set of active column indices of X: $A^{(0)} = \cancel{O}$
+      \item set of inactive column indices of X: $B^{(0)} = \{ j:j=1...D \}$
+      \item initial residual: $r^{(0)}=y$
+    \end{itemize}
+    \underline{Iteration:}
+    \begin{itemize}
+      \item for $t=1,...,T:$
+      \begin{itemize}
+        \item find $\hat{j}^{(t)}=\argmax_{j\in B^{(t-1)}} \abs{x_j^T \cdot r^{(t-1)}}$
+        \item move $\hat{j}^{(t)}$ from B to A
+        \item define active matrix $x^{(t)}$ containing all indices from $A^{(t)}$
+        \item solve OLS problem $\hat{\beta}^{(t)}=\argmin_\beta \norm{x^{(t)}\beta-y}$
+        \item update residual: $r^{(t)}=y-x^{(t)}\hat{\beta}^{(t)}$
+      \end{itemize}
+    \end{itemize}
+
 
 
 
