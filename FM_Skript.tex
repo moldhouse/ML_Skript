@@ -2166,6 +2166,156 @@ showstringspaces=false            %
         \item update residual: $r^{(t)}=y-x^{(t)}\hat{\beta}^{(t)}$
       \end{itemize}
     \end{itemize}
+    \paragraph{Application of sparse regression - Topic discovery}
+    \begin{itemize}
+      \item index i (rows of x) corresponds to words, index j (columns of x)
+      corresponds to topicd
+      \items each column $x_j$ is word frequency hostogramm for topic j
+      $\Rightarrow x_{ij} \widehat{=}$ relative frequency of word in document
+      that only talks about topic j
+      \item Y: word frequency histogram of new document
+      \item task: find out, what topic(s) Y talks about by comparison of word counts
+      \item linear model: $Y=X\beta + \varepsilon$
+      \item $\beta$ must be positive and sparse
+      \item Solution: apply non-negative LASSO ($L_1$ regularization) or non-negative
+      orthogonal matching pusuit to get $\beta$, non-zwor elements of $\beta
+      \widehat{=}$ topics that best explain Y's word frequencies
+      \item Extensions: to learn matrix X ('Dictionary') along with $\beta$ of
+      training set, 'dictionary learning'
+    \end{itemize}
+    \subsection{Non-linear Regression}
+    Non-linear model with additive gaussian noise $Y=f(X;\beta)+\varepsilon$
+    (linear regression is a special case: $f(X;\beta)=X\beta$). There are two approaches:
+    \begin{itemize}
+      \item find optimal $\beta$ directly:
+      \begin{itemize}
+        \item non-linear alg. (Levenberg-Marquort Algorithm)
+        \item regression tree/forest
+      \end{itemize}
+      \item Write: \begin{equation*}
+        f(X;\beta)=\phi(X) \cdot \beta \quad \phi(X): \mathbb{R}^D \to \mathbb{R}^{D'}
+        \quad \text{non-linear mapping}
+    \end{equation*}
+    \begin{equation*}
+      \tilde{X}=\phi(X) \quad \text{'augmented feature'}
+    \end{equation*}
+    how to find $\phi$?
+    \begin{itemize}
+      \item hand crafted
+      \item kernel trick/methods
+      \item learn $\phi(X;\theta)$, e.g. neural network
+    \end{itemize}
+    \end{itemize}
+    \paragraph{Example 1 - XOR Problem}
+    True model: $Y=X_1$ XOR $X_2 \neq [X_1, X_2]\cdot \beta+b$ \\
+    Solution: Find new axis:
+    \begin{equation*}
+      \begin{align*}
+        \tilde{X_1} &= 2X_1-1 \in \{ -1,1\} \\
+        \tilde{X_2} &= 2X_2-1 \in \-1, 1\} \\
+        \tilde{X_3} &= \tilde{X_1} \cdot \tilde{X_2} \\
+        Y &= \frac{\tilde{X_3}+1}{2} = \tilde{X}\beta = \left[ \tilde{X_1}, \tilde{X_2}, \tilde{X_3}\right] \cdot
+        \left[ \begin{array}{c}
+        0 \\
+        0 \\
+        \frac{1}{2} \\
+        \end{array}
+        \right] + \frac{1}{2}
+      \end{align*}
+    \end{equation*}
+    \noindent \paragraph{Example 2 - Fitting a circle}
+    \begin{equation*}
+      \text{model:} \quad y_1 = c+ \left[ \begin{array}{c} cos(\phi_i) \\ sin(\phi_i)
+      \end{array} \right] \cdot (r+\varepsilon_i)
+    \end{equation*}
+    Free variable $\phi$, parameters r (radius) and c (center).
+    \begin{equation*}
+      \begin{align*}
+      \text{Least squares problem:} \quad \hat{c}, \hat{r}&=\argmin_{c,r} \sum_i
+      (\norm{y_i-c}-r)^2 \\ &=\argmin_{c,r} \sum_i (\underbrace{\sqrt{(y_{i1}-c_1)^2+(y_
+      {i2}-c_2)^2}}_{\text{non-linear}}-r)^2
+      \end{align*}
+    \end{equation*}
+    \underline{Solution 1:} non-linear least squares (homework?)
+    \underline{Solution 2:} work in an augmented space by means of algebraic loss
+    \begin{equation*}
+      \begin{align*}
+        \hat{c}, \hat{r}&=\argmin_{c,r} \sum_i (\norm{y_i-c}^2-r^2)^2 \\
+        &= \argmin_{c,r} \sum_i ((y_{i1}-c_1)^2+(y_{i2}-c_2)^2-r^2)^2 \\
+        &= \argmin_{c,r} \sum_i (y_i^2-2c^T \cdot y_i+c^2-r^2)^2
+      \end{align*}
+    \end{equation*}
+    \begin{equation*}
+      \begin{align*}
+        \tilde{x_i} &= [y_{i1}, y_{i2},1] \\
+        \tilde{y_i} &= y_i^Ty_i \\
+        \beta &= [2c_1, 2c_2, r^2-c^Tc]^T \\
+        \hat{\beta} &= \argmin_{\beta} \sum_i (\tilde{y_i}-\tilde{x_i}\beta)^2
+      \end{align*}
+    \end{equation*}
+    \begin{equation*}
+      \begin{align*}
+        \hat{c}_1 = \frac{\hat{\beta}_1}{2} \quad \hat{c}_2 = \frac{\hat{\beta}_2}{2}
+        \quad \hat{r}=\sqrt{\hat{\beta}_3+\hat{c}^T\hat{c}}
+      \end{align*}
+    \end{equation*}
+    \subsubsection{Levenberg-Marquart Algorithm}
+    \textbf{Problem: } $\hat{\beta}=\argmin_\beta \sum_i (Y_i-f(X_i;\beta))^2$
+    has no closed form solution because $f(X_i;\beta)$ is non-linear
+    \begin{itemize}
+      \item linearize f in the neighborhood of a current guess $\beta^{(t)}$ and
+      find an improvement
+      \begin{equation*}
+        \beta^{(t+1)}=\beta^{(t)}+\Delta^{(t)} \text{by \underline{linear least squares}}
+      \end{equation*}
+      $\Rightarrow$ Iterate until convergence
+      \item Linearization by Taylor expansion:
+      \begin{equation*}
+        f(X;\beta+\Delta) = f(X;\beta)+\frac{\partial f}{\partial \beta} \bigg \vert_\beta
+        \cdot \Delta + \mathcal{O}(\Delta^2)
+      \end{equation*}
+      \begin{equation*}
+        \text{Loss } (\beta+\Delta) \approx \sum_i \underbrace{(Y_i-f(X_i;\beta)}_{\tilde{Y}}-
+        \underbrace{\frac{\partial f}{\partial \beta} \bigg \vert_\beta}_{\tilde{X}} \cdot \Delta)^2
+      \end{equation*}
+    \end{itemize}
+    $\Rightarrow$ Gauss-Newton algorithm: \\
+    Initialization:
+    \begin{itemize}
+      \item find initial guess $\beta^{(0)}$
+      \item for f=1...T (or until convergence):
+      \begin{equation*}
+        \hat{Delta}^{(t)} = \argmin_{\Delta} \sum_i (\tilde{Y}_i^{(t)}-\tilde{X}_i^{(t)} \cdot \Delta)^2
+      \end{equation*}
+      \begin{equation*}
+        \text{with } \tilde{Y}_i^{(t)}=Y_i-f(X_i;\beta^{(t-1)}), \tilde{X}^{(t)}=
+        \frac{\partial f}{\partial \beta} \bigg \vert_{\beta=\beta^{(t-1)}}
+      \end{equation*}
+      \begin{equation*}
+        \beta^{(t)}=\beta^{(t-1)}+\hat{\Delta}^{(t)}
+      \end{equation*}
+    \end{itemize}
+    \begin{itemize}
+      \item Solution via pseudo-inverse
+      \begin{equation*}
+        \tilde{\Delta}^{(t)}=(\tilde{X}^T\tilde{X})^{-1}\tilde{X}^T\tilde{Y}
+      \end{equation*}
+      \item problem: Gauss-Newton easily overfitts/$\tilde{X}$ may have bad condition
+      $\Rightarrow \Delta^{(t)}$ eplodes (no convergence)
+      \item Lovenberg uses ridge regression to regularize
+      \begin{equation*}
+        \hat{\Delta}^{(t)}=(\tilde{X}^T\tilde{X}+\tau \mathbbm{1})^{-1}\tilde{X}^T\tilde{Y}
+      \end{equation*}
+      effect if $\tau$ small (relative to $\tilde{X}^T\tilde{X}$) \\
+      $\Rightarrow$ behaves like unregularized regression \\
+      $\Rightarrow$ fast convergence \\
+      If $\tau$ big (relative to $\tilde{X}^T\tilde{X}$)
+      \begin{equation*}
+        \Rightarrow \tilde{\Delta}^{(t)} \approx \frac{1}{\tau} \tilde{X}^T\tilde{Y}
+      \end{equation*}
+      $\Rightarrow$ gradient decent, with step size $\frac{1}{\tau}$, slow but numerically stable
+    \end{itemize}
+
 
 
 

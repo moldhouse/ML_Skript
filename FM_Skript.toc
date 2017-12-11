@@ -70,3 +70,8 @@
 \contentsline {subsubsection}{\numberline {2.5.2}Ridge Regression}{44}
 \contentsline {subsubsection}{\numberline {2.5.3}Sparse Regression}{46}
 \contentsline {paragraph}{Approximation algorithm:}{46}
+\contentsline {paragraph}{Application of sparse regression - Topic discovery}{47}
+\contentsline {subsection}{\numberline {2.6}Non-linear Regression}{47}
+\contentsline {paragraph}{Example 1 - XOR Problem}{48}
+\contentsline {paragraph}{Example 2 - Fitting a circle}{48}
+\contentsline {subsubsection}{\numberline {2.6.1}Levenberg-Marquart Algorithm}{49}
