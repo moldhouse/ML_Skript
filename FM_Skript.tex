@@ -2285,7 +2285,7 @@ showstringspaces=false            %
       \item find initial guess $\beta^{(0)}$
       \item for f=1...T (or until convergence):
       \begin{equation*}
-        \hat{Delta}^{(t)} = \argmin_{\Delta} \sum_i (\tilde{Y}_i^{(t)}-\tilde{X}_i^{(t)} \cdot \Delta)^2
+        \hat{\Delta}^{(t)} = \argmin_{\Delta} \sum_i (\tilde{Y}_i^{(t)}-\tilde{X}_i^{(t)} \cdot \Delta)^2
       \end{equation*}
       \begin{equation*}
         \text{with } \tilde{Y}_i^{(t)}=Y_i-f(X_i;\beta^{(t-1)}), \tilde{X}^{(t)}=
@@ -2314,9 +2314,19 @@ showstringspaces=false            %
         \Rightarrow \tilde{\Delta}^{(t)} \approx \frac{1}{\tau} \tilde{X}^T\tilde{Y}
       \end{equation*}
       $\Rightarrow$ gradient decent, with step size $\frac{1}{\tau}$, slow but numerically stable
+      \item problem: regularization should be applied to standardized data, but we cannot standardize $\tilde{X}$ because it mus be Jacobian
+      \item Marquarts trick: weight $\tau$ with the diagonal elements of $\tilde{X}^T\tilde{X}$
+      \begin{equation*}
+      \hat{\Delta}^{(t)} = (\underbrace{\tilde{X}^T\tilde{X} + \tau diag(\tilde{X}^T\tilde{X})}_{\text{multiply diagonal of} X^TX \text{with} (1+\tau)})^{-1}\tilde{X}\tilde{Y}
+      \end{equation*}
+      \item how to choose $\tau$ automatically: \\
+      $\Rightarrow$ Stepsize control: start with initial $\tau = \tau_{0} (=0.1)$
+      \begin{itemize}
+      \item solve current iteration with current $\tau$, if residual decreases \\
+      $\Rightarrow$ accept $\hat{\beta}^{(t)}$ and use loss regularization in next iteration if residual increases $\Rightarrow$ reject $\hat{\beta}^{(t)}$, increase $\tau \leftarrow \sqrt{2} \tau$, retry current iteration.
+      \end{itemize}
+
     \end{itemize}
-
-
 
 
 
