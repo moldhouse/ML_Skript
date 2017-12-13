@@ -75,3 +75,9 @@
 \contentsline {paragraph}{Example 1 - XOR Problem}{48}
 \contentsline {paragraph}{Example 2 - Fitting a circle}{48}
 \contentsline {subsubsection}{\numberline {2.6.1}Levenberg-Marquart Algorithm}{49}
+\contentsline {subsubsection}{\numberline {2.6.2}Regression trees & forests}{50}
+\contentsline {subsubsection}{\numberline {2.6.3}Kernel Methods}{51}
+\contentsline {paragraph}{Prediction}{52}
+\contentsline {paragraph}{Example}{53}
+\contentsline {paragraph}{Popular Kernel functions}{53}
+\contentsline {paragraph}{Example continued}{53}

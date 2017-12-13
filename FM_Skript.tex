@@ -2320,6 +2320,196 @@ showstringspaces=false            %
 
 
 
+    We did OLS in hand-crafted augmented data space:
+    \begin{equation*}
+      \tilde{X}=\phi(X) \quad \tilde{Y}=\psi(Y)
+    \end{equation*}
+    \subsubsection{Regression trees & forests}
+    Almost equal to density tree, adapted to regression problem. Idea:
+    \begin{equation*}
+      Y=f(X)+\varepsilon \quad \text{is approximated by a piecewise constant function}
+    \end{equation*}
+    \begin{equation*}
+      \hat{Y}=\hat{f}(X) \quad \text{with} \quad \hat{f}(X)=\sum_l f_l \mathbbm{1}\floor{X \in \text{bin}_l}
+    \end{equation*}
+    If bins are fixed, determine
+    \begin{equation*}
+      \hat{f}_l=\argmin_{\{ f_l \}} \sum_i (Y_i-\hat{f}(X_i))^2
+    \end{equation*}
+    \begin{equation*}
+      \Rightarrow \hat{f}_l=\frac{1}{N_l} \sum_{i \in \text{bin}_l} Y_i
+      \quad i \in \text{bin} \widehat{=} X_i \in \text{bin}_l
+    \end{equation*}
+    Define bins by recursive subdivision, as in density tree, but two differences:
+    \begin{itemize}
+      \item to determine the best split of bin l, search exhaustively or
+      randomly over all possible splits of bin l, and than choose the best split
+      $\widehat{=}$ minimize the redidual after splitting
+      \begin{equation*}
+        \text{residual} \quad = \sum_{i \in \text{bin}_l} (Y_i-\hat{f}_\lambda)^2+\sum_{i \in \text{bin}_
+        \rho}(Y_i -\hat{f}_\rho)^2
+      \end{equation*}
+      \item in each iteration, split the bin with highest score:
+      \begin{equation*}
+        \text{score}_l \quad = \sum_{i \in \text{bin}_l}(Y_i-\hat{f}_l)^2-
+        \sum_{i \in \text{bin}_l}(Y_i-\hat{f}_{\lambda_l})^2-
+        \sum_{i \in \text{bin}_l}(Y_i-\hat{f}_{\rho_l})^2
+      \end{equation*}
+    \end{itemize}
+    We also generalize into regression forest, train many trees with random variation:
+    \begin{itemize}
+      \item check a random subset of the possible candidate splits
+      \item present a random subset of the training data to each tree
+      \item during prediction: return average of all trees
+    \end{itemize}
+    \subsubsection{Kernel Methods}
+    Idea: replace handcrafted augmented feature space with a kernel function. We
+    consider a fourth solution method for ridge regression via dual optimization problem.
+    Recall:
+    \begin{equation*}
+      \hat{\beta} = \argmin_\beta \sum_i (Y_i-X_i \beta)^2+\tau \beta^T \beta
+    \end{equation*}
+    This is the primal optimization problem of ridge regression. Now we will rewrite:
+    \begin{equation*}
+      \hat{\beta}, \{ \hat{r}_i \} = \argmin_{\beta, \{ r_i \}} \sum_i r_i^2 +
+      \tau \beta^T \beta \quad \text{such that } \forall i: r_i=Y_i-X_i\beta
+    \end{equation*}
+    Define Lagrangian function:
+    \begin{equation*}
+      L(\beta, \{ r_i \}, \{ \alpha_i \})=\tau \beta^T\beta+\sum_i r_i^2+
+      2 \tau \sum_i \alpha_i (Y_i-X_i\beta-r_i)
+    \end{equation*}
+    Where $\alpha_i$ are the Lagrangian multipliers, also calles the dual variables.
+    We can now optimize:
+    \begin{equation*}
+      \boxed{\hat{\beta}, \{ \hat{r}_i \}, \{ \hat{\alpha}_i \} = \argmax_{\{ \alpha_i \}}
+      \argmin_{\beta, \{ r_i \} } L(\beta, \{r_i\}, \{ \alpha_i \})}
+    \end{equation*}
+    \begin{equation*}
+      \frac{\partial L}{\partial \beta}=2\tau\beta^T-2\tau \sum_i \alpha_i X_i
+      \overset{!}{=} 0
+    \end{equation*}
+    \begin{equation*}
+      \Rightarrow \beta^T=\sum_i \alpha_i X_i = \alpha^T X
+    \end{equation*}
+    \begin{equation*}
+      \begin{align*}
+      L &= \tau \alpha^T X X^T \alpha+\sum_i r_i^2 + 2\tau \sum_i \alpha_i Y_i -
+      2 \tau \sum_i \alpha_i r_i - 2\tau \underbrace{\sum_i \alpha_i X_i X^T \alpha}_
+      {\alpha^T X X^T \alpha} \\
+      &= -\tau \alpha^T X X^T \alpha + \sum_i r_i^2 +2\tau\sum_i\alpha_iY_i-2\tau\sum_i\alpha_ir_i
+      \end{align*}
+    \end{equation*}
+    \begin{equation*}
+      \text{Gram Matrix} \quad G = XX^T \in \mathbb{R}^{N \times N}
+    \end{equation*}
+    \begin{equation*}
+      \text{Elements} \quad G_{ii'}=X_iX_{i'}^T
+    \end{equation*}
+    This is the scalar product between features of instance i and i'.
+    \begin{equation*}
+      \begin{align*}
+        \frac{\partial L}{\partial r_i}=2r_i-2\tau\alpha_i \overset{!}{=}0
+        \quad r_i = \tau \alpha_i
+      \end{align*}
+    \end{equation*}
+    \begin{equation*}
+      \begin{align*}
+        \Rightarrow L&= -\tau \alpha^T G \alpha+\tau^2\alpha^T\alpha+2\tau\sum_i\alpha_i
+        Y_i-2\tau^2\alpha^T\alpha \\
+        &= -\tau \alpha^T G \alpha - \tau^2 \alpha^T\alpha+2\tau\alpha^TY
+      \end{align*}
+    \end{equation*}
+    \begin{equation*}
+      \begin{align*}
+        \frac{\partial L}{\partial \alpha}&=-2\tau G\alpha-2\tau^2\alpha+2\tau Y
+        \overset{!}{=}0 \\
+        &= -G\alpha-\tau \alpha+Y \overset{!}{=}0 \quad \quad (G+\tau\mathbbm{1}_N)\alpha=Y
+      \end{align*}
+    \end{equation*}
+    \begin{equation}
+      \boxed{\hat{\alpha}=(G+\tau \mathbbm{1})^{-1}Y} \quad \text{dual solution}
+    \end{equation}
+    \begin{equation*}
+      \Rightarrow \hat{\beta}^T=\hat{\alpha}^TX
+    \end{equation*}
+    \noindent \paragraph{Prediction} for new instance $X_{\text{new}}$:
+    \begin{equation*}
+      Y_{\text{new}}=X_{\text{new}}\hat{\beta}=\hat{\beta^T}X_{\text{new}}^T
+      =\alpha^TXX_{\text{new}}^T
+    \end{equation*}
+    \begin{equation*}
+      \text{with Gram vector} \quad g=XX_{\text{new}}^T, g_i=X_iX_{\text{new}}^T
+    \end{equation*}
+    \begin{equation*}
+      \boxed{Y_{\text{new}}\hat{\alpha}^Tg_{\text{new}}}
+    \end{equation*}
+    Solve dual in augmented feature space: $\tilde{X}=\phi(X)$
+    \begin{equation*}
+      \hat{\alpha}=(\tilde{G}+\tau \mathbbm{1})^{-1}Y \quad \tilde{G}=\tilde{X}\tilde{X}^T
+    \end{equation*}
+    \begin{equation*}
+      Y_{\text{new}}=\hat{\alpha}^T\tilde{g}_{\text{new}} \quad \hat{g}_{\text{new}}=\tilde{X}\tilde{X}_{\text{new}}^T
+    \end{equation*}
+    Kernel trick: we can construct $\tilde{G}$ and $\tilde{g}_{\text{new}}$ without ever computing
+    $\tilde{X}$ and $\tilde{X}_{\text{new}}$, namely via a kernel function k
+    \begin{equation*}
+      \tilde{G}_{ii'}=\phi(X_i)\phi(X_{i'})^T :=K(X_i,X_{i'})
+    \end{equation*}
+    K is chosen to be much simpler than $\phi$.
+    \noindent \paragraph{Example}
+    \begin{equation*}
+      X_i= [X_{i1}, X_{i2}], \quad \tilde{X}=[X_{i1}^2, X_{i2}^2, \sqrt{2}X_{i1}X_{i2},
+      \sqrt{2}X_{i1}, \sqrt{2}X_{i2}, 1]
+    \end{equation*}
+    \begin{equation*}
+      \begin{align*}
+        \tilde{G}_{ii'}&=\tilde{X}_i\tilde{X}_{i'}^T=X_{i1}^2+X_{i'1}^2+
+        X_{i2}^2X_{i'2}^2+2X_{i1}X_{i2}X_{i'1}X_{i'2}+2X_{i1}X_{i'1}
+        +2X_{i2}X_{i'2}+1 \\
+        &=(X_iX_{i'}^T+1)^2=K(X_i, X_{i'})
+      \end{align*}
+    \end{equation*}
+    General condition that the kernel trick is applicable:
+    \begin{enumerate}
+      \item Solution of optimization problem only accesses features via scalar products.
+      We achieve this by using the dual optimization problem with G.
+      \item Kernel function is positive definite (Mercer's condition)
+      \begin{equation*}
+        \int_{\mathbb{R}^D}\int_{\mathbb{R}^D}K(X_i, X_{i'})f(X_i)f(X_{i'})d(X_i, X_{i'}) \geq 0
+      \end{equation*}
+      for arbitrary square integrable functions $f: \mathbb{R}^D \to \mathbb{R}^D$ \\
+      Intuition: the matrix $\tilde{G}+\tau \mathbbm{1}$ is always positive definite for $\tau >0$ and invertible.
+    \end{enumerate}
+    \noindent \paragraph{Popular Kernel functions}
+    \begin{itemize}
+      \item Polynomial Kernels:
+      \begin{equation*}
+        K(X_i, X_{i'})=(X_iX_{i'}^T+1)^q \quad q \in \mathbb{N}^+
+      \end{equation*}
+      \item squared exponential (Gaussian) kernel
+      \begin{equation*}
+        K(X_i, X_{i'})=e^{-\frac{\norm{X_i-X_{i'}}^2}{2\sigma^2}}
+      \end{equation*}
+    \end{itemize}
+    \noindent \paragraph{Example continued}
+    \begin{equation*}
+      K(X_i, X_{i'})=(X_iX_{i'}^T+1)^2
+    \end{equation*}
+    This is sufficient to solve the XOR problem. By choosing the right kernel, arbitrary
+    non-linear relationships $Y=f(X)$ can be modeled. The disadvantage is that
+    this is more expensive. Inversion of $G+\tau \mathbbm{1}$ takes $\mathcal{O}(N^3)$
+    if G is dense and $\mathcal{O}(N)$ if G is sparse. We also need prediction $
+    \mathcal{O}(N\cdot D)$ to compute $j_{\text{new}}$. It also easily overfits,
+    therefore carefully select regularization parameter $\tau$ and the properties
+    q and $\sigma$ of the kernel function via cross validation.
+
+
+
+
+
+
+
 
 
 
