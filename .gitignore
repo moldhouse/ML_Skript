@@ -1,0 +1,6 @@
+# diese Dateien werden von git nicht in die Versionskontrolle aufgenommen
+*.toc
+*.aux
+*.log
+*.fdb_latexmk
+*.fls
