@@ -2334,7 +2334,7 @@ showstringspaces=false            %
     \begin{equation*}
       \tilde{X}=\phi(X) \quad \tilde{Y}=\psi(Y)
     \end{equation*}
-    \subsubsection{Regression trees & forests}
+    \subsubsection{Regression trees \& forests}
     Almost equal to density tree, adapted to regression problem. Idea:
     \begin{equation*}
       Y=f(X)+\varepsilon \quad \text{is approximated by a piecewise constant function}
@@ -2434,32 +2434,32 @@ showstringspaces=false            %
       \begin{align*}
         \frac{\partial L}{\partial \alpha}&=-2\tau G\alpha-2\tau^2\alpha+2\tau Y
         \overset{!}{=}0 \\
-        &= -G\alpha-\tau \alpha+Y \overset{!}{=}0 \quad \quad (G+\tau\mathbbm{1}_N)\alpha=Y
+        &= -G\alpha-\tau \alpha+Y \overset{!}{=}0 \quad \quad (G+\tau\mathbbm{1}_N)\hat{\alpha}=Y
       \end{align*}
     \end{equation*}
-    \begin{equation}
+    \begin{equation*}
       \boxed{\hat{\alpha}=(G+\tau \mathbbm{1})^{-1}Y} \quad \text{dual solution}
-    \end{equation}
+    \end{equation*}
     \begin{equation*}
       \Rightarrow \hat{\beta}^T=\hat{\alpha}^TX
     \end{equation*}
     \noindent \paragraph{Prediction} for new instance $X_{\text{new}}$:
     \begin{equation*}
-      Y_{\text{new}}=X_{\text{new}}\hat{\beta}=\hat{\beta^T}X_{\text{new}}^T
-      =\alpha^TXX_{\text{new}}^T
+      Y_{\text{new}}=X_{\text{new}}\hat{\beta}=\hat{\beta}^TX_{\text{new}}^T
+      =\hat{\alpha}^TXX_{\text{new}}^T
     \end{equation*}
     \begin{equation*}
-      \text{with Gram vector} \quad g=XX_{\text{new}}^T, g_i=X_iX_{\text{new}}^T
+      \text{with Gram vector} \quad g=XX_{\text{new}}^T, \quad g_i=X_iX_{\text{new}}^T
     \end{equation*}
     \begin{equation*}
-      \boxed{Y_{\text{new}}\hat{\alpha}^Tg_{\text{new}}}
+      \boxed{Y_{\text{new}}=\hat{\alpha}^Tg_{\text{new}}}
     \end{equation*}
     Solve dual in augmented feature space: $\tilde{X}=\phi(X)$
     \begin{equation*}
       \hat{\alpha}=(\tilde{G}+\tau \mathbbm{1})^{-1}Y \quad \tilde{G}=\tilde{X}\tilde{X}^T
     \end{equation*}
     \begin{equation*}
-      Y_{\text{new}}=\hat{\alpha}^T\tilde{g}_{\text{new}} \quad \hat{g}_{\text{new}}=\tilde{X}\tilde{X}_{\text{new}}^T
+      Y_{\text{new}}=\hat{\alpha}^T\tilde{g}_{\text{new}} \quad \tilde{g}_{\text{new}}=\tilde{X}\tilde{X}_{\text{new}}^T
     \end{equation*}
     Kernel trick: we can construct $\tilde{G}$ and $\tilde{g}_{\text{new}}$ without ever computing
     $\tilde{X}$ and $\tilde{X}_{\text{new}}$, namely via a kernel function k
@@ -2474,7 +2474,7 @@ showstringspaces=false            %
     \end{equation*}
     \begin{equation*}
       \begin{align*}
-        \tilde{G}_{ii'}&=\tilde{X}_i\tilde{X}_{i'}^T=X_{i1}^2+X_{i'1}^2+
+        \tilde{G}_{ii'}&=\tilde{X}_i\tilde{X}_{i'}^T=X_{i1}^2X_{i'1}^2+
         X_{i2}^2X_{i'2}^2+2X_{i1}X_{i2}X_{i'1}X_{i'2}+2X_{i1}X_{i'1}
         +2X_{i2}X_{i'2}+1 \\
         &=(X_iX_{i'}^T+1)^2=K(X_i, X_{i'})

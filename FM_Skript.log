@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.2)  13 DEC 2017 16:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.2)  14 DEC 2017 18:31
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1248,20 +1248,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./FM_S
-kript.toc
-! Misplaced alignment tab character &.
-<argument> \numberline {2.6.2}Regression trees &
-                                                 forests
-l.78 ...ine {2.6.2}Regression trees & forests}{50}
-                                                  
-I can't figure out why you would want to use a tab mark
-here. If you just want an ampersand, the remedy is
-simple: Just type `I\&' now. But if some right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
-
-)
+kript.toc)
 \tf@toc=\write5
 \openout5 = `FM_Skript.toc'.
 
@@ -2772,18 +2759,6 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [49]
-! Misplaced alignment tab character &.
-<argument> Regression trees &
-                              forests
-l.2337 ...ubsubsection{Regression trees & forests}
-                                                  
-I can't figure out why you would want to use a tab mark
-here. If you just want an ampersand, the remedy is
-simple: Just type `I\&' now. But if some right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
-
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
@@ -2919,7 +2894,7 @@ ype1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2017/texmf-dist/fonts/typ
 e1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1
 /public/cm-super/sfrm1200.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/p
 ublic/cm-super/sfrm1728.pfb>
-Output written on FM_Skript.pdf (54 pages, 456433 bytes).
+Output written on FM_Skript.pdf (54 pages, 457245 bytes).
 PDF statistics:
  290 PDF objects out of 1000 (max. 8388607)
  203 compressed objects within 3 object streams
