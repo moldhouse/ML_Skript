@@ -81,3 +81,10 @@
 \contentsline {paragraph}{Example}{53}
 \contentsline {paragraph}{Popular Kernel functions}{53}
 \contentsline {paragraph}{Example continued}{53}
+\contentsline {paragraph}{Kernel Trick recalled:}{54}
+\contentsline {paragraph}{Simplified version:}{54}
+\contentsline {subsection}{\numberline {2.7}Robust regression}{54}
+\contentsline {subsubsection}{\numberline {2.7.1}Introduction}{54}
+\contentsline {subsubsection}{\numberline {2.7.2}RANSAC algorithm}{55}
+\contentsline {paragraph}{Algorithm to find fundamental matrix}{56}
+\contentsline {subsubsection}{\numberline {2.7.3}Robust loss functions}{56}

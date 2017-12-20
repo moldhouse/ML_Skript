@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.2)  14 DEC 2017 18:31
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.2)  20 DEC 2017 11:44
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -2858,12 +2858,201 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[54] (./FM_Skript.aux) ) 
+[54]
+! Missing { inserted.
+<to be read again> 
+                   $
+l.2581       \item return model $M_$
+                                     with the most inliers (and correspondin...
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.2581       \item return model $M_$
+                                     with the most inliers (and correspondin...
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Undefined control sequence.
+l.2592 ...only inliers in iteration t})=\gamma^{\N
+                                                  _{\text{min}}}=
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[55]
+
+LaTeX Warning: Command \t invalid in math mode on input line 2627.
+
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 2627
+.
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/omlcmr.fd
+File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10.95> not available
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 2627.
+
+
+LaTeX Warning: Command \t invalid in math mode on input line 2627.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2627 ...lon \mathcal{N}(0, \tau^2)) \quad \t\geq
+                                                   0
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Improper \spacefactor.
+<recently read> \spacefactor 
+                             
+l.2627 ...lon \mathcal{N}(0, \tau^2)) \quad \t\geq
+                                                   0
+You can refer to \spacefactor only in horizontal mode;
+you can refer to \prevdepth only in vertical mode; and
+neither of these is meaningful inside \write. So
+I'm forgetting what you said and using zero instead.
+
+! Extra }, or forgotten $.
+\add@accent ... \accent@spacefactor \spacefactor }
+                                                  \accent #1 #2\egroup \spac...
+l.2627 ...lon \mathcal{N}(0, \tau^2)) \quad \t\geq
+                                                   0
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Please use \mathaccent for accents in math mode.
+\add@accent ...@spacefactor \spacefactor }\accent 
+                                                  #1 #2\egroup \spacefactor ...
+l.2627 ...lon \mathcal{N}(0, \tau^2)) \quad \t\geq
+                                                   0
+I'm changing \accent to \mathaccent here; wish me luck.
+(Accents are not the same in formulas as they are in text.)
+
+! Missing { inserted.
+<to be read again> 
+                   \edef 
+l.2627 ...lon \mathcal{N}(0, \tau^2)) \quad \t\geq
+                                                   0
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+! You can't use `\spacefactor' in math mode.
+\add@accent ...}\accent #1 #2\egroup \spacefactor 
+                                                  \accent@spacefactor 
+l.2627 ...lon \mathcal{N}(0, \tau^2)) \quad \t\geq
+                                                   0
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! Extra }, or forgotten $.
+\UseTextAccent ...se@text@encoding \@curr@enc #3}}
+                                                  
+l.2627 ...lon \mathcal{N}(0, \tau^2)) \quad \t\geq
+                                                   0
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2628   \end{equation*}
+                        
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.2628   \end{equation*}
+                        
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.2628   \end{equation*}
+                        
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.2628   \end{equation*}
+                        
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2628   \end{equation*}
+                        
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Display math should end with $$.
+<to be read again> 
+                   \endgroup 
+l.2628   \end{equation*}
+                        
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[56] (./FM_Skript.aux) ) 
 Here is how much of TeX's memory you used:
- 34709 strings out of 492995
- 761370 string characters out of 6132705
+ 34725 strings out of 492995
+ 761649 string characters out of 6132705
  811079 words of memory out of 5000000
- 37810 multiletter control sequences out of 15000+600000
+ 37823 multiletter control sequences out of 15000+600000
  20256 words of font info for 64 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  121i,21n,153p,10383b,1915s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -2889,15 +3078,16 @@ ts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2017/texmf-dist
 /fonts/type1/public/cm-super/sfbx1095.pfb></usr/local/texlive/2017/texmf-dist/f
 onts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2017/texmf-dist/fon
 ts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2017/texmf-dist/fonts
-/type1/public/cm-super/sfrm0800.pfb></usr/local/texlive/2017/texmf-dist/fonts/t
-ype1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2017/texmf-dist/fonts/typ
-e1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1
-/public/cm-super/sfrm1200.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/p
-ublic/cm-super/sfrm1728.pfb>
-Output written on FM_Skript.pdf (54 pages, 457245 bytes).
+/type1/public/cm-super/sfrm0600.pfb></usr/local/texlive/2017/texmf-dist/fonts/t
+ype1/public/cm-super/sfrm0800.pfb></usr/local/texlive/2017/texmf-dist/fonts/typ
+e1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1
+/public/cm-super/sfrm1095.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/p
+ublic/cm-super/sfrm1200.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/pub
+lic/cm-super/sfrm1728.pfb>
+Output written on FM_Skript.pdf (56 pages, 481255 bytes).
 PDF statistics:
- 290 PDF objects out of 1000 (max. 8388607)
- 203 compressed objects within 3 object streams
+ 301 PDF objects out of 1000 (max. 8388607)
+ 211 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
  19 words of extra memory for PDF output out of 10000 (max. 10000000)
 

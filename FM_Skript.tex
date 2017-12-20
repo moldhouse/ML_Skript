@@ -2514,6 +2514,149 @@ showstringspaces=false            %
     therefore carefully select regularization parameter $\tau$ and the properties
     q and $\sigma$ of the kernel function via cross validation.\\
     End.
+    \noindent \paragraph{Kernel Trick recalled:} reformulate problems such that feautres are only
+    accessed via scalar products $X_iX_{i'}^T$
+    \begin{itemize}
+      \item replace all scalar products with calls to kernel function $K(X_i, X_{i'})$
+      \item choose kernel according to application, solve $\hat{alpha}=(G+\tau
+      \mathbbm{1})^{-1}Y$, predict $\hat{Y_{\text{new}}}=\hat{\alpha}^Tg_{\text{new}}
+      \quad G_{ii'}=K(X_i,X_{i'}), g_i=K(X_i,X_{\text{new}})$
+    \end{itemize}
+    \noindent \paragraph{Simplified version:} Kernel regression without ridge - Nadaraya-Walson
+    regression:
+    \begin{itemize}
+      \item no training
+      \item prediction: \begin{equation*}
+        Y_{\text{new}}=\frac{\sum_i Y_i g_i}{\sum_i g_i} \widehat{=}\alpha_{\text{new}}
+        =\frac{Y}{\norm{g_{\text{new}}}_1}=(\frac{1}{\norm{g_{\text{new}}}_1}\mathbbm{1})Y
+    \end{equation*}
+    \item usually not as good as Kernel ridge regression but cheaper
+    \end{itemize}
+    \subsection{Robust regression}
+    \subsubsection{Introduction}
+    \begin{itemize}
+      \item Robust means that the regression still works when the data does not
+      (exactly) conform to method's application
+      \item 2 important types of deviation:
+      \begin{enumerate}
+        \item contaminated data: True distribution has heavier tail then expected
+        \item several independe model instances in the data $\Rightarrow$ inliers
+        of one model are outliers of the other
+      \end{enumerate}
+      \item use robust regression wih care to not make up conclusions miss:
+      \begin{itemize}
+        \item Ozone hole was discovered 1985 from the ground but shouls have been deected by
+        Nimbus 7 satellite in 1983. The analysis software considered ouon concentration
+        as low as in the hole as outliers and ignored hem
+      \end{itemize}
+      \item 2 basic approaches:
+      \begin{enumerate}
+        \item filer out the outliers, e.g. RANSAC algorithms
+        \item use robust loss functions (implicit down weighted during optimization)
+      \end{enumerate}
+    \end{itemize}
+    \subsubsection{RANSAC algorithm}
+    Application when:
+    \begin{itemize}
+      \item outlier funcino is medium < 70\% - 90\% (more outliers - more expensive)
+      \item data is superposition of several models
+      \item regression problem has only few degrees of freedom (less than 10
+      unknown variables)
+    \end{itemize}
+    \underline{Idea:} Let model have K unknowns. There is an algorithm that can fit the model with a minimal
+    number of data points. \\
+    \underline{Examples:} \begin{itemize}
+      \item line fit in 2D: $N_{\text{min}}=2$
+      \item circle in 2D: $N_{\text{min}}=3$
+      \item hyperplane in n-D: $N_{\text{min}}=n+1$
+      \item fundamentals matrix: $N_{\text{min}}=8$ (Transformation between two
+      pictures of same scene)
+    \end{itemize}
+    \underline{Algorithm:} Repeat for t=1...T:
+    \begin{itemize}
+      \item select instances at random and fi the model $M_t$.
+      \item for all other insances compute the distance from the model $d_{it}$
+      and count inliers $\widehat{=}d_{it}\leq \varepsilon$. $\varepsilon=2\sigma
+      \approx$ std. deviation without outliers.
+      \item return model $M_$ with the most inliers (and corresponding inliers set).
+    \end{itemize}
+    Now imagine a model with data of two lines inside. Two find both lines we must find
+    the first winner model. Then remove the inliers of the first model and run the
+    RANSAC algorithm again. To improve the model: Use std. regression on the inliers
+    set of the best fit - the random model is usually not the best fit.
+    \begin{itemize}
+      \item How often should we try? Define an acceptable prob. of failure, $
+      \alpha \ll 1 \quad \alpha = 0.1\%$.
+      \item must know the inlier function $\gamma=\frac{N_{in}}{N}$.
+      \begin{equation*}
+        p(\text{pick only inliers in iteration t})=\gamma^{\N_{\text{min}}}=
+        p(\text{model $M_t$ is good})
+      \end{equation*}
+      \begin{equation*}
+        p(\text{pick at least one outlier in iteration t})=1-\gamma^{N_{\text{min}}}
+        =p(\text{model $M_t$ is bad})
+      \end{equation*}
+      \begin{equation*}
+        p(\text{all T models are bad})=(1-\gamma^{N_{\text{min}}})^T=1-p(\text
+        {at least one model is good})=1-\alpha
+      \end{equation*}
+      \begin{equation*}
+        \Rightarrow T \geq \frac{\log(1-\alpha)}{\log(1-\gamma^{N_{\text{min}}})}
+      \end{equation*}
+    \end{itemize}
+    \begin{equation*}
+    \begin{array}{c|cccc}
+      \text{application} &N_{\text{min}} &\gamma=90\% &50\% &30\% \\
+      \hline
+      \text{2D-line} &2 &3 &17 &49 \\
+      \text{3D-circle} &3 &4 &35 &169 \\
+      \text{fundam. matrix} &8 &9 &1172 &70188
+    \end{array}
+  \end{equation*}
+  \noindent \paragraph{Algorithm to find fundamental matrix}
+  \begin{itemize}
+    \item detect characteristic points in both picturing ('interest points')
+    with SIFT or HOG algorithm
+    \item use RANSAC to create hypothesis about \underline{corresponding points}
+    - refer to same real world problem
+  \end{itemize}
+  \subsubsection{Robust loss functions}
+  \textbf{Example:} contaminated Gaussian distribution:
+  \begin{equation*}
+    X \sim \underbrace{(1-\varepsilon)}_{\text{mixture prob.}}\underbrace{\mathcal{N}(0, \sigma^2)}_
+    {\text{desired distrib.}}+\varepsilon \mathcal{N}(0, \tau^2)) \quad \t\geq 0
+  \end{equation*}
+  \begin{equation*}
+    \text{Mean: } \mu=0 \quad \text{Variance of X: } var(\bar{X})=\frac{1}{N}(1-\varepsilon)
+    \sigma^2+\varepsilon\tau^2)=\frac{\sigma^2}{N}(1-\varepsilon+\varepsilon\underbrace{\frac{\tau^2}{\sigma^2})}
+    _{\leq 1}
+  \end{equation*}
+  If $\varepsilon>0, \tau>5$: Variance is increased. Traditional robust estimator median:
+  \begin{equation*}
+    Med(X)=t \quad \text{such that} \quad \#\{x_i<t\}=\#\{x_i>t\}
+  \end{equation*}
+  Center of ordered set of observations.
+  \begin{equation*}
+    var(Med(X))=\frac{\sigma^2}{N}\frac{\pi}{2((1-\varepsilon)+\varepsilon\frac{\tau}{\sigma})^2}
+  \end{equation*}
+  \begin{equation*}
+    \Rightarrow \frac{var(Med(x))}{var(Mean(X))}\overset{*}{=}\frac{\pi}{2} \simeq 1.57 \quad \text{if no contamination ($\varepsilon=0$)}
+  \end{equation*}
+  $\Rightarrow$ need 57 \% more data to achieve the accuracy with median. Median
+  is more robust under outliers
+  \begin{equation*}
+    \overset{*}{=}\begin{cases}
+    1 & \text{if } (\varepsilon=5\%, \frac{\tau}{\sigma}=4) \\
+    0.29 & \text{if } (\varepsilon=5\%, \frac{\tau}{\sigma}=10) \\
+    0.17 & \text{if } (\varepsilon=10\%, \frac{\tau}{\sigma}=10) \\
+    \end{cases}
+  \end{equation*}
+
+
+
+
+
+
 
 
 
